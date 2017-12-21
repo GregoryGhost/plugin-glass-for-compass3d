@@ -8,9 +8,9 @@ namespace GlassPlugin.Models
 {
     enum TypeGlass
     {
-        crimp,
-        clean,
-        faceted
+        Crimp,
+        Clean,
+        Faceted
     }
 
     interface IGlass
@@ -18,49 +18,64 @@ namespace GlassPlugin.Models
         void CreateModel(Parameters model);
     }
 
-    public class GlassProxy: IGlass
+    public class GlassProxy : IGlass
     {
         Glass _glass = new Glass();
-        
+
+        readonly int maxCountOfFaceGlass = 20;
+
+        readonly int minCountOfFaceGlass = 4;
+
         public void CheckInput(Parameters model)
         {
-            /*Проверка переданных параметров*/
-            /*
-             * Параметры:
-             * диаметр дна (R1);
-             * диаметр верхней части (либо угол наклона стенки)[R2];
-             * тип узора стенки (изображены на рисунке 1);
-             * высота узора стенки (от середины стакана)[H2];
-             * верхний и нижний ободок стакана;
-             * количество граней;
-             * толщина дна (T1);
-             * толщина стенки (T2);
-             * высота стакана (H1);
 
-             * Описанные выше параметры взаимосвязаны следующим образом:
-             * если стакан граненый, то:
-             * R1 меньше, либо равно R2;
-             * R1, R2 меньше, либо равны H1;
-             * R1, R2 угол наклона между ними не больше пяти градусов;
-             * H2 меньше, либо равно H1;
-             * T2 меньше, либо равно пяти процентам от R2;
-             * T1 в интервале от двух до семи процентов от H1;
-             * количество граней в интервале от четырех до двадцати;
-             * для нижнего обода пять процентов от H1.
-             * 
-             * если стакан гофрированный, то:
-             * для верхнего обода, узора, толщины стенки и дна - два процента и один процент соответственно от H1;
-             * остальные параметры как и в граненном стакане.
-             *
-             * если стакан гладкий, то для него R1 равно R2 и толщина стенки и дна выбирается автоматически в зависимости от H1.
-            */
             switch (model.typeOfGlass)
             {
-                case TypeGlass.faceted:
+                case TypeGlass.Faceted:
+                    //TODO: как-то отрефакторить этот ужас из if'ов
+                    //
+                    if (model.diameterBottomOfGlass <= model.diameterTopOfGlass)
+                    {
+                        if ((model.diameterTopOfGlass <= model.heightGlass) &&
+                            (model.diameterBottomOfGlass <= model.heightGlass))
+                        {
+                            //считаем угол наклона в 5 градусов между R1, R2
+                            const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
+                            var b = model.diameterTopOfGlass - model.diameterBottomOfGlass;
+                            var a = model.heightGlass;
+                            var calcTiltAngle = Math.Atan(a / b) * 180 / Math.PI;
+
+                            if ((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
+                                calcTiltAngle >= 0)
+                            {
+                                if (model.heightFaceOfGlass <= model.heightGlass)
+                                {
+                                    if (model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100))
+                                    {
+                                        if ((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
+                                            (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100)))
+                                        {
+                                            if ((model.countOfFaceGlass <= maxCountOfFaceGlass)
+                                                && (model.countOfFaceGlass >= minCountOfFaceGlass))
+                                            {
+                                                _glass.CreateModel(model);
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
                     break;
-                case TypeGlass.crimp:
+                case TypeGlass.Crimp:
+                    _glass.CreateModel(model);
                     break;
-                case TypeGlass.clean:
+                case TypeGlass.Clean:
+                    if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
+                    {
+                        _glass.CreateModel(model);
+                    }
                     break;
             }
             throw new NotImplementedException();
@@ -91,14 +106,24 @@ namespace GlassPlugin.Models
             System.Runtime.Serialization.StreamingContext context) { }
     }
 
-    class Glass:IGlass
+    class Glass : IGlass
     {
-        //Kompas3DObject _kompas;
+        Compass3D _kompas;
         Parameters _param;
 
         public void CreateModel(Parameters model)
         {
             /*надеямся, что модель имеет валидные данные и создаем 3д модел в Компасе*/
+            switch (model.typeOfGlass)
+            {
+                case TypeGlass.Faceted:
+                    _kompas.BuildGlass(model);
+                    break;
+                case TypeGlass.Crimp:
+                    break;
+                case TypeGlass.Clean:
+                    break;
+            }
             throw new NotImplementedException();
         }
     }
@@ -143,8 +168,8 @@ namespace GlassPlugin.Models
         //    get { return countOfFaceGlass; }
         //}
         public void setParameters(
-            double countOfFaceGlass, 
-            double depthBottomOfGlass, 
+            double countOfFaceGlass,
+            double depthBottomOfGlass,
             double diameterTopOfGlass,
             double diameterBottomOfGlass,
             double sideDepthOfGlass,
@@ -176,10 +201,10 @@ namespace GlassPlugin.Models
             setParameters(
                 countOfFaceGlass,
                 depthBottomOfGlass,
-                depthBottomOfGlass, 
-                diameterTopOfGlass, 
-                sideDepthOfGlass, 
-                heightFaceOfGlass, 
+                depthBottomOfGlass,
+                diameterTopOfGlass,
+                sideDepthOfGlass,
+                heightFaceOfGlass,
                 heightGlass,
                 typeOfGlass
                 );
