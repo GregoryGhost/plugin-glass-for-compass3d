@@ -28,57 +28,55 @@ namespace GlassPlugin.Models
 
         public void CheckInput(Parameters model)
         {
-
-            switch (model.typeOfGlass)
+            //TODO: как-то отрефакторить этот ужас из if'ов
+            //
+            if (model.diameterBottomOfGlass <= model.diameterTopOfGlass)
             {
-                case TypeGlass.Faceted:
-                    //TODO: как-то отрефакторить этот ужас из if'ов
-                    //
-                    if (model.diameterBottomOfGlass <= model.diameterTopOfGlass)
+                if ((model.diameterTopOfGlass <= model.heightGlass) &&
+                    (model.diameterBottomOfGlass <= model.heightGlass))
+                {
+                    //считаем угол наклона в 5 градусов между R1, R2
+                    const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
+                    var b = model.diameterTopOfGlass - model.diameterBottomOfGlass;
+                    var a = model.heightGlass;
+                    var calcTiltAngle = Math.Atan(a / b) * 180 / Math.PI;
+
+                    if ((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
+                        calcTiltAngle >= 0)
                     {
-                        if ((model.diameterTopOfGlass <= model.heightGlass) &&
-                            (model.diameterBottomOfGlass <= model.heightGlass))
+                        if (model.heightFaceOfGlass <= model.heightGlass)
                         {
-                            //считаем угол наклона в 5 градусов между R1, R2
-                            const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
-                            var b = model.diameterTopOfGlass - model.diameterBottomOfGlass;
-                            var a = model.heightGlass;
-                            var calcTiltAngle = Math.Atan(a / b) * 180 / Math.PI;
-
-                            if ((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
-                                calcTiltAngle >= 0)
+                            if (model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100))
                             {
-                                if (model.heightFaceOfGlass <= model.heightGlass)
+                                if ((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
+                                    (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100)))
                                 {
-                                    if (model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100))
+                                    if ((model.countOfFaceGlass <= maxCountOfFaceGlass)
+                                        && (model.countOfFaceGlass >= minCountOfFaceGlass))
                                     {
-                                        if ((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
-                                            (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100)))
+                                        switch (model.typeOfGlass)
                                         {
-                                            if ((model.countOfFaceGlass <= maxCountOfFaceGlass)
-                                                && (model.countOfFaceGlass >= minCountOfFaceGlass))
-                                            {
+                                            case TypeGlass.Faceted:
                                                 _glass.CreateModel(model);
-                                            }
+                                                break;
+                                            case TypeGlass.Crimp:
+                                                _glass.CreateModel(model);
+                                                break;
+                                            case TypeGlass.Clean:
+                                                if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
+                                                {
+                                                    _glass.CreateModel(model);
+                                                }
+                                                break;
                                         }
-
                                     }
                                 }
+
                             }
                         }
                     }
-                    break;
-                case TypeGlass.Crimp:
-                    _glass.CreateModel(model);
-                    break;
-                case TypeGlass.Clean:
-                    if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
-                    {
-                        _glass.CreateModel(model);
-                    }
-                    break;
+                }
             }
-            throw new NotImplementedException();
         }
 
         /// <summary>
