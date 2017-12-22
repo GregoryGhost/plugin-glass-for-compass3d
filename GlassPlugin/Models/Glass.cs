@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using GlassPlugin.Models.ExceptionsOfGlassParameters;
 
 namespace GlassPlugin.Models
 {
@@ -32,57 +33,95 @@ namespace GlassPlugin.Models
             //
             if (model.diameterBottomOfGlass <= model.diameterTopOfGlass)
             {
-                if ((model.diameterTopOfGlass <= model.heightGlass) &&
-                    (model.diameterBottomOfGlass <= model.heightGlass))
+                if (model.diameterTopOfGlass <= model.heightGlass)
                 {
-                    //считаем угол наклона в 5 градусов между R1, R2
-                    const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
-                    var b = model.diameterTopOfGlass - model.diameterBottomOfGlass;
-                    var a = model.heightGlass;
-                    var calcTiltAngle = Math.Atan(a / b) * 180 / Math.PI;
-
-                    if ((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
-                        calcTiltAngle >= 0)
+                    if ((model.diameterBottomOfGlass <= model.heightGlass))
                     {
-                        if (model.heightFaceOfGlass <= model.heightGlass)
+                        //считаем угол наклона в 5 градусов между R1, R2
+                        const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
+                        var b = model.diameterTopOfGlass - model.diameterBottomOfGlass;
+                        var a = model.heightGlass;
+                        var calcTiltAngle = Math.Atan(a / b) * 180 / Math.PI;
+
+                        if ((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
+                            calcTiltAngle >= 0)
                         {
-                            if (model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100))
+                            if (model.heightFaceOfGlass <= model.heightGlass)
                             {
-                                if ((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
-                                    (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100)))
+                                if (model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100))
                                 {
-                                    if ((model.countOfFaceGlass <= maxCountOfFaceGlass)
-                                        && (model.countOfFaceGlass >= minCountOfFaceGlass))
+                                    if ((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
+                                        (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100)))
                                     {
-                                        switch (model.typeOfGlass)
+                                        if ((model.countOfFaceGlass <= maxCountOfFaceGlass)
+                                            && (model.countOfFaceGlass >= minCountOfFaceGlass))
                                         {
-                                            case TypeGlass.Faceted:
-                                                _glass.CreateModel(model);
-                                                break;
-                                            case TypeGlass.Crimp:
-                                                _glass.CreateModel(model);
-                                                break;
-                                            case TypeGlass.Clean:
-                                                if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
-                                                {
+                                            switch (model.typeOfGlass)
+                                            {
+                                                case TypeGlass.Faceted:
                                                     _glass.CreateModel(model);
-                                                }
-                                                break;
+                                                    break;
+                                                case TypeGlass.Crimp:
+                                                    _glass.CreateModel(model);
+                                                    break;
+                                                case TypeGlass.Clean:
+                                                    if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
+                                                    {
+                                                        _glass.CreateModel(model);
+                                                    }
+                                                    else
+                                                    {
+                                                        throw new DifferentTopAndBottomDiameters("test");
+                                                    }
+                                                    break;
+                                            }
+                                        }
+                                        else
+                                        {
+                                            throw new UnacceptableNumberOfFaces();
                                         }
                                     }
-                                }
+                                    else
+                                    {
+                                        throw new OutOfRangeDepthBottom();
+                                    }
 
+                                }
+                                else
+                                {
+                                    throw new OutOfRangeSideDepth();
+                                }
+                            }
+                            else
+                            {
+                                throw new OutOfRangeHeightFace();
                             }
                         }
+                        else
+                        {
+                            throw new OutOfRangeTitleAngle();
+                        }
+                    }
+                    else
+                    {
+                        throw new DiameterBottomAboveHeightGlass();
                     }
                 }
+                else
+                {
+                    throw new DiameterTopAboveHeightGlass();
+                }
+            }
+            else
+            {
+                throw new DiameterBottomOutOfRangeDiameterTop();
             }
         }
 
         /// <summary>
         /// Создает модель Стакана по переданным параметрам в Компасе 3d
         /// </summary>
-        /// <exception cref="System.Exception">Thrown when...</exception>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when...</exception>
         public void CreateModel(Parameters model)
         {
             this.CheckInput(model);
@@ -90,19 +129,7 @@ namespace GlassPlugin.Models
         }
     }
 
-    /*Sample of create user exception*/
-    [Serializable()]
-    public class InvalidDepartmentException : System.Exception
-    {
-        public InvalidDepartmentException() : base() { }
-        public InvalidDepartmentException(string message) : base(message) { }
-        public InvalidDepartmentException(string message, System.Exception inner) : base(message, inner) { }
 
-        // A constructor is needed for serialization when an
-        // exception propagates from a remoting server to the client. 
-        protected InvalidDepartmentException(System.Runtime.Serialization.SerializationInfo info,
-            System.Runtime.Serialization.StreamingContext context) { }
-    }
 
     class Glass : IGlass
     {
