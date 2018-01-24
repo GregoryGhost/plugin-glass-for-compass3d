@@ -62,6 +62,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Models\Compass3D.cs" />
+    <Compile Include="Models\ExceptionsOfGlassParameters.cs" />
     <Compile Include="Models\Glass.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
