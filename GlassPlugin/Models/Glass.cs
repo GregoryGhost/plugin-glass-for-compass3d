@@ -45,7 +45,7 @@ namespace GlassPlugin.Models
             //{
             //    Console.WriteLine("{0}", e.Message);
             //}
-            
+
             if ((model.diameterBottomOfGlass <= model.diameterTopOfGlass) == false)
             {
                 throw new DiameterBottomOutOfRangeDiameterTop();
@@ -82,29 +82,18 @@ namespace GlassPlugin.Models
             {
                 throw new OutOfRangeDepthBottom();
             }
-            if (((model.countOfFaceGlass <= maxCountOfFaceGlass) && 
+            if (((model.countOfFaceGlass <= maxCountOfFaceGlass) &&
                 (model.countOfFaceGlass >= minCountOfFaceGlass)) == false)
             {
                 throw new UnacceptableNumberOfFaces();
             }
-            switch (model.typeOfGlass)
+
+            if (model.typeOfGlass == TypeGlass.Clean)
             {
-                case TypeGlass.Faceted:
-                    _glass.CreateModel(model);
-                    break;
-                case TypeGlass.Crimp:
-                    _glass.CreateModel(model);
-                    break;
-                case TypeGlass.Clean:
-                    if (model.diameterTopOfGlass == model.diameterBottomOfGlass)
-                    {
-                        _glass.CreateModel(model);
-                    }
-                    else
-                    {
-                        throw new DifferentTopAndBottomDiameters("test");
-                    }
-                    break;
+                if (model.diameterTopOfGlass != model.diameterBottomOfGlass)
+                {
+                    throw new DifferentTopAndBottomDiameters("test");
+                }
             }
         }
 
