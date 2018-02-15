@@ -12,6 +12,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GlassPlugin.Models;
+using GlassPlugin.Models.ExceptionsOfGlassParameters;
 
 namespace GlassPlugin
 {
@@ -20,9 +22,52 @@ namespace GlassPlugin
     /// </summary>
     public partial class MainWindow : Window
     {
+        Parameters _glass;
+
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            TypeGlass typeGlass = TypeGlass.Clean;
+            switch (cbTypeGlass.SelectedIndex)
+            {
+                case 0:
+                    typeGlass = TypeGlass.Faceted;
+                    break;
+                case 1:
+                    typeGlass = TypeGlass.Crimp;
+                    break;
+                case 2:
+                    typeGlass = TypeGlass.Clean;
+                    break;
+            }
+           Parameters model = new Parameters(Convert.ToDouble(eCountOfFace.Text),
+                                              Convert.ToDouble(eDepthBottom),
+                                              Convert.ToDouble(eDiameterTop),
+                                              Convert.ToDouble(eDiameterBottom),
+                                              Convert.ToDouble(eSideDepth),
+                                              Convert.ToDouble(eHeightFace),
+                                              Convert.ToDouble(eHeight),
+                                              typeGlass);
+            
+            //Parameters model = new Parameters(-9, 10, 1, 10,
+            //                                  2,                                              
+            //                                  3,
+            //                                  4,
+            //                                  typeGlass);
+            GlassProxy creator = new GlassProxy();
+            try
+            {
+                creator.CreateModel(model);
+            }
+            catch (ArgumentOutOfRangeException eD)
+            {
+                MessageBox.Show(eD.Message, eD.Source,
+         MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
