@@ -48,15 +48,15 @@ namespace GlassPlugin.Models
 
             if ((model.diameterBottomOfGlass <= model.diameterTopOfGlass) == false)
             {
-                throw new DiameterBottomOutOfRangeDiameterTop();
+                throw new DiameterBottomOutOfRangeDiameterTop("Диаметр дна должен быть меньше или равен диаметру горлышка");
             }
             if ((model.diameterTopOfGlass <= model.heightGlass) == false)
             {
-                throw new DiameterTopAboveHeightGlass();
+                throw new DiameterTopAboveHeightGlass("Диаметр горлышка должен быть меньше либо равен высоте стакана");
             }
             if ((model.diameterBottomOfGlass <= model.heightGlass) == false)
             {
-                throw new DiameterBottomAboveHeightGlass();
+                throw new DiameterBottomAboveHeightGlass("Диаметр дна должен быть меньше либо равен высоте стакана");
             }
             //считаем угол наклона в 5 градусов между R1, R2
             const int tiltAngleBetweenDiameterTopAndBottomOfGlass = 5;
@@ -67,32 +67,42 @@ namespace GlassPlugin.Models
             if (((calcTiltAngle <= tiltAngleBetweenDiameterTopAndBottomOfGlass) &&
                  (calcTiltAngle >= 0)) == false)
             {
-                throw new OutOfRangeTitleAngle();
+                var t = String.Format("Угл наклона выходит за допустимый диапозон от 0 до {0} градусов", calcTiltAngle);
+                throw new OutOfRangeTitleAngle(t);
             }
             if ((model.heightFaceOfGlass <= model.heightGlass) == false)
             {
-                throw new OutOfRangeHeightFace();
+                throw new OutOfRangeHeightFace("Высота граней должна быть меньше либо равна высоты стакана");
             }
             if ((model.sideDepthOfGlass <= (model.diameterTopOfGlass * 5 / 100)) == false)
             {
-                throw new OutOfRangeSideDepth();
+                throw new OutOfRangeSideDepth("Толщина стенки должна быть меньше либо равна 5% от высоты стакана");
             }
-            if (((model.depthBottomOfGlass <= (model.heightGlass * 7 / 100)) &&
-                (model.depthBottomOfGlass >= (model.heightGlass * 2 / 100))) == false)
+
+            var c = (model.heightGlass * 7 / 100);
+            var c2 = (model.heightGlass * 2 / 100);
+
+            if ((model.depthBottomOfGlass <= c) &&
+                (model.depthBottomOfGlass >= c2) == false)
             {
-                throw new OutOfRangeDepthBottom();
+                var t = String.Format("Толщина дна выходит за допустимый диапозон от {0} до {1}", c, c2);
+                throw new OutOfRangeDepthBottom(t);
             }
+
             if (((model.countOfFaceGlass <= maxCountOfFaceGlass) &&
                 (model.countOfFaceGlass >= minCountOfFaceGlass)) == false)
             {
-                throw new UnacceptableNumberOfFaces();
+                var t = String.Format("Количество граней стакана выходит за допустимый диапозон от {0} до {1}",
+                    minCountOfFaceGlass,
+                    maxCountOfFaceGlass);
+                throw new UnacceptableNumberOfFaces(t);
             }
 
             if (model.typeOfGlass == TypeGlass.Clean)
             {
-                if (model.diameterTopOfGlass != model.diameterBottomOfGlass)
+                if ((model.diameterTopOfGlass == model.diameterBottomOfGlass) == false)
                 {
-                    throw new DifferentTopAndBottomDiameters("test");
+                    throw new DifferentTopAndBottomDiameters("Диаметры дна и горлышка должны быть равны у гладкого стакана");
                 }
             }
         }
