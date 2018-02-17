@@ -7,22 +7,8 @@ using GlassPlugin.Models.ExceptionsOfGlassParameters;
 
 namespace GlassPlugin.Models
 {
-    public enum TypeGlass
+    public class GlassProxy : IGlassDrawing
     {
-        Crimp,
-        Clean,
-        Faceted
-    }
-
-    interface IGlass
-    {
-        void CreateModel(Parameters model);
-    }
-
-    public class GlassProxy : IGlass
-    {
-        Glass _glass = new Glass();
-
         readonly int maxCountOfFaceGlass = 20;
 
         readonly int minCountOfFaceGlass = 4;
@@ -32,20 +18,6 @@ namespace GlassPlugin.Models
         /// </summary>
         public void CheckInput(Parameters model)
         {
-            //TODO: Рассмотреть вариант fluent interface для проверки и постройки Стакана
-            //TODO: Рассмотреть также вариант по замене enum TypeGlass на соответствующие классы
-            //      с полиморфной постройкой стакана в Компасе
-            //try{
-            //    var glass = Glass().SetBottomWidth(1234)
-            //                        .SetHeight(10)
-            //                         .SetRaduis(20)
-            //                          .SetType(TypeGlass.Crimp)
-            //                       .Build();
-            //}catch(Exception e)
-            //{
-            //    Console.WriteLine("{0}", e.Message);
-            //}
-
             if ((model.diameterBottomOfGlass <= model.diameterTopOfGlass) == false)
             {
                 throw new DiameterBottomOutOfRangeDiameterTop("Диаметр дна должен быть меньше или равен диаметру горлышка");
@@ -107,14 +79,93 @@ namespace GlassPlugin.Models
             }
         }
 
-        /// <summary>
-        /// Создает модель Стакана по переданным параметрам в Компасе 3d
-        /// </summary>
-        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when...</exception>
-        public void CreateModel(Parameters model)
+        public double CountOfFaceGlass{
+            get;
+            set;
+        }
+
+        public double DepthBottomOfGlass
         {
-            this.CheckInput(model);
-            this._glass.CreateModel(model);
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double HeightFaceOfGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double HeightGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DiameterTopOfGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DiameterBottomOfGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double SideDepthOfGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public TypeGlass TypeOfGlass
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 

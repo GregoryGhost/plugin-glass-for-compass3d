@@ -34,25 +34,25 @@ namespace GlassPlugin
             TypeGlass typeGlass = TypeGlass.Clean;
             switch (cbTypeGlass.SelectedIndex)
             {
-                case 0:
+                case (int)TypeGlass.Faceted:
                     typeGlass = TypeGlass.Faceted;
                     break;
-                case 1:
+                case (int)TypeGlass.Crimp:
                     typeGlass = TypeGlass.Crimp;
                     break;
-                case 2:
+                case (int)TypeGlass.Clean:
                     typeGlass = TypeGlass.Clean;
                     break;
             }
-           Parameters model = new Parameters(Convert.ToDouble(eCountOfFace.Text),
-                                              Convert.ToDouble(eDepthBottom),
-                                              Convert.ToDouble(eDiameterTop),
-                                              Convert.ToDouble(eDiameterBottom),
-                                              Convert.ToDouble(eSideDepth),
-                                              Convert.ToDouble(eHeightFace),
-                                              Convert.ToDouble(eHeight),
-                                              typeGlass);
-            
+            Parameters model = new Parameters(Convert.ToDouble(eCountOfFace.Text),
+                                               Convert.ToDouble(eDepthBottom),
+                                               Convert.ToDouble(eDiameterTop),
+                                               Convert.ToDouble(eDiameterBottom),
+                                               Convert.ToDouble(eSideDepth),
+                                               Convert.ToDouble(eHeightFace),
+                                               Convert.ToDouble(eHeight),
+                                               typeGlass);
+
             //Parameters model = new Parameters(-9, 10, 1, 10,
             //                                  2,                                              
             //                                  3,
