@@ -59,15 +59,15 @@ namespace GlassPlugin
             //                                  4,
             //                                  typeGlass);
             GlassProxy creator = new GlassProxy();
-            try
-            {
-                creator.CreateModel(model);
-            }
-            catch (ArgumentOutOfRangeException eD)
-            {
-                MessageBox.Show(eD.Message, eD.Source,
-         MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+         //   try
+         //   {
+         //       creator.CreateModel(model);
+         //   }
+         //   catch (ArgumentOutOfRangeException eD)
+         //   {
+         //       MessageBox.Show(eD.Message, eD.Source,
+         //MessageBoxButton.OK, MessageBoxImage.Error);
+         //   }
         }
     }
 }

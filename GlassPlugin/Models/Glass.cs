@@ -169,7 +169,7 @@ namespace GlassPlugin.Models
         }
     }
 
-
+    interface IGlass { }
 
     class Glass : IGlass
     {
