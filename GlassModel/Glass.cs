@@ -60,4 +60,43 @@ namespace GlassModel
         /// </summary>
         bool IsValid { get; }
     }
+
+
+    public interface IAutoCalcParams
+    {
+        /// <summary>
+        /// Зависимый параметр - высота стакана
+        /// </summary>
+        bool Height { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - диаметр основания
+        /// </summary>
+        bool DiameterBottom { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - угол наклона высоты стакана
+        /// </summary>
+        bool AngleHeight { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - толщина стенок стакана
+        /// </summary>
+        bool DepthSide { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - толщина дна стакана
+        /// </summary>
+        bool DepthBottom { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - высота граней стакана
+        /// </summary>
+        bool HeightFaceted { get; set; }
+
+        /// <summary>
+        /// Зависимый параметр - количество граней стакана
+        /// </summary>
+        bool CountFaceted { get; set; }
+    }
 }
