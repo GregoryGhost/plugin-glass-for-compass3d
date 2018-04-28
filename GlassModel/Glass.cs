@@ -204,7 +204,9 @@ namespace GlassModel
         }
     }
 
-
+    /// <summary>
+    /// Зависимые параметры стакана.
+    /// </summary>
     public class DependenciesParams : IAutoCalcParams
     {
 
@@ -232,64 +234,49 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Зависимый параметр - угол наклона высоты стакана.
+        /// </summary>
         public bool AngleHeight
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Зависимый параметр - толщина стенки стакана.
+        /// </summary>
         public bool DepthSide
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Зависимый параметр - толщина дна стакана.
+        /// </summary>
         public bool DepthBottom
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Зависимый параметр - высота узора.
+        /// </summary>
         public bool HeightFaceted
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
+        /// <summary>
+        /// Зависимый параметр - количество граней.
+        /// </summary>
         public bool CountFaceted
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
     }
 
