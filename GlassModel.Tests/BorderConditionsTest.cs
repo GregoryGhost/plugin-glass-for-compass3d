@@ -7,7 +7,7 @@ namespace GlassModel.Tests
     [TestFixture]
     public class BorderConditionsTests
     {
-        private BorderConditions _parameter;
+        private BorderConditions<double> _parameter;
 
         private const double _min = -10.0f;
         private const double _value = 0.0f;
@@ -16,7 +16,7 @@ namespace GlassModel.Tests
         [SetUp]
         public void Setup()
         {
-            _parameter = new BorderConditions(_min, _value, _max);
+            _parameter = new BorderConditions<double>(_min, _value, _max);
         }
 
         [Test(Description = "BorderConditions constructor test positive")]
@@ -25,7 +25,7 @@ namespace GlassModel.Tests
         public void PositiveBorderConditionsConstructorTest(double min,
             double value, double max)
         {
-            var parameter = new BorderConditions(min, value, max);
+            var parameter = new BorderConditions<double>(min, value, max);
 
             Assert.That(min, Is.EqualTo(parameter.Min));
             Assert.That(value, Is.EqualTo(parameter.Value));
@@ -39,9 +39,10 @@ namespace GlassModel.Tests
         public void NegativeBorderConditionsConstructorTest(double min,
             double value, double max)
         {
-            BorderConditions parameter;
             Assert.Throws<ArgumentException>(() =>
-                parameter = new BorderConditions(min, value, max));
+            {
+                var parameter = new BorderConditions<double>(min, value, max);
+            });
         }
 
 

@@ -44,7 +44,7 @@ namespace GlassModel
         /// <summary>
         /// Количество граней стакана
         /// </summary>
-        double CountFaceted { get; set; }
+        int CountFaceted { get; set; }
     }
 
 
@@ -106,23 +106,23 @@ namespace GlassModel
     /// <summary>
     /// Диапазон допустимых значений параметра.
     /// </summary>
-    public class BorderConditions
+    public class BorderConditions<T> where T: IComparable<T>
     {
         /// <summary>
-        /// Минимальная граница для значения параметра
+        /// Минимальная граница для значения параметра.
         /// </summary>
-        private double _minimum = 0.0f;
+        private T _minimum;
         private const string nameOfMin = "min";
 
         /// <summary>
-        /// Максимальная граница для значения параметра
+        /// Максимальная граница для значения параметра.
         /// </summary>
-        private double _maximum = 0.0f;
+        private T _maximum;
 
         /// <summary>
-        /// Значение параметра
+        /// Значение параметра.
         /// </summary>
-        private double _value = 0.0f;
+        private T _value;
 
         /// <summary>
         /// Установление граничных условий для значения.
@@ -133,9 +133,9 @@ namespace GlassModel
         /// <exception cref="ArgumentException">
         ///     Возникает, если максимальное
         ///     меньше минимального значения.</exception>
-        public BorderConditions(double min, double value, double max)
+        public BorderConditions(T min, T value, T max)
         {
-            if (min > max)
+            if (min.CompareTo(max) > 0)
             {
                 var msg = String.Format("Минимальное значение = {0} " +
                     "больше максимального = {1}", min, max);
@@ -150,7 +150,7 @@ namespace GlassModel
         /// <summary>
         /// Максимальное значение диапазона.
         /// </summary>
-        public double Max
+        public T Max
         {
             get { return _maximum; }
             private set
@@ -162,7 +162,7 @@ namespace GlassModel
         /// <summary>
         /// Минимальное значение диапазона.
         /// </summary>
-        public double Min
+        public T Min
         {
             get { return _minimum; }
             private set
@@ -177,12 +177,13 @@ namespace GlassModel
         /// <exception cref="ArgumentException">
         ///     Возникает, если устанавливаемое значение
         ///     выходит за рамки заданного интервала.</exception>
-        public double Value
+        public T Value
         {
             get { return _value; }
             set
             {
-                if (value > Max)
+                //if (value > Max)
+                if(value.CompareTo(Max) > 0)
                 {
                     var msg = String.Format("Заданное значение = {0}" +
                         "больше, чем максимальное значение = {1}",
@@ -190,7 +191,7 @@ namespace GlassModel
                     throw new ArgumentException(msg);
                 }
 
-                if (value < Min)
+                if (value.CompareTo(Min) < 0)
                 {
                     var msg = String.Format("Заданное значение = {0}" +
                         "меньше, чем минимальное значение = {1}",
@@ -201,390 +202,288 @@ namespace GlassModel
                 _value = value;
             }
         }
+    }
 
 
-        public class DependenciesParams : IAutoCalcParams
+    public class DependenciesParams : IAutoCalcParams
+    {
+
+        public bool Height
         {
-
-            public bool Height
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
-
-            public bool DiameterBottom
+            set
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool AngleHeight
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool DepthSide
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool DepthBottom
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool HeightFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool CountFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
         }
 
-        /// <summary>
-        /// Гладкий стакан
-        /// </summary>
-        public class CleanGlass : IGlass, IChecker
+        public bool DiameterBottom
         {
-            private IAutoCalcParams _dependencies;
-
-            public CleanGlass()
+            get
             {
-                _dependencies = new DependenciesParams();
+                throw new NotImplementedException();
             }
-
-            public double Height
+            set
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double DiameterBottom
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double AngleHeight
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double DepthSide
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double DepthBottom
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double HeightFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double CountFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool IsValid
-            {
-                get { throw new NotImplementedException(); }
+                throw new NotImplementedException();
             }
         }
 
-
-        /// <summary>
-        /// Гранёный стакан
-        /// </summary>
-        public class FacetedGlass : IGlass, IChecker
+        public bool AngleHeight
         {
-
-            public double Height
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
-
-            public double DiameterBottom
+            set
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double AngleHeight
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double DepthSide
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double DepthBottom
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double HeightFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public double CountFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
-
-            public bool IsValid
-            {
-                get { throw new NotImplementedException(); }
+                throw new NotImplementedException();
             }
         }
 
-
-        /// <summary>
-        /// Гофрированный стакан
-        /// </summary>
-        public class CrimpGlass : IGlass, IChecker
+        public bool DepthSide
         {
-
-            public double Height
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
-
-            public double DiameterBottom
+            set
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
+        }
 
-            public double AngleHeight
+        public bool DepthBottom
+        {
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-            public double DepthSide
+        public bool HeightFaceted
+        {
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
 
-            public double DepthBottom
+        public bool CountFaceted
+        {
+            get
             {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
+                throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+    }
 
-            public double HeightFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
 
-            public double CountFaceted
-            {
-                get
-                {
-                    throw new NotImplementedException();
-                }
-                set
-                {
-                    throw new NotImplementedException();
-                }
-            }
+    /// <summary>
+    /// Гранёный стакан
+    /// </summary>
+    public class FacetedGlass : IGlass, IChecker
+    {
 
-            public bool IsValid
+        public double Height
+        {
+            get
             {
-                get { throw new NotImplementedException(); }
+                throw new NotImplementedException();
             }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DiameterBottom
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double AngleHeight
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DepthSide
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DepthBottom
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double HeightFaceted
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int CountFaceted
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsValid
+        {
+            get { throw new NotImplementedException(); }
+        }
+    }
+
+
+    /// <summary>
+    /// Гофрированный стакан
+    /// </summary>
+    public class CrimpGlass : IGlass, IChecker
+    {
+
+        public double Height
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DiameterBottom
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double AngleHeight
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DepthSide
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double DepthBottom
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public double HeightFaceted
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public int CountFaceted
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+            set
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool IsValid
+        {
+            get { throw new NotImplementedException(); }
         }
     }
 }
