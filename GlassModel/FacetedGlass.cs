@@ -72,6 +72,9 @@ namespace GlassModel
         /// <summary>
         /// Угол наклона высоты.
         /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override double AngleHeight
         {
             get
@@ -84,15 +87,23 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Толщина стенки стакана.
+        ///     Устанавливается значение в процентах,
+        ///     возвращается вычисленное значение в ед. длины.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override double DepthSide
         {
             get
             {
-                throw new NotImplementedException();
+                return DiameterBottom * _depthSide.Value / 100;
             }
             set
             {
-                throw new NotImplementedException();
+                _depthSide.Value = value;
             }
         }
 
