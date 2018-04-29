@@ -80,6 +80,11 @@ namespace GlassModel
         /// <summary>
         /// Задаваемый параметр - высота стакана
         /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала или
+        ///     нарушается условие взаимосвязи 
+        ///     с диаметром дна стакана.</exception>
         public double Height
         {
             get
@@ -107,6 +112,11 @@ namespace GlassModel
         /// <summary>
         /// Задаваемый параметр - диаметр дна стакана
         /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала или
+        ///     нарушается условие взаимосвязи 
+        ///     с высотой стакана.</exception>
         public double DiameterBottom
         {
             get
