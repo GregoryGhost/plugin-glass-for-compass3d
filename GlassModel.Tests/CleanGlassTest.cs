@@ -112,15 +112,22 @@ namespace GlassModel.Tests
             _cleanGlass.DepthSide = height;
             _cleanGlass.DepthBottom = height;
 
-            var expDepthBottom = calcDepthOfGlass(height, _percentForDepthBottom);
-            var expDepthSide = calcDepthOfGlass(diameterBottom,
+            var expDepthBottom = CalcDepthOfGlass(height, _percentForDepthBottom);
+            var expDepthSide = CalcDepthOfGlass(diameterBottom,
                 _percentForDepthSide);
 
             Assert.That(expDepthBottom, Is.EqualTo(_cleanGlass.DepthBottom));
             Assert.That(expDepthSide, Is.EqualTo(_cleanGlass.DepthSide));
         }
 
-        private double calcDepthOfGlass(double height, double percent)
+        /// <summary>
+        /// Вычисляет значение толщины стенки или дна стакана.
+        /// </summary>
+        /// <param name="height">Значение высоты или диаметра
+        ///     дна стакана.</param>
+        /// <param name="percent">Процент стенки или дна стакана.</param>
+        /// <returns></returns>
+        public static double CalcDepthOfGlass(double height, double percent)
         {
             return height * percent / 100;
         }

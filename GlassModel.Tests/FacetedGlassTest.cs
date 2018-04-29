@@ -69,19 +69,19 @@ namespace GlassModel.Tests
 
         [Test(Description = "Check setted params of faceted glass -" +
             "height, diameter bottom - correct data")]
-        [TestCase(_min, _min / 2, _minAngle, _valid,
-            TestName = "Setted - Height glass = min," +
-                "diameter bottom = min, angle height = min")]
-        [TestCase(_max, _max / 2, _maxAngle, _valid,
-            TestName = "Setted - Height glass = max," +
-                "diameter bottom = max, angle height = max")]
+        [TestCase(_min, _min / 2, _minAngle, _minDepth, _valid,
+            TestName = "Setted - All params = min")]
+        [TestCase(_max, _max / 2, _maxAngle, _maxDepthSide, _valid, 
+                TestName = "Setted - All params = max")]
         [TestCase((_min + _max) / 2, (_min / 2 + _max / 2) / 2, _minAngle,
-            _valid, TestName = "Setted - Height glass and diameter bottom" +
+            _maxDepthSide, _valid, 
+                TestName = "Setted - Height glass and diameter bottom" +
                     "in the allowable range")]
-        [TestCase(_max, _min / 2, _minAngle, _valid,
+        [TestCase(_max, _min / 2, _minAngle, _maxDepthSide, _valid,
             TestName = "Setted - Height glass >= diameter bottom,")]
         public void CheckSettedParamsPositive(double height,
-            double diameterBottom, double angleHeight, bool expIsValid)
+            double diameterBottom, double angleHeight, double depthSide,
+                bool expIsValid)
         {
             _facetedGlass.Height = height;
             _facetedGlass.DiameterBottom = diameterBottom;
@@ -93,8 +93,14 @@ namespace GlassModel.Tests
                 _facetedGlass.Height >= _facetedGlass.DiameterBottom);
 
             _facetedGlass.AngleHeight = angleHeight;
+            _facetedGlass.DepthSide = depthSide;
+
+            var expDepthSide = CleanGlassTest.CalcDepthOfGlass(
+                diameterBottom, depthSide);
+
             //angleHeight, depthSide, depthBottom, countFaceted
             Assert.That(angleHeight, Is.EqualTo(_facetedGlass.AngleHeight));
+            Assert.That(expDepthSide, Is.EqualTo(_facetedGlass.DepthSide));
 
             Assert.That(expIsValid,
                 Is.EqualTo(_facetedGlass.IsValid));
