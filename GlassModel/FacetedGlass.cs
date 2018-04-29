@@ -9,42 +9,18 @@ namespace GlassModel
     /// <summary>
     /// Гранёный стакан
     /// </summary>
-    public class FacetedGlass : IGlass, IChecker
+    public class FacetedGlass : CleanGlass
     {
         /// <summary>
-        /// Высота стакана
-        /// </summary>
-        private BorderConditions<double> _height;
-
-        /// <summary>
-        /// Процент высоты узора от высоты стаканаы
+        /// Процент высоты узора от высоты стакана
         /// </summary>
         private readonly double _percentForHeightFaceted = 90;
 
-        public FacetedGlass(BorderConditions<double> height)
-        {
-            _height = height;
-        }
+        public FacetedGlass(BorderConditions<double> height,
+            BorderConditions<double> diameterBottom)
+            : base(diameterBottom, height) { }
 
-        /// <summary>
-        /// Высота стакана
-        /// </summary>
-        /// <exception cref="ArgumentException">
-        ///     Возникает, если устанавливаемое значение
-        ///     выходит за рамки заданного интервала.</exception>
-        public double Height
-        {
-            get
-            {
-                return _height.Value;
-            }
-            set
-            {
-                _height.Value = value;
-            }
-        }
-
-        public double DiameterBottom
+        public override double AngleHeight
         {
             get
             {
@@ -56,7 +32,7 @@ namespace GlassModel
             }
         }
 
-        public double AngleHeight
+        public override double DepthSide
         {
             get
             {
@@ -68,19 +44,7 @@ namespace GlassModel
             }
         }
 
-        public double DepthSide
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public double DepthBottom
+        public override double DepthBottom
         {
             get
             {
@@ -95,7 +59,7 @@ namespace GlassModel
         /// <summary>
         /// Зависимый параметр - высота узора стакана
         /// </summary>
-        public double HeightFaceted
+        public override double HeightFaceted
         {
             get
             {
@@ -106,7 +70,7 @@ namespace GlassModel
             }
         }
 
-        public int CountFaceted
+        public override int CountFaceted
         {
             get
             {
@@ -116,11 +80,6 @@ namespace GlassModel
             {
                 throw new NotImplementedException();
             }
-        }
-
-        public bool IsValid
-        {
-            get { throw new NotImplementedException(); }
         }
     }
 }
