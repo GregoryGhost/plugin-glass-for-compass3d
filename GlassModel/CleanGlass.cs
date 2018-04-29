@@ -19,17 +19,17 @@ namespace GlassModel
         /// <summary>
         /// Постоянный угол наклона высоты стакана
         /// </summary>
-        protected double _angleHeight = 0.0f;
+        private double _angleHeight = 0.0f;
 
         /// <summary>
         /// Отсутствует узор стакана => высота узора равна нулю 
         /// </summary>
-        protected double _heightFaceted = 0.0f;
+        private double _heightFaceted = 0.0f;
 
         /// <summary>
         /// Отсутствуют грани стакана => количество граней равно нулю
         /// </summary>
-        protected int _countFaceted = 0;
+        private int _countFaceted = 0;
 
         /// <summary>
         /// Задаваемый параметр - высота стакана
@@ -44,12 +44,12 @@ namespace GlassModel
         /// <summary>
         /// Процент толщины дна стакана
         /// </summary>
-        protected double _depthBottom = 7;
+        private double _depthBottom = 7;
 
         /// <summary>
         /// Процент толщины стенки стакана
         /// </summary>
-        protected double _depthSide = 2;
+        private double _depthSide = 2;
 
         /// <summary>
         /// Установление параметров гладкого стакана.
