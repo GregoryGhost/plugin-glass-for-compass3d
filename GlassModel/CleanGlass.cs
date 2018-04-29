@@ -32,6 +32,17 @@ namespace GlassModel
         private readonly int _countFaceted = 0;
 
         /// <summary>
+        /// Задаваемый параметр - высота стакана
+        /// </summary>
+        private BorderConditions<double> _height;
+
+        /// <summary>
+        /// Задаваемый параметр - диаметр дна стакана
+        /// </summary>
+        private BorderConditions<double> _diameterBottom;
+
+
+        /// <summary>
         /// Установление параметров гладкого стакана.
         /// </summary>
         /// <param name="diameterBottom">Диаметр дна стакана.</param>
@@ -40,40 +51,64 @@ namespace GlassModel
             BorderConditions<double> height)
         {
             _dependencies = new DependenciesParams();
+            //Фиксированные параметры
             _dependencies.AngleHeight = true;
             _dependencies.CountFaceted = true;
+            _dependencies.HeightFaceted = true;
+            //Зависимые параметры
             _dependencies.DepthBottom = true;
             _dependencies.DepthSide = true;
-            _dependencies.HeightFaceted = true;
+            //Задаваемые параметры
+            _dependencies.Height = false;
+            _dependencies.DiameterBottom = false;
+
+            this._height = height;
+            this._diameterBottom = diameterBottom;
         }
 
         /// <summary>
-        /// Высота стакана
+        /// Задаваемый параметр - высота стакана
         /// </summary>
         public double Height
         {
             get
             {
-                throw new NotImplementedException();
+                return _height.Value;
             }
             set
             {
-                throw new NotImplementedException();
+                if (value < this._diameterBottom.Value)
+                {
+                    var msg = String.Format("Высота стакана = {0}"+
+                        "должна быть больше либо равна" +
+                            "диаметру дна стакана = {1}", value,
+                                _diameterBottom.Value);
+                    throw new ArgumentException(msg);
+                }
+                _height.Value = value;
             }
         }
 
         /// <summary>
-        /// Диаметр дна стакана
+        /// Задаваемый параметр - диаметр дна стакана
         /// </summary>
         public double DiameterBottom
         {
             get
             {
-                throw new NotImplementedException();
+                return _diameterBottom.Value;
             }
             set
             {
-                throw new NotImplementedException();
+                if (value > this._height.Value)
+                {
+                    var msg = String.Format("Диаметр дна стакан = {0}" +
+                        "должен быть меньше либо равен" +
+                            "высоте стакана {1}", value,
+                                _height.Value);
+                    throw new ArgumentException(msg);
+                }
+                _diameterBottom.Value = value;
             }
         }
 

@@ -205,37 +205,31 @@ namespace GlassModel
     }
 
     /// <summary>
-    /// Зависимые параметры стакана.
+    /// Интерфейс для зависимых, фиксированных и задаваемых
+    ///     параметров стакана.
     /// </summary>
     public class DependenciesParams : IAutoCalcParams
     {
-
+        /// <summary>
+        /// Высота стакана.
+        /// </summary>
         public bool Height
         {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
-        }
-
-        public bool DiameterBottom
-        {
-            get
-            {
-                throw new NotImplementedException();
-            }
-            set
-            {
-                throw new NotImplementedException();
-            }
+            get;
+            set;
         }
 
         /// <summary>
-        /// Зависимый параметр - угол наклона высоты стакана.
+        /// Диаметр дна стакана.
+        /// </summary>
+        public bool DiameterBottom
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Угол наклона высоты стакана.
         /// </summary>
         public bool AngleHeight
         {
@@ -244,7 +238,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависимый параметр - толщина стенки стакана.
+        /// Толщина стенки стакана.
         /// </summary>
         public bool DepthSide
         {
@@ -253,7 +247,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависимый параметр - толщина дна стакана.
+        /// Толщина дна стакана.
         /// </summary>
         public bool DepthBottom
         {
@@ -262,7 +256,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависимый параметр - высота узора.
+        /// Высота узора.
         /// </summary>
         public bool HeightFaceted
         {
@@ -271,7 +265,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависимый параметр - количество граней.
+        /// Количество граней.
         /// </summary>
         public bool CountFaceted
         {
