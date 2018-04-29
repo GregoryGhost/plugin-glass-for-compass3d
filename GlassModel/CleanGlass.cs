@@ -73,6 +73,8 @@ namespace GlassModel
 
             this._height = height;
             this._diameterBottom = diameterBottom;
+            _isValidParams.Add(_labelDiameterBottom, true);
+            _isValidParams.Add(_labelHeight, true);
         }
 
         /// <summary>
@@ -88,13 +90,17 @@ namespace GlassModel
             {
                 if (value < this._diameterBottom.Value)
                 {
-                    var msg = String.Format("Высота стакана = {0} "+
+                    var msg = String.Format("Высота стакана = {0} " +
                         "должна быть больше либо равна " +
                             "диаметру дна стакана = {1}", value,
                                 _diameterBottom.Value);
+
+                    _isValidParams[_labelHeight] = false;
+
                     throw new ArgumentException(msg);
                 }
                 _height.Value = value;
+                _isValidParams[_labelHeight] = true;
             }
         }
 
@@ -115,9 +121,13 @@ namespace GlassModel
                         "должен быть меньше либо равен " +
                             "высоте стакана {1}", value,
                                 _height.Value);
+
+                    _isValidParams[_labelDiameterBottom] = false;
+
                     throw new ArgumentException(msg);
                 }
                 _diameterBottom.Value = value;
+                _isValidParams[_labelDiameterBottom] = true;
             }
         }
 
@@ -191,9 +201,28 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Словарь с параметрами стакана: имя параметра и 
+        ///     удовлетворяет ли он требованиям предметной области.
+        /// </summary>
+        private Dictionary<string, bool> _isValidParams =
+            new Dictionary<string, bool>();
+        private const string _labelDiameterBottom = "DiameterBottom";
+        private const string _labelHeight = "Height";
+
         public bool IsValid
         {
-            get { throw new NotImplementedException(); }
+            get
+            {
+                var valid = true;
+
+                foreach (var p in _isValidParams)
+                {
+                    valid = p.Value;
+                    if (valid == false) break;
+                }
+                return valid;
+            }
         }
     }
 }
