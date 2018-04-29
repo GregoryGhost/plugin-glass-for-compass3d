@@ -41,6 +41,15 @@ namespace GlassModel
         /// </summary>
         private BorderConditions<double> _diameterBottom;
 
+        /// <summary>
+        /// Процент толщины дна стакана
+        /// </summary>
+        private readonly double _depthBottom = 7;
+
+        /// <summary>
+        /// Процент толщины стенки стакана
+        /// </summary>
+        private readonly double _depthSide = 2;
 
         /// <summary>
         /// Установление параметров гладкого стакана.
@@ -133,11 +142,10 @@ namespace GlassModel
         {
             get
             {
-                throw new NotImplementedException();
+                return this.DiameterBottom * _depthSide / 100;
             }
             set
             {
-                throw new NotImplementedException();
             }
         }
 
@@ -148,11 +156,10 @@ namespace GlassModel
         {
             get
             {
-                throw new NotImplementedException();
+                return this.Height * _depthBottom / 100;
             }
             set
             {
-                throw new NotImplementedException();
             }
         }
 
