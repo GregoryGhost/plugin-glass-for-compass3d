@@ -14,42 +14,42 @@ namespace GlassModel
         /// <summary>
         /// Зависимые и фиксированные параметры стакана
         /// </summary>
-        private IAutoCalcParams _dependencies;
+        protected IAutoCalcParams _dependencies;
 
         /// <summary>
         /// Постоянный угол наклона высоты стакана
         /// </summary>
-        private readonly double _angleHeight = 0.0f;
+        protected double _angleHeight = 0.0f;
 
         /// <summary>
         /// Отсутствует узор стакана => высота узора равна нулю 
         /// </summary>
-        private readonly double _heightFaceted = 0.0f;
+        protected double _heightFaceted = 0.0f;
 
         /// <summary>
         /// Отсутствуют грани стакана => количество граней равно нулю
         /// </summary>
-        private readonly int _countFaceted = 0;
+        protected int _countFaceted = 0;
 
         /// <summary>
         /// Задаваемый параметр - высота стакана
         /// </summary>
-        private BorderConditions<double> _height;
+        protected BorderConditions<double> _height;
 
         /// <summary>
         /// Задаваемый параметр - диаметр дна стакана
         /// </summary>
-        private BorderConditions<double> _diameterBottom;
+        protected BorderConditions<double> _diameterBottom;
 
         /// <summary>
         /// Процент толщины дна стакана
         /// </summary>
-        private readonly double _depthBottom = 7;
+        protected double _depthBottom = 7;
 
         /// <summary>
         /// Процент толщины стенки стакана
         /// </summary>
-        private readonly double _depthSide = 2;
+        protected double _depthSide = 2;
 
         /// <summary>
         /// Установление параметров гладкого стакана.
@@ -144,7 +144,7 @@ namespace GlassModel
         /// <summary>
         /// Отсутствующий угол наклона высоты стакана
         /// </summary>
-        public double AngleHeight
+        public virtual double AngleHeight
         {
             get
             {
@@ -158,7 +158,7 @@ namespace GlassModel
         /// <summary>
         /// Зависящий параметр - толщина стенки стакана
         /// </summary>
-        public double DepthSide
+        public virtual double DepthSide
         {
             get
             {
@@ -172,7 +172,7 @@ namespace GlassModel
         /// <summary>
         /// Зависящий параметр - толщина дна
         /// </summary>
-        public double DepthBottom
+        public virtual double DepthBottom
         {
             get
             {
@@ -186,7 +186,7 @@ namespace GlassModel
         /// <summary>
         /// Отсутствующий узор
         /// </summary>
-        public double HeightFaceted
+        public virtual double HeightFaceted
         {
             get
             {
@@ -200,7 +200,7 @@ namespace GlassModel
         /// <summary>
         /// Отсутствующие грани
         /// </summary>
-        public int CountFaceted
+        public virtual int CountFaceted
         {
             get
             {
@@ -215,10 +215,10 @@ namespace GlassModel
         /// Словарь с параметрами стакана: имя параметра и 
         ///     удовлетворяет ли он требованиям предметной области.
         /// </summary>
-        private Dictionary<string, bool> _isValidParams =
+        protected Dictionary<string, bool> _isValidParams =
             new Dictionary<string, bool>();
-        private const string _labelDiameterBottom = "DiameterBottom";
-        private const string _labelHeight = "Height";
+        protected const string _labelDiameterBottom = "DiameterBottom";
+        protected const string _labelHeight = "Height";
 
         public bool IsValid
         {
