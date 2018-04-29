@@ -38,6 +38,7 @@
   <ItemGroup>
     <Compile Include="BorderConditionsTest.cs" />
     <Compile Include="CleanGlassTest.cs" />
+    <Compile Include="FacetedGlassTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
