@@ -30,7 +30,8 @@ namespace GlassModel.Tests
             _facetedGlass = new FacetedGlass(height);
         }
 
-        [Test(Description = "")]
+        [Test(Description = "Check dependencies params of faceted glass" + 
+            " - height faceted")]
         [TestCase(_min, TestName="Depend params - Height glass = min")]
         [TestCase(_max, TestName = "Depend params - Height glass = max")]
         [TestCase((_min + _max) / 2,
