@@ -14,6 +14,8 @@ namespace GlassModel.Tests
         private const int _countFaceted = 0;
         private const double _min = 10;
         private const double _max = 200;
+        private const double _percentForDepthBottom = 7;
+        private const double _percentForDepthSide = 2;
 
         [SetUp]
         public void Setup()
@@ -45,14 +47,14 @@ namespace GlassModel.Tests
         [Test(Description = "Check setted params of clean glass -" +
             "height, diameter bottom - correct data")]
         [TestCase(_min, _min / 2,
-            TestName = "Height glass = min, diameter bottom = min")]
+            TestName = "Setted - Height glass = min, diameter bottom = min")]
         [TestCase(_max, _max / 2,
-            TestName = "Height glass = max, diameter bottom = max")]
+            TestName = "Setted - Height glass = max, diameter bottom = max")]
         [TestCase((_min + _max) / 2, (_min / 2 + _max / 2) / 2,
-            TestName = "Height glass and diameter bottom" +
+            TestName = "Setted - Height glass and diameter bottom" +
                 "in the allowable range")]
         [TestCase(_max, _min / 2,
-            TestName = "Height glass >= diameter bottom,")]
+            TestName = "Setted - Height glass >= diameter bottom,")]
         public void CheckSettedParamsPositive(double height,
             double diameterBottom)
         {
@@ -67,11 +69,11 @@ namespace GlassModel.Tests
         [Test(Description = "Check setted params of clean glass -" +
             "height, diameter bottom - incorrect data")]
         [TestCase(_min / 10, _min / 10,
-            TestName = "Height glass < min, diameter bottom < min")]
+            TestName = "Setted neg - Height glass < min, diameter bottom < min")]
         [TestCase(_max * 2, _max,
-            TestName = "Height glass > max, diameter bottom > max")]
+            TestName = "Setted neg - Height glass > max, diameter bottom > max")]
         [TestCase(_min, _max / 2,
-            TestName = "Height glass < diameter bottom,")]
+            TestName = "Setted neg - Height glass < diameter bottom,")]
         public void CheckSettedParamsNegative(double height,
             double diameterBottom)
         {
@@ -85,6 +87,37 @@ namespace GlassModel.Tests
                 _cleanGlass.DiameterBottom = diameterBottom;
                 _cleanGlass.Height = height;
             });
+        }
+
+        [Test(Description = "Check dependencies params of clean glass -" +
+            "depth side, depth bottom - correct data")]
+        [TestCase(_min , _min / 2,
+            TestName = "Depend - Height glass = min, diameter bottom = min")]
+        [TestCase(_max, _max / 2,
+            TestName = "Depend - Height glass = max, diameter bottom = max")]
+        [TestCase((_min + _max) / 2, (_min / 2 + _max / 2) / 2,
+            TestName = "Depend - Height glass and diameter bottom" +
+                "in the allowable range")]
+        public void CheckDependenciesParamsPositive(double height,
+            double diameterBottom)
+        {
+            _cleanGlass.Height = height;
+            _cleanGlass.DiameterBottom = diameterBottom;
+
+            _cleanGlass.DepthSide = height;
+            _cleanGlass.DepthBottom = height;
+
+            var expDepthBottom = calcDepthOfGlass(height, _percentForDepthBottom);
+            var expDepthSide = calcDepthOfGlass(diameterBottom,
+                _percentForDepthSide);
+
+            Assert.That(expDepthBottom, Is.EqualTo(_cleanGlass.DepthBottom));
+            Assert.That(expDepthSide, Is.EqualTo(_cleanGlass.DepthSide));
+        }
+
+        private double calcDepthOfGlass(double height, double percent)
+        {
+            return height * percent / 100;
         }
     }
 }
