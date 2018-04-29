@@ -12,15 +12,15 @@ namespace GlassModel.Tests
         private const double _angle = 0.0f;
         private const double _heightFaceted = 0.0f;
         private const int _countFaceted = 0;
-        private const double min = 10;
-        private const double max = 200;
+        private const double _min = 10;
+        private const double _max = 200;
 
         [SetUp]
         public void Setup()
         {
-            var height = new BorderConditions<double>(min, min, max);
-            var diameterBottom = new BorderConditions<double>(min / 2,
-                min / 2, max / 2);
+            var height = new BorderConditions<double>(_min, _min, _max);
+            var diameterBottom = new BorderConditions<double>(_min / 2,
+                _min / 2, _max / 2);
 
             _cleanGlass = new CleanGlass(diameterBottom, height);
         }
@@ -41,16 +41,50 @@ namespace GlassModel.Tests
             Assert.That(kFaceted, Is.EqualTo(_cleanGlass.CountFaceted));
         }
 
-        //[Test(Description="Setting the correct data for the parameters")]
-        //[TestCase()]
-        //public void SettingCorrectDataForParamsPositive()
-        //{
-        //    _cleanGlass.DiameterBottom = diameter;          
-        //    _cleanGlass.Height = height;
-        //    _cleanGlass.DepthSide = dSide;
-        //    _cleanGlass.DepthBottom = dBottom;
 
+        [Test(Description = "Check setted params of clean glass -" +
+            "height, diameter bottom - correct data")]
+        [TestCase(_min, _min / 2,
+            TestName = "Height glass = min, diameter bottom = min")]
+        [TestCase(_max, _max / 2,
+            TestName = "Height glass = max, diameter bottom = max")]
+        [TestCase((_min + _max) / 2, (_min / 2 + _max / 2) / 2,
+            TestName = "Height glass and diameter bottom" +
+                "in the allowable range")]
+        [TestCase(_max, _min / 2,
+            TestName = "Height glass >= diameter bottom,")]
+        public void CheckSettedParamsPositive(double height,
+            double diameterBottom)
+        {
+            _cleanGlass.Height = height;
+            _cleanGlass.DiameterBottom = diameterBottom;
 
-        //}
+            Assert.That(height, Is.EqualTo(_cleanGlass.Height));
+            Assert.That(diameterBottom, Is.EqualTo(_cleanGlass.DiameterBottom));
+            Assert.That(_cleanGlass.Height >= _cleanGlass.DiameterBottom);
+        }
+
+        [Test(Description = "Check setted params of clean glass -" +
+            "height, diameter bottom - incorrect data")]
+        [TestCase(_min / 10, _min / 10,
+            TestName = "Height glass < min, diameter bottom < min")]
+        [TestCase(_max * 2, _max,
+            TestName = "Height glass > max, diameter bottom > max")]
+        [TestCase(_min, _max / 2,
+            TestName = "Height glass < diameter bottom,")]
+        public void CheckSettedParamsNegative(double height,
+            double diameterBottom)
+        {
+            Assert.Throws<ArgumentException>(() =>
+            {
+                _cleanGlass.Height = height;
+                _cleanGlass.DiameterBottom = diameterBottom;
+            });
+            Assert.Throws<ArgumentException>(() =>
+            {
+                _cleanGlass.DiameterBottom = diameterBottom;
+                _cleanGlass.Height = height;
+            });
+        }
     }
 }
