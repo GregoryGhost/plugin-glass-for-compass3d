@@ -79,8 +79,8 @@ namespace GlassModel
             {
                 if (value < this._diameterBottom.Value)
                 {
-                    var msg = String.Format("Высота стакана = {0}"+
-                        "должна быть больше либо равна" +
+                    var msg = String.Format("Высота стакана = {0} "+
+                        "должна быть больше либо равна " +
                             "диаметру дна стакана = {1}", value,
                                 _diameterBottom.Value);
                     throw new ArgumentException(msg);
@@ -102,8 +102,8 @@ namespace GlassModel
             {
                 if (value > this._height.Value)
                 {
-                    var msg = String.Format("Диаметр дна стакан = {0}" +
-                        "должен быть меньше либо равен" +
+                    var msg = String.Format("Диаметр дна стакан = {0} " +
+                        "должен быть меньше либо равен " +
                             "высоте стакана {1}", value,
                                 _height.Value);
                     throw new ArgumentException(msg);
