@@ -59,17 +59,13 @@ namespace GlassModel
         public CleanGlass(BorderConditions<double> diameterBottom,
             BorderConditions<double> height)
         {
-            _dependencies = new DependenciesParams();
-            //Фиксированные параметры
-            _dependencies.AngleHeight = true;
-            _dependencies.CountFaceted = true;
-            _dependencies.HeightFaceted = true;
-            //Зависимые параметры
-            _dependencies.DepthBottom = true;
-            _dependencies.DepthSide = true;
-            //Задаваемые параметры
-            _dependencies.Height = false;
-            _dependencies.DiameterBottom = false;
+            //Фиксированные параметры - angle height,
+            //  count faceted, height faceted.
+            //Зависимые автовычисляемые параметры - depth bottom,
+            //  depth side.
+            //Задаваемые параметры - height, diameter bottom.
+            _dependencies = new DependenciesParams(false, false,
+                true, true, true, true, true);
 
             this._height = height;
             this._diameterBottom = diameterBottom;
@@ -248,6 +244,12 @@ namespace GlassModel
                 }
                 return valid;
             }
+        }
+
+
+        public IAutoCalcParams Properties
+        {
+            get { return _dependencies; }
         }
     }
 }

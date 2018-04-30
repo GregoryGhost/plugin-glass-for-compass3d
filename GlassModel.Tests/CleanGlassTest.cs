@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using GlassModel;
 using System;
+using System.Collections.Generic;
 
 
 namespace GlassModel.Tests
@@ -100,7 +101,7 @@ namespace GlassModel.Tests
 
         [Test(Description = "Check dependencies params of clean glass -" +
             "depth side, depth bottom - correct data")]
-        [TestCase(_min , _min / 2,
+        [TestCase(_min, _min / 2,
             TestName = "Depend - Height glass = min, diameter bottom = min")]
         [TestCase(_max, _max / 2,
             TestName = "Depend - Height glass = max, diameter bottom = max")]
@@ -122,6 +123,26 @@ namespace GlassModel.Tests
 
             Assert.That(expDepthBottom, Is.EqualTo(_cleanGlass.DepthBottom));
             Assert.That(expDepthSide, Is.EqualTo(_cleanGlass.DepthSide));
+        }
+
+        [Test(Description = "Check auto calc params of clean glass - " +
+            "height, diameter bottom, angleHeight, depth side, " +
+                "depth bottom, height faceted, count faceted")]
+        [TestCase(new[] { false, false, true, true, true, true, true },
+            TestName = "Check auto calc params")]
+        public void CheckAutoCalcParams(bool[] exp)
+        {
+            var was = CreateArrayAutoCalcParams(_cleanGlass.Properties);
+
+            Assert.That(exp, Is.EqualTo(was));
+        }
+
+        public static bool[] CreateArrayAutoCalcParams(IAutoCalcParams parameters)
+        {
+            var p = parameters;
+
+            return new[]{p.Height, p.DiameterBottom, p.AngleHeight,
+                p.DepthSide, p.DepthBottom, p.HeightFaceted, p.CountFaceted};
         }
 
         /// <summary>

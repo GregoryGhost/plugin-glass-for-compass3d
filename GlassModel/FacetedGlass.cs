@@ -55,18 +55,14 @@ namespace GlassModel
             BorderConditions<double> angleHeight,
             BorderConditions<double> depthSide,
             BorderConditions<double> depthBottom,
-            BorderConditions<int> countFaceted) :
-            base(diameterBottom, height)
+            BorderConditions<int> countFaceted)
+            : base(diameterBottom, height)
         {
-            //Задаваемые параметры
-            base._dependencies.Height = false;
-            base._dependencies.DiameterBottom = false;
-            base._dependencies.AngleHeight = false;
-            base._dependencies.CountFaceted = false;
-            base._dependencies.DepthSide = false;
-            base._dependencies.DepthBottom = false;
-            //Вычисляемый параметр
-            base._dependencies.HeightFaceted = true;
+            //Зависимые автовычисляемые параметры - height faceted.
+            //Задаваемые параметры - height, diameter bottom,
+            //  angle height, count faceted, depth side, depth bottom.
+            _dependencies = new DependenciesParams(false, false,
+                false, false, false, true, false);
 
             _angleHeight = angleHeight;
             _depthSide = depthSide;
