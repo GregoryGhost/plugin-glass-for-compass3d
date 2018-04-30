@@ -10,7 +10,6 @@ namespace GlassModel.Tests
 
         private const double _angle = 0.0f;
         private const double _heightFaceted = 0.0f;
-        private const int _countFaceted = 0;
 
         private const double _min = 10;
         private const double _max = 200;
@@ -47,6 +46,33 @@ namespace GlassModel.Tests
         {
             CleanGlassTest.CheckAutoCalcParamsOfGlass(exp,
                 _crimpGlass);
+        }
+
+        [Test(Description = "Check fixed params of crimp glass -" +
+            "angle height, count faceted, height faceted")]
+        [TestCase(_angle, _heightFaceted, _percentForDepthBottom,
+            _percentForDepthSide,
+                TestName = "Fixed params of clean glass")]
+        public void CheckFixedParams(double angle, double hFaceted,
+            double depthBottom, double depthSide)
+        {
+            _crimpGlass.AngleHeight = angle + 10;
+            _crimpGlass.DepthBottom = depthBottom + 10;
+            _crimpGlass.DepthSide = depthSide + 10;
+            _crimpGlass.HeightFaceted = hFaceted + 10;
+
+            var expDepthSide = CleanGlassTest.CalcDepthOfGlass(
+                _crimpGlass.DiameterBottom, _percentForDepthSide);
+            var expDepthBottom = CleanGlassTest.CalcDepthOfGlass(
+                _crimpGlass.Height, _percentForDepthBottom);
+            var expHeightFaceted = CleanGlassTest.CalcDepthOfGlass(
+                _crimpGlass.Height, _percentForHeightFaceted);
+
+            Assert.That(angle, Is.EqualTo(_crimpGlass.AngleHeight));
+            Assert.That(expHeightFaceted,
+                Is.EqualTo(_crimpGlass.HeightFaceted));
+            Assert.That(expDepthSide, Is.EqualTo(_crimpGlass.DepthSide));
+            Assert.That(expDepthBottom, Is.EqualTo(_crimpGlass.DepthBottom));
         }
     }
 }
