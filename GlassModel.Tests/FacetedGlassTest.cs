@@ -130,7 +130,7 @@ namespace GlassModel.Tests
         [TestCase(_min, _max, _minAngle, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - diameter bottom > max")]
-        [TestCase(_min, _max, _minAngle /2 , _minDepth,
+        [TestCase(_min, _max, _minAngle / 2, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - angle height < min")]
         [TestCase(_max, _min, _maxAngle * 2, _minDepth,
@@ -178,6 +178,19 @@ namespace GlassModel.Tests
 
             Assert.That(expIsValid,
                 Is.EqualTo(_facetedGlass.IsValid));
+        }
+
+        [Test(Description = "Check auto calc params of faceted glass - " +
+            "height, diameter bottom, angleHeight, depth side, " +
+                "depth bottom, height faceted, count faceted")]
+        [TestCase(new[] { false, false, false, false, false, true, false },
+            TestName = "Check auto calc params")]
+        public void CheckAutoCalcParams(bool[] exp, IAutoCalcParams aParams)
+        {
+            var was = CleanGlassTest.CreateArrayAutoCalcParams(
+                _facetedGlass.Properties);
+
+            Assert.That(exp, Is.EqualTo(was));
         }
     }
 }

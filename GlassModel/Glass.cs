@@ -45,6 +45,11 @@ namespace GlassModel
         /// Количество граней стакана
         /// </summary>
         int CountFaceted { get; set; }
+
+        /// <summary>
+        /// Узнать автовычислимые параметры стакана
+        /// </summary>
+        IAutoCalcParams Properties { get; }
     }
 
 
@@ -70,43 +75,43 @@ namespace GlassModel
         /// <summary>
         /// Зависимый параметр - высота стакана
         /// </summary>
-        bool Height { get; set; }
+        bool Height { get; }
 
         /// <summary>
         /// Зависимый параметр - диаметр основания
         /// </summary>
-        bool DiameterBottom { get; set; }
+        bool DiameterBottom { get; }
 
         /// <summary>
         /// Зависимый параметр - угол наклона высоты стакана
         /// </summary>
-        bool AngleHeight { get; set; }
+        bool AngleHeight { get; }
 
         /// <summary>
         /// Зависимый параметр - толщина стенок стакана
         /// </summary>
-        bool DepthSide { get; set; }
+        bool DepthSide { get; }
 
         /// <summary>
         /// Зависимый параметр - толщина дна стакана
         /// </summary>
-        bool DepthBottom { get; set; }
+        bool DepthBottom { get; }
 
         /// <summary>
         /// Зависимый параметр - высота граней стакана
         /// </summary>
-        bool HeightFaceted { get; set; }
+        bool HeightFaceted { get; }
 
         /// <summary>
         /// Зависимый параметр - количество граней стакана
         /// </summary>
-        bool CountFaceted { get; set; }
+        bool CountFaceted { get; }
     }
 
     /// <summary>
     /// Диапазон допустимых значений параметра.
     /// </summary>
-    public class BorderConditions<T> where T: IComparable<T>
+    public class BorderConditions<T> where T : IComparable<T>
     {
         /// <summary>
         /// Минимальная граница для значения параметра.
@@ -183,7 +188,7 @@ namespace GlassModel
             set
             {
                 //if (value > Max)
-                if(value.CompareTo(Max) > 0)
+                if (value.CompareTo(Max) > 0)
                 {
                     var msg = String.Format("Заданное значение = {0}" +
                         "больше, чем максимальное значение = {1}",
@@ -210,13 +215,27 @@ namespace GlassModel
     /// </summary>
     public class DependenciesParams : IAutoCalcParams
     {
+
+        public DependenciesParams(bool height, bool diameterBottom,
+            bool angleHeight, bool depthSide, bool depthBottom,
+                bool heightFaceted, bool countFaceted)
+        {
+            Height = height;
+            DiameterBottom = diameterBottom;
+            AngleHeight = angleHeight;
+            DepthSide = depthSide;
+            DepthBottom = depthBottom;
+            HeightFaceted = heightFaceted;
+            CountFaceted = countFaceted;
+        }
+
         /// <summary>
         /// Высота стакана.
         /// </summary>
         public bool Height
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -225,7 +244,7 @@ namespace GlassModel
         public bool DiameterBottom
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -234,7 +253,7 @@ namespace GlassModel
         public bool AngleHeight
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -243,7 +262,7 @@ namespace GlassModel
         public bool DepthSide
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -252,7 +271,7 @@ namespace GlassModel
         public bool DepthBottom
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -261,7 +280,7 @@ namespace GlassModel
         public bool HeightFaceted
         {
             get;
-            set;
+            private set;
         }
 
         /// <summary>
@@ -270,7 +289,7 @@ namespace GlassModel
         public bool CountFaceted
         {
             get;
-            set;
+            private set;
         }
     }
 
@@ -366,6 +385,12 @@ namespace GlassModel
         }
 
         public bool IsValid
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+
+        public IAutoCalcParams Properties
         {
             get { throw new NotImplementedException(); }
         }
