@@ -71,10 +71,14 @@ namespace GlassModel.Tests
 
         [Test(Description = "Check setted params of clean glass -" +
             "height, diameter bottom - incorrect data")]
-        [TestCase(_min / 10, _min / 10, _invalid,
-            TestName = "Setted neg - Height glass < min, diameter bottom < min")]
-        [TestCase(_max * 2, _max, _invalid,
-            TestName = "Setted neg - Height glass > max, diameter bottom > max")]
+        [TestCase(_min / 10, _min / 2, _invalid,
+            TestName = "Setted neg - Height glass < min, diameter bottom = min")]
+        [TestCase(_min / 10, _min / 2, _invalid,
+            TestName = "Setted neg - Height glass = min, diameter bottom < min")]
+        [TestCase(_max * 2, _max / 2, _invalid,
+            TestName = "Setted neg - Height glass > max, diameter bottom = max")]
+        [TestCase(_max, _max, _invalid,
+            TestName = "Setted neg - Height glass = max, diameter bottom > max")]
         [TestCase(_min, _max / 2, _invalid,
             TestName = "Setted neg - Height glass < diameter bottom,")]
         public void CheckSettedParamsNegative(double height,

@@ -93,18 +93,25 @@ namespace GlassModel
             }
             set
             {
-                if (value < this._diameterBottom.Value)
+                try
                 {
-                    var msg = String.Format("Высота стакана = {0} " +
-                        "должна быть больше либо равна " +
-                            "диаметру дна стакана = {1}", value,
-                                _diameterBottom.Value);
+                    if (value < this._diameterBottom.Value)
+                    {
+                        var msg = String.Format("Высота стакана = {0} " +
+                            "должна быть больше либо равна " +
+                                "диаметру дна стакана = {1}", value,
+                                    _diameterBottom.Value);
 
-                    _isValidParams[_labelHeight] = false;
+                        throw new ArgumentException(msg);
+                    }
 
-                    throw new ArgumentException(msg);
+                    _height.Value = value;
                 }
-                _height.Value = value;
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelHeight] = false;
+                    throw ex;
+                }
                 _isValidParams[_labelHeight] = true;
             }
         }
@@ -125,18 +132,26 @@ namespace GlassModel
             }
             set
             {
-                if (value > this._height.Value)
+                try
                 {
-                    var msg = String.Format("Диаметр дна стакан = {0} " +
-                        "должен быть меньше либо равен " +
-                            "высоте стакана {1}", value,
-                                _height.Value);
+                    if (value > this._height.Value)
+                    {
+                        var msg = String.Format("Диаметр дна стакан = {0} " +
+                            "должен быть меньше либо равен " +
+                                "высоте стакана {1}", value,
+                                    _height.Value);
 
-                    _isValidParams[_labelDiameterBottom] = false;
+                        _isValidParams[_labelDiameterBottom] = false;
 
-                    throw new ArgumentException(msg);
+                        throw new ArgumentException(msg);
+                    }
+                    _diameterBottom.Value = value;
                 }
-                _diameterBottom.Value = value;
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelDiameterBottom] = false;
+                    throw ex;
+                }
                 _isValidParams[_labelDiameterBottom] = true;
             }
         }
