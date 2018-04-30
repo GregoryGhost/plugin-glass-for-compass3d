@@ -185,12 +185,10 @@ namespace GlassModel.Tests
                 "depth bottom, height faceted, count faceted")]
         [TestCase(new[] { false, false, false, false, false, true, false },
             TestName = "Check auto calc params")]
-        public void CheckAutoCalcParams(bool[] exp, IAutoCalcParams aParams)
+        public void CheckAutoCalcParams(bool[] exp)
         {
-            var was = CleanGlassTest.CreateArrayAutoCalcParams(
-                _facetedGlass.Properties);
-
-            Assert.That(exp, Is.EqualTo(was));
+            CleanGlassTest.CheckAutoCalcParamsOfGlass(exp,
+                _facetedGlass);
         }
     }
 }

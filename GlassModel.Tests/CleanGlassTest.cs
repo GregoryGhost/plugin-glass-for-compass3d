@@ -132,12 +132,26 @@ namespace GlassModel.Tests
             TestName = "Check auto calc params")]
         public void CheckAutoCalcParams(bool[] exp)
         {
-            var was = CreateArrayAutoCalcParams(_cleanGlass.Properties);
+            CheckAutoCalcParamsOfGlass(exp,
+                _cleanGlass);
+        }
+
+        /// <summary>
+        /// Проверяет автовычисляемые параметры стакана
+        /// </summary>
+        /// <param name="exp">Массив ожидаемых автовычисляемых
+        ///     параметров стакана</param>
+        /// <param name="glass">Проверяемый стакан</param>
+        public static void CheckAutoCalcParamsOfGlass(bool[] exp,
+            IGlass glass)
+        {
+            var was = CreateArrayAutoCalcParams(
+                glass.Properties);
 
             Assert.That(exp, Is.EqualTo(was));
         }
 
-        public static bool[] CreateArrayAutoCalcParams(IAutoCalcParams parameters)
+        private static bool[] CreateArrayAutoCalcParams(IAutoCalcParams parameters)
         {
             var p = parameters;
 
