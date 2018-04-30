@@ -111,11 +111,11 @@ namespace GlassModel
         {
             get
             {
-                throw new NotImplementedException();
+                return Height * _depthBottom.Value / 100;
             }
             set
             {
-                throw new NotImplementedException();
+                _depthBottom.Value = value;
             }
         }
 
@@ -137,11 +137,11 @@ namespace GlassModel
         {
             get
             {
-                throw new NotImplementedException();
+                return _countFaceted.Value;
             }
             set
             {
-                throw new NotImplementedException();
+                _countFaceted.Value = value;
             }
         }
     }
