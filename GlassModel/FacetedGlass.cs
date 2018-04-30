@@ -36,6 +36,11 @@ namespace GlassModel
         /// </summary>
         protected BorderConditions<int> _countFaceted;
 
+        private const string _labelAngleHeight = "AngleHeight";
+        private const string _labelCountFaceted = "CountFaceted";
+        private const string _labelDepthSide = "DepthSide";
+        private const string _labelDepthBottom = "DepthBottom";
+
         /// <summary>
         /// Устанавливает задаваемые параметры для граненого стакана.
         /// </summary>
@@ -50,8 +55,8 @@ namespace GlassModel
             BorderConditions<double> angleHeight,
             BorderConditions<double> depthSide,
             BorderConditions<double> depthBottom,
-            BorderConditions<int> countFaceted) : 
-                base(diameterBottom, height)
+            BorderConditions<int> countFaceted) :
+            base(diameterBottom, height)
         {
             //Задаваемые параметры
             base._dependencies.Height = false;
@@ -67,6 +72,11 @@ namespace GlassModel
             _depthSide = depthSide;
             _depthBottom = depthBottom;
             _countFaceted = countFaceted;
+
+            _isValidParams.Add(_labelAngleHeight, true);
+            _isValidParams.Add(_labelCountFaceted, true);
+            _isValidParams.Add(_labelDepthSide, true);
+            _isValidParams.Add(_labelDepthBottom, true);
         }
 
         /// <summary>
@@ -83,7 +93,16 @@ namespace GlassModel
             }
             set
             {
-                _angleHeight.Value = value;
+                try
+                {
+                    _angleHeight.Value = value;
+                }
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelAngleHeight] = false;
+                    throw ex;
+                }
+                _isValidParams[_labelAngleHeight] = true;
             }
         }
 
@@ -103,7 +122,16 @@ namespace GlassModel
             }
             set
             {
-                _depthSide.Value = value;
+                try
+                {
+                    _depthSide.Value = value;
+                }
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelDepthSide] = false;
+                    throw ex;
+                }
+                _isValidParams[_labelDepthSide] = true;
             }
         }
 
@@ -115,7 +143,16 @@ namespace GlassModel
             }
             set
             {
-                _depthBottom.Value = value;
+                try
+                {
+                    _depthBottom.Value = value;
+                }
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelDepthBottom] = false;
+                    throw ex;
+                }
+                _isValidParams[_labelDepthBottom] = true;
             }
         }
 
@@ -141,7 +178,16 @@ namespace GlassModel
             }
             set
             {
-                _countFaceted.Value = value;
+                try
+                {
+                    _countFaceted.Value = value;
+                }
+                catch (ArgumentException ex)
+                {
+                    _isValidParams[_labelCountFaceted] = false;
+                    throw ex;
+                }
+                _isValidParams[_labelCountFaceted] = true;
             }
         }
     }
