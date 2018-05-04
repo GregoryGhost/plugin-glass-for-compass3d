@@ -12,8 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using GlassPlugin.Models;
-using GlassPlugin.Models.ExceptionsOfGlassParameters;
+using GlassModel;
 
 namespace GlassPlugin
 {
@@ -22,52 +21,132 @@ namespace GlassPlugin
     /// </summary>
     public partial class MainWindow : Window
     {
-        Parameters _glass;
+        private const string _nameProgram = "Построитель стакана";
 
         public MainWindow()
         {
             InitializeComponent();
+
+            _style = (Style)this.TryFindResource("TextBoxInError");
+            this.Title = _nameProgram;
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void ShowBuildMessage(bool resultBuilding)
         {
-            TypeGlass typeGlass = TypeGlass.Clean;
-            switch (cbTypeGlass.SelectedIndex)
+            string success;
+            MessageBoxImage styleBox;
+            if (resultBuilding)
             {
-                case (int)TypeGlass.Faceted:
-                    typeGlass = TypeGlass.Faceted;
-                    break;
-                case (int)TypeGlass.Crimp:
-                    typeGlass = TypeGlass.Crimp;
-                    break;
-                case (int)TypeGlass.Clean:
-                    typeGlass = TypeGlass.Clean;
-                    break;
+                success = "успех";
+                styleBox = MessageBoxImage.Information;
             }
-            Parameters model = new Parameters(Convert.ToDouble(eCountOfFace.Text),
-                                               Convert.ToDouble(eDepthBottom),
-                                               Convert.ToDouble(eDiameterTop),
-                                               Convert.ToDouble(eDiameterBottom),
-                                               Convert.ToDouble(eSideDepth),
-                                               Convert.ToDouble(eHeightFace),
-                                               Convert.ToDouble(eHeight),
-                                               typeGlass);
+            else
+            {
+                success = "провал";
+                styleBox = MessageBoxImage.Warning;
+            }
+            var msg = String.Format("Постройка модели в Компасе завершилась - {0} ", success);
+            MessageBox.Show(msg,
+                "Аля Компас 3д",
+                MessageBoxButton.OK,
+                styleBox);
+        }
 
-            //Parameters model = new Parameters(-9, 10, 1, 10,
-            //                                  2,                                              
-            //                                  3,
-            //                                  4,
-            //                                  typeGlass);
-            GlassProxy creator = new GlassProxy();
-         //   try
-         //   {
-         //       creator.CreateModel(model);
-         //   }
-         //   catch (ArgumentOutOfRangeException eD)
-         //   {
-         //       MessageBox.Show(eD.Message, eD.Source,
-         //MessageBoxButton.OK, MessageBoxImage.Error);
-         //   }
+        private void Build_Click(object sender, RoutedEventArgs e)
+        {
+            var fakeGlass = _glasses.SelectedGlass;
+
+            var isValid = fakeGlass.BuildModel();
+
+            var msg = isValid ? "Стакан успешно построен."
+                : "Исправьте параметры стакана.";
+            var typeMessage = isValid ? MessageBoxImage.Information
+                : MessageBoxImage.Warning;
+
+            MessageBox.Show(msg,
+                _nameProgram,
+                MessageBoxButton.OK,
+                typeMessage);
+        }
+
+        GlassesViewModel _glasses;
+        MainWindow _main;
+        Style _style;
+
+        private void GenTextBox(List<Tuple<string, bool, string>> nameProp,
+            GlassViewModel selected)
+        {
+            const int width = 140;
+
+            _main.test.Children.Clear();
+
+            foreach (var prop in nameProp)
+            {
+                if (prop.Item2 == false)
+                {
+                    var labelProp = prop.Item1;
+
+                    var t1 = new TextBox
+                    {
+                        Style = _style,
+                        Width = width
+                    };
+
+                    var bind = new Binding
+                    {
+                        Source = selected,
+                        Path = new PropertyPath(labelProp),
+                        ValidatesOnDataErrors = true,
+                        ValidatesOnExceptions = true,
+                        UpdateSourceTrigger = 
+                            UpdateSourceTrigger.PropertyChanged,
+                        Mode = BindingMode.TwoWay
+                    };
+
+                    t1.SetBinding(TextBox.TextProperty, bind);
+
+                    var textProp = prop.Item3;
+
+                    var l1 = new Label
+                    {
+                        Content = String.Format("{0}:", textProp),
+                        Width = width
+                    };
+
+                    var st = new StackPanel
+                    {
+                        Orientation = Orientation.Horizontal
+                    };
+                    st.Children.Add(l1);
+                    st.Children.Add(t1);
+
+                    _main.test.Children.Add(st);
+                }
+            }
+        }
+
+        private void ComboBox_SelectionChanged(object sender,
+            SelectionChangedEventArgs e)
+        {
+            if (cmbbox.SelectedIndex == -1) return;
+
+            var selected = _glasses.SelectedGlass;
+
+            var nameProp = selected.Properties;
+
+            GenTextBox(nameProp, selected);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            var index = cmbbox.SelectedIndex;
+            cmbbox.SelectionChanged += ComboBox_SelectionChanged;
+            _main = (MainWindow)Application.Current.MainWindow;
+
+            _glasses = this.Resources["Glasses"] 
+                as GlassesViewModel;
+            cmbbox.SelectedIndex = -1;
+            cmbbox.SelectedIndex = index;
         }
     }
 }
