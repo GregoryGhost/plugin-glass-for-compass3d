@@ -190,7 +190,7 @@ namespace GlassModel
                 //if (value > Max)
                 if (value.CompareTo(Max) > 0)
                 {
-                    var msg = String.Format("Заданное значение = {0}" +
+                    var msg = String.Format("Заданное значение = {0} " +
                         "больше, чем максимальное значение = {1}",
                             value, Max);
                     throw new ArgumentException(msg);
@@ -198,7 +198,7 @@ namespace GlassModel
 
                 if (value.CompareTo(Min) < 0)
                 {
-                    var msg = String.Format("Заданное значение = {0}" +
+                    var msg = String.Format("Заданное значение = {0} " +
                         "меньше, чем минимальное значение = {1}",
                             value, Min);
                     throw new ArgumentException(msg);

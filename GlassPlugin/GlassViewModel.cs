@@ -145,6 +145,23 @@ namespace GlassPlugin
         private string _name = String.Empty;
         private IChecker _checker;
 
+        private List<Tuple<string, bool, string>> _properties;
+
+        private readonly Tuple<string, string> _labelHeight =
+            new Tuple<string, string>("Height", "Высота");
+        private readonly Tuple<string, string> _labelDiameterBottom =
+            new Tuple<string, string>("DiameterBottom", "Диаметр дна");
+        private readonly Tuple<string, string> _labelAngleHeight =
+            new Tuple<string, string>("AngleHeight", "Угол наклона высоты");
+        private readonly Tuple<string, string> _labelDepthSide =
+            new Tuple<string, string>("DepthSide", "Глубина стенки");
+        private readonly Tuple<string, string> _labelDepthBottom =
+            new Tuple<string, string>("DepthBottom", "Глубина дна");
+        private readonly Tuple<string, string> _labelCountFaceted =
+            new Tuple<string, string>("CountFaceted", "Количество граней");
+        private readonly Tuple<string, string> _labelHeightFaceted =
+            new Tuple<string, string>("HeightFaceted", "Высота узора");
+
         /// <summary>
         /// Инициализация представление стакана
         /// </summary>
@@ -154,6 +171,26 @@ namespace GlassPlugin
         {
             _glass = glass;
             _name = name;
+            _checker = glass as IChecker;
+
+            var prop = _glass.Properties;
+            _properties = new List<Tuple<string, bool, string>>
+            {
+                new Tuple<string,bool, string>(_labelHeight.Item1,
+                    prop.Height, _labelHeight.Item2),
+                new Tuple<string,bool, string>(_labelDiameterBottom.Item1,
+                    prop.DiameterBottom, _labelDiameterBottom.Item2),
+                new Tuple<string,bool, string>(_labelAngleHeight.Item1,
+                    prop.AngleHeight, _labelAngleHeight.Item2),
+                new Tuple<string,bool, string>(_labelDepthSide.Item1,
+                    prop.DepthSide, _labelDepthSide.Item2),
+                new Tuple<string,bool, string>(_labelDepthBottom.Item1,
+                    prop.DepthBottom, _labelDepthBottom.Item2),
+                new Tuple<string,bool, string>(_labelCountFaceted.Item1,
+                    prop.CountFaceted, _labelCountFaceted.Item2),
+                new Tuple<string,bool, string>(_labelHeightFaceted.Item1,
+                    prop.HeightFaceted, _labelHeightFaceted.Item2),
+            };
         }
 
         /// <summary>
@@ -168,7 +205,7 @@ namespace GlassPlugin
             set
             {
                 _glass.Height = value;
-                OnPropertyChanged("Height");
+                OnPropertyChanged(_labelHeight.Item1);
             }
         }
 
@@ -184,7 +221,72 @@ namespace GlassPlugin
             set
             {
                 _glass.DiameterBottom = value;
-                OnPropertyChanged("DiameterBottom");
+                OnPropertyChanged(_labelDiameterBottom.Item1);
+            }
+        }
+
+        public double AngleHeight
+        {
+            get
+            {
+                return _glass.AngleHeight;
+            }
+            set
+            {
+                _glass.AngleHeight = value;
+                OnPropertyChanged(_labelAngleHeight.Item1);
+            }
+        }
+
+        public double DepthSide
+        {
+            get
+            {
+                return _glass.DepthSide;
+            }
+            set
+            {
+                _glass.DepthSide = value;
+                OnPropertyChanged(_labelDepthSide.Item1);
+            }
+        }
+
+        public double DepthBottom
+        {
+            get
+            {
+                return _glass.DepthBottom;
+            }
+            set
+            {
+                _glass.DepthBottom = value;
+                OnPropertyChanged(_labelDepthBottom.Item1);
+            }
+        }
+
+        public int CountFaceted
+        {
+            get
+            {
+                return _glass.CountFaceted;
+            }
+            set
+            {
+                _glass.CountFaceted = value;
+                OnPropertyChanged(_labelCountFaceted.Item1);
+            }
+        }
+
+        public double HeightFaceted
+        {
+            get
+            {
+                return _glass.HeightFaceted;
+            }
+            set
+            {
+                _glass.HeightFaceted = value;
+                OnPropertyChanged(_labelHeightFaceted.Item1);
             }
         }
 
@@ -201,11 +303,11 @@ namespace GlassPlugin
         /// <summary>
         /// Узнать автовычислимые параметры стакана.
         /// </summary>
-        public IAutoCalcParams Properties
+        public List<Tuple<string, bool, string>> Properties
         {
             get
             {
-                return _glass.Properties;
+                return _properties;
             }
         }
 
@@ -240,6 +342,21 @@ namespace GlassPlugin
             {
                 return _checker.IsValid;
             }
+        }
+
+        /// <summary>
+        /// Построение стакана в САПР.
+        /// </summary>
+        /// <returns>Возвращает True в случае успешного построения
+        ///     и False, если построение провалилось.</returns>
+        public bool BuildModel()
+        {
+            if (IsValid)
+            {
+                //построение стакана в САПР
+            }
+
+            return IsValid;
         }
     }
 }
