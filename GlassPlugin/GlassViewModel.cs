@@ -64,14 +64,16 @@ namespace GlassPlugin
             var facetedGlass = new FacetedGlass(height, diameterBottom,
                 angleHeight, depthSide, depthBottom, countFaceted);
 
-            Add(new GlassViewModel(facetedGlass, "Гранёный стакан"));
+            var builder = new BuilderOfBlank();
+
+            Add(new GlassViewModel(facetedGlass, builder, "Гранёный стакан"));
 
             var cleanGlass = new CleanGlass(diameterBottom, height);
             countFaceted = new BorderConditions<int>(20, 20, 60);
             var crimpGlass = new CrimpGlass(height, diameterBottom, countFaceted);
 
-            Add(new GlassViewModel(cleanGlass, "Гладкий стакан"));
-            Add(new GlassViewModel(crimpGlass, "Гофрированный стакан"));
+            Add(new GlassViewModel(cleanGlass, builder, "Гладкий стакан"));
+            Add(new GlassViewModel(crimpGlass, builder, "Гофрированный стакан"));
         }
     }
 
@@ -144,6 +146,7 @@ namespace GlassPlugin
         private IGlass _glass;
         private string _name = String.Empty;
         private IChecker _checker;
+        private IBuilder _builder;
 
         private List<Tuple<string, bool, string>> _properties;
 
@@ -167,11 +170,12 @@ namespace GlassPlugin
         /// </summary>
         /// <param name="glass">Стакан</param>
         /// <param name="name">Название стакана</param>
-        public GlassViewModel(IGlass glass, string name)
+        public GlassViewModel(IGlass glass, IBuilder builder, string name)
         {
             _glass = glass;
             _name = name;
             _checker = glass as IChecker;
+            _builder = builder;
 
             var prop = _glass.Properties;
             _properties = new List<Tuple<string, bool, string>>
@@ -353,7 +357,14 @@ namespace GlassPlugin
         {
             if (IsValid)
             {
-                //построение стакана в САПР
+                try
+                {
+                    _builder.Build(_glass, _checker);
+                }
+                catch (ArgumentException)
+                {
+                    return false;
+                }
             }
 
             return IsValid;
