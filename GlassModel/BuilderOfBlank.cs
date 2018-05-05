@@ -264,14 +264,11 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            var depthSide = 5;
             _diameterSideCutting = glass.DiameterBottom * 
-                (100 - depthSide) / 100;
+                (100 - glass.DepthSide) / 100;
 
-            //_heightCutting = glass.Height *
-            //    (100 - glass.DepthBottom) / 100;
-            var depth = 5;
-            _heightCutting = glass.Height * (100 - depth) / 100;
+            _heightCutting = glass.Height *
+                (100 - glass.DepthBottom) / 100;
         }
 
         public double DiameterFacetedStart
