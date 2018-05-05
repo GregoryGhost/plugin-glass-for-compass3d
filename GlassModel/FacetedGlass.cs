@@ -104,8 +104,6 @@ namespace GlassModel
 
         /// <summary>
         /// Толщина стенки стакана.
-        ///     Устанавливается значение в процентах,
-        ///     возвращается вычисленное значение в ед. длины.
         /// </summary>
         /// <exception cref="ArgumentException">
         ///     Возникает, если устанавливаемое значение
@@ -114,7 +112,7 @@ namespace GlassModel
         {
             get
             {
-                return DiameterBottom * _depthSide.Value / 100;
+                return _depthSide.Value;
             }
             set
             {
@@ -131,11 +129,17 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Толщина дна стакана.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override double DepthBottom
         {
             get
             {
-                return Height * _depthBottom.Value / 100;
+                return _depthBottom.Value;
             }
             set
             {
@@ -159,13 +163,19 @@ namespace GlassModel
         {
             get
             {
-                return this.Height * _percentForHeightFaceted / 100;
+                return _percentForHeightFaceted;
             }
             set
             {
             }
         }
 
+        /// <summary>
+        /// Количество граней стакана.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override int CountFaceted
         {
             get
