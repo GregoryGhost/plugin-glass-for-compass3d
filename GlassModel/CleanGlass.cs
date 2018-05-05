@@ -44,12 +44,12 @@ namespace GlassModel
         /// <summary>
         /// Процент толщины дна стакана
         /// </summary>
-        private double _depthBottom = 7;
+        private double _percentForDepthBottom = 7;
 
         /// <summary>
         /// Процент толщины стенки стакана
         /// </summary>
-        private double _depthSide = 2;
+        private double _percentForDepthSide = 2;
 
         /// <summary>
         /// Установление параметров гладкого стакана.
@@ -173,7 +173,7 @@ namespace GlassModel
         {
             get
             {
-                return this.DiameterBottom * _depthSide / 100;
+                return _percentForDepthSide;
             }
             set
             {
@@ -187,7 +187,7 @@ namespace GlassModel
         {
             get
             {
-                return this.Height * _depthBottom / 100;
+                return _percentForDepthBottom;
             }
             set
             {

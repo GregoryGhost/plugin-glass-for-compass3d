@@ -61,12 +61,9 @@ namespace GlassModel.Tests
             _crimpGlass.DepthSide = depthSide + 10;
             _crimpGlass.HeightFaceted = hFaceted + 10;
 
-            var expDepthSide = CleanGlassTest.CalcDepthOfGlass(
-                _crimpGlass.DiameterBottom, _percentForDepthSide);
-            var expDepthBottom = CleanGlassTest.CalcDepthOfGlass(
-                _crimpGlass.Height, _percentForDepthBottom);
-            var expHeightFaceted = CleanGlassTest.CalcDepthOfGlass(
-                _crimpGlass.Height, _percentForHeightFaceted);
+            var expDepthSide = _percentForDepthSide;
+            var expDepthBottom = _percentForDepthBottom;
+            var expHeightFaceted = _percentForHeightFaceted;
 
             Assert.That(angle, Is.EqualTo(_crimpGlass.AngleHeight));
             Assert.That(expHeightFaceted,

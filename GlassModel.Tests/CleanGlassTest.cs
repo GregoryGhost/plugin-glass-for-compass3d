@@ -117,9 +117,8 @@ namespace GlassModel.Tests
             _cleanGlass.DepthSide = height;
             _cleanGlass.DepthBottom = height;
 
-            var expDepthBottom = CalcDepthOfGlass(height, _percentForDepthBottom);
-            var expDepthSide = CalcDepthOfGlass(diameterBottom,
-                _percentForDepthSide);
+            var expDepthBottom = _percentForDepthBottom;
+            var expDepthSide = _percentForDepthSide;
 
             Assert.That(expDepthBottom, Is.EqualTo(_cleanGlass.DepthBottom));
             Assert.That(expDepthSide, Is.EqualTo(_cleanGlass.DepthSide));
