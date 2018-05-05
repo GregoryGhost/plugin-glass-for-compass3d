@@ -157,9 +157,9 @@ namespace GlassPlugin
         private readonly Tuple<string, string> _labelAngleHeight =
             new Tuple<string, string>("AngleHeight", "Угол наклона высоты");
         private readonly Tuple<string, string> _labelDepthSide =
-            new Tuple<string, string>("DepthSide", "Глубина стенки");
+            new Tuple<string, string>("DepthSide", "Глубина стенки (в процентах)");
         private readonly Tuple<string, string> _labelDepthBottom =
-            new Tuple<string, string>("DepthBottom", "Глубина дна");
+            new Tuple<string, string>("DepthBottom", "Глубина дна (в процентах)");
         private readonly Tuple<string, string> _labelCountFaceted =
             new Tuple<string, string>("CountFaceted", "Количество граней");
         private readonly Tuple<string, string> _labelHeightFaceted =
