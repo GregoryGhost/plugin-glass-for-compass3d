@@ -47,14 +47,13 @@ namespace GlassModel
         {
             _builderBlank.Build(glass, checker);
 
-            _startX = glass.DiameterBottom / 2;
-            _startY = glass.Height / 2;
+            _startX = 0;
+            _startY = 0;
 
             _glass = glass;
             _calcParams = new CalcParams(glass);
 
-            var doc = _kompas.Document3D;
-            doc.Create();
+            var doc = _kompas.ActiveDocument3D;
 
             var part = (ksPart)doc.GetPart((short)Part_Type.pTop_Part);
 
@@ -93,8 +92,8 @@ namespace GlassModel
             polygon.count = _glass.CountFaceted;
 
             draw.ksRegularPolygon(polygon);
-            draw.ksCircle(_startX, _startX,
-                _calcParams.DiameterFacetedStart, 1);
+            draw.ksCircle(_startX, _startY,
+                _calcParams.DiameterFacetedStart * 2, 1);
 
             sketchDef.EndEdit();
         }
@@ -109,7 +108,10 @@ namespace GlassModel
             extrDef.directionType = (short)Direction_Type.dtNormal;
 
             var angle = _glass.AngleHeight;
-            var depthCut = _glass.HeightFaceted;
+            var heightFaceted = _glass.Height * 
+                _glass.HeightFaceted / 100;
+            var depthCut =  heightFaceted - 
+                (_glass.Height - heightFaceted) / 2;
             var draftOutward = false; //вырезание угла направлено наружу
 
             extrDef.SetSideParam(true, (short)End_Type.etBlind,

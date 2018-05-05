@@ -109,6 +109,14 @@ namespace GlassModel
             }
         }
 
+        public ksDocument3D ActiveDocument3D
+        {
+            get
+            {
+                return _kompas.ActiveDocument3D();
+            }
+        }
+
         /// <summary>
         /// Создание смещенной плоскости
         /// </summary>
