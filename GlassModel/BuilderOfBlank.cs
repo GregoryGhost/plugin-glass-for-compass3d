@@ -202,6 +202,7 @@ namespace GlassModel
                 glass.Height,
                 glass.AngleHeight,
                 false);
+            extrDef.SetSketch(sketch);
 
             extr.Create();
         }
@@ -238,12 +239,13 @@ namespace GlassModel
             extrDef.SetSideParam(true, (short)End_Type.etBlind,
                 depthCut, angle, 
                     true);//вырезание угла направлено внутрь
+            extrDef.SetSketch(sketch);
 
             extr.Create();
         }
     }
 
-    private class CalcParams
+    public class CalcParams
     {
         private double _diameterFacetedStart;
         private double _diameterSideCutting;
@@ -262,10 +264,14 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            _diameterSideCutting = glass.DiameterBottom;
+            var depthSide = 5;
+            _diameterSideCutting = glass.DiameterBottom * 
+                (100 - depthSide) / 100;
 
-            _heightCutting = glass.Height *
-                (100 - glass.DepthBottom) / 100;
+            //_heightCutting = glass.Height *
+            //    (100 - glass.DepthBottom) / 100;
+            var depth = 5;
+            _heightCutting = glass.Height * (100 - depth) / 100;
         }
 
         public double DiameterFacetedStart
