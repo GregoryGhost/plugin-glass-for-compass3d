@@ -28,6 +28,9 @@ namespace GlassModel
         {
             _kompas = KompasWrapper.Instance;
             _kompas.ShowCAD();
+
+            _startX = 0;
+            _startY = _startX;
         }
 
         /// <summary>
@@ -49,17 +52,13 @@ namespace GlassModel
 
             _kompas.ShowCAD();
 
-            _startX = 0;
-            _startY = _startX;
+            _startX = glass.DiameterBottom / 2;
+            _startY = glass.Height / 2;
 
             var doc = _kompas.Document3D;
             doc.Create();
 
             var part = (ksPart)doc.GetPart((short)Part_Type.pTop_Part);
-            if (part == null)
-            {
-                return;
-            }
 
             var sketchBase = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_sketch);
@@ -93,37 +92,12 @@ namespace GlassModel
             GenerateCutSide3d(sketchCutSide, part, glass, params1);
         }
 
-        /// <summary>
-        /// Создание смещенной плоскости
-        /// </summary>
-        /// <param name="part">Компонент сборки</param>
-        /// <param name="basePlane">Исходная плоскость</param>
-        /// <param name="offset">Смещение</param>
-        /// <returns>Возвращает смещенную плоскость</returns>
-        private ksEntity CreateOffsetPlane(ksPart part, ksEntity basePlane,
-            double offset)
+        private void GenerateBlank2d(ksSketchDefinition sketchDef,
+            IGlass glass)
         {
-            ksEntity planeFormSurface =
-                part.NewEntity((short)Obj3dType.o3d_planeOffset);
-            ksPlaneOffsetDefinition planeDefinition =
-                planeFormSurface.GetDefinition();
-
-            planeDefinition.SetPlane(basePlane);
-            planeDefinition.offset = offset;
-
-            planeFormSurface.Create();
-
-            return planeFormSurface;
-        }
-
-        private void GenerateBlank2d(ksSketchDefinition sketchDef, IGlass glass)
-        {
-            var hX = glass.DiameterBottom / 2;
-            var hY = glass.Height / 2;
-
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            draw.ksCircle(hX, hY, glass.DiameterBottom / 2.0, 1);
+            draw.ksCircle(_startX, _startY, glass.DiameterBottom / 2.0, 1);
 
             sketchDef.EndEdit();
         }
@@ -153,13 +127,10 @@ namespace GlassModel
         private void GenerateCutSide2d(ksSketchDefinition sketchDef,
             CalcParams calcParams, IGlass glass)
         {
-            var hX = glass.DiameterBottom / 2;
-            var hY = glass.Height / 2;
-
             var draw =
                 (ksDocument2D)sketchDef.BeginEdit();
 
-            draw.ksCircle(hX, hY,
+            draw.ksCircle(_startX, _startY,
                 calcParams.DiameterSideCutting / 2, 1);
 
             sketchDef.EndEdit();
@@ -187,6 +158,7 @@ namespace GlassModel
             extr.Create();
         }
     }
+
 
     public class CalcParams
     {

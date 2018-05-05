@@ -1,4 +1,5 @@
-﻿using Kompas6LTAPI5;
+﻿using Kompas6Constants3D;
+using Kompas6LTAPI5;
 using System;
 using System.Runtime.InteropServices;
 
@@ -106,6 +107,29 @@ namespace GlassModel
             {
                 return _kompas.Document3D();
             }
+        }
+
+        /// <summary>
+        /// Создание смещенной плоскости
+        /// </summary>
+        /// <param name="part">Компонент сборки</param>
+        /// <param name="basePlane">Исходная плоскость</param>
+        /// <param name="offset">Смещение</param>
+        /// <returns>Возвращает смещенную плоскость</returns>
+        public ksEntity CreateOffsetPlane(ksPart part, ksEntity basePlane,
+            double offset)
+        {
+            ksEntity planeFormSurface =
+                part.NewEntity((short)Obj3dType.o3d_planeOffset);
+            ksPlaneOffsetDefinition planeDefinition =
+                planeFormSurface.GetDefinition();
+
+            planeDefinition.SetPlane(basePlane);
+            planeDefinition.offset = offset;
+
+            planeFormSurface.Create();
+
+            return planeFormSurface;
         }
     }
 }
