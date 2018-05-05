@@ -66,8 +66,8 @@ namespace GlassModel
 
             _kompas.ShowCAD();
 
-            _startX = glass.DiameterBottom / 2;
-            _startY = glass.Height / 2;
+            _startX = 0;
+            _startY = 0;
 
             _glass = glass;
             _calcParams = new CalcParams(glass);
@@ -182,7 +182,8 @@ namespace GlassModel
 
         public CalcParams(IGlass glass)
         {
-            _offsetFacetedPlane = glass.Height * 0.9;
+            _offsetFacetedPlane = 
+                glass.Height * glass.HeightFaceted / 100;
 
             var angleRad = glass.AngleHeight * System.Math.PI
                 / 180;
