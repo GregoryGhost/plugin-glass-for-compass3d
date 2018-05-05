@@ -39,6 +39,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BuilderCleanGlass.cs" />
+    <Compile Include="BuilderCrimpGlass.cs" />
+    <Compile Include="BuilderFacetedGlass.cs" />
     <Compile Include="BuilderOfBlank.cs" />
     <Compile Include="CleanGlass.cs" />
     <Compile Include="CrimpGlass.cs" />
