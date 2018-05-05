@@ -64,16 +64,21 @@ namespace GlassPlugin
             var facetedGlass = new FacetedGlass(height, diameterBottom,
                 angleHeight, depthSide, depthBottom, countFaceted);
 
-            var builder = new BuilderOfBlank();
+            var builderCleanGlass = new BuilderCleanGlass();
+            var builderFacetedGlass = new BuilderFacetedGlass();
+            var builderCrimpGlass = new BuilderCrimpGlass();
 
-            Add(new GlassViewModel(facetedGlass, builder, "Гранёный"));
+            Add(new GlassViewModel(facetedGlass,
+                builderFacetedGlass, "Гранёный"));
 
             var cleanGlass = new CleanGlass(diameterBottom, height);
             countFaceted = new BorderConditions<int>(20, 20, 60);
             var crimpGlass = new CrimpGlass(height, diameterBottom, countFaceted);
 
-            Add(new GlassViewModel(cleanGlass, builder, "Гладкий"));
-            Add(new GlassViewModel(crimpGlass, builder, "Гофрированный"));
+            Add(new GlassViewModel(cleanGlass,
+                builderCleanGlass, "Гладкий"));
+            Add(new GlassViewModel(crimpGlass,
+                builderCrimpGlass, "Гофрированный"));
         }
     }
 

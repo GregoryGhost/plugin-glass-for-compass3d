@@ -131,5 +131,10 @@ namespace GlassModel
 
             return planeFormSurface;
         }
+
+        public ksRegularPolygonParam GetParamStruct(short param)
+        {
+            return _kompas.GetParamStruct(param);
+        }
     }
 }
