@@ -19,7 +19,21 @@ namespace GlassModel
         /// </summary>
         private double _startY;
 
+        /// <summary>
+        /// Обертка над САПР Компас 3D.
+        /// </summary>
         private KompasWrapper _kompas;
+
+        /// <summary>
+        /// Шаблон стакана для построения.
+        /// </summary>
+        private IGlass _glass;
+
+        /// <summary>
+        /// Посчитанные необходимые параметры
+        ///     для построения стакана в САПР Компас 3D.
+        /// </summary>
+        private CalcParams _calcParams;
 
         /// <summary>
         /// Инициализация необходимых параметров для работы с Компас 3D
@@ -55,6 +69,9 @@ namespace GlassModel
             _startX = glass.DiameterBottom / 2;
             _startY = glass.Height / 2;
 
+            _glass = glass;
+            _calcParams = new CalcParams(glass);
+
             var doc = _kompas.Document3D;
             doc.Create();
 
@@ -64,21 +81,21 @@ namespace GlassModel
                 (short)Obj3dType.o3d_sketch);
             sketchBase.name = "Эскиз основания";
 
-            var sketchDefBase =
-                (ksSketchDefinition)sketchBase.GetDefinition();
             var basePlane = (ksEntity)part.GetDefaultEntity(
                 (short)Obj3dType.o3d_planeXOY);
+
+            var sketchDefBase =
+                (ksSketchDefinition)sketchBase.GetDefinition();
             sketchDefBase.SetPlane(basePlane);
+
             sketchBase.Create();
 
-            var params1 = new CalcParams(glass);
-
-            var sketchCutSide =
-                (ksEntity)part.NewEntity((short)Obj3dType.o3d_sketch);
+            var sketchCutSide = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_sketch);
             sketchCutSide.name = "Эскиз вырезанных внутренностей";
 
-            var offsetCutPlane = 
-                CreateOffsetPlane(part, basePlane, glass.Height);
+            var offsetCutPlane = _kompas.CreateOffsetPlane(
+                part, basePlane, glass.Height);
 
             var sketchDefCutSide =
                 (ksSketchDefinition)sketchCutSide.GetDefinition();
@@ -86,24 +103,22 @@ namespace GlassModel
 
             sketchCutSide.Create();
 
-            GenerateBlank2d(sketchDefBase, glass);
-            GenerateBlank3d(sketchBase, part, glass, params1);
-            GenerateCutSide2d(sketchDefCutSide, params1, glass);
-            GenerateCutSide3d(sketchCutSide, part, glass, params1);
+            GenerateBlank2d(sketchDefBase);
+            GenerateBlank3d(sketchBase, part);
+            GenerateCutSide2d(sketchDefCutSide);
+            GenerateCutSide3d(sketchCutSide, part);
         }
 
-        private void GenerateBlank2d(ksSketchDefinition sketchDef,
-            IGlass glass)
+        private void GenerateBlank2d(ksSketchDefinition sketchDef)
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            draw.ksCircle(_startX, _startY, glass.DiameterBottom / 2.0, 1);
+            draw.ksCircle(_startX, _startY, _glass.DiameterBottom / 2.0, 1);
 
             sketchDef.EndEdit();
         }
-        
-        private void GenerateBlank3d(ksEntity sketch, ksPart part,
-            IGlass glass, CalcParams params1)
+
+        private void GenerateBlank3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_bossExtrusion);
@@ -116,28 +131,26 @@ namespace GlassModel
 
             extrDef.SetSideParam(true,
                 (short)End_Type.etBlind,
-                glass.Height,
-                glass.AngleHeight,
+                _glass.Height,
+                _glass.AngleHeight,
                 false);
             extrDef.SetSketch(sketch);
 
             extr.Create();
         }
 
-        private void GenerateCutSide2d(ksSketchDefinition sketchDef,
-            CalcParams calcParams, IGlass glass)
+        private void GenerateCutSide2d(ksSketchDefinition sketchDef)
         {
             var draw =
                 (ksDocument2D)sketchDef.BeginEdit();
 
             draw.ksCircle(_startX, _startY,
-                calcParams.DiameterSideCutting / 2, 1);
+                _calcParams.DiameterSideCutting / 2, 1);
 
             sketchDef.EndEdit();
         }
 
-        private void GenerateCutSide3d(ksEntity sketch, ksPart part,
-            IGlass glass, CalcParams calcParams)
+        private void GenerateCutSide3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_cutExtrusion);
@@ -147,12 +160,12 @@ namespace GlassModel
                 (ksCutExtrusionDefinition)extr.GetDefinition();
             extrDef.directionType = (short)Direction_Type.dtNormal;
 
-            var angle = glass.AngleHeight;
-            var depthCut = calcParams.HeightCutting;
+            var angle = _glass.AngleHeight;
+            var depthCut = _calcParams.HeightCutting;
+            var draftOutward = true;//вырезание угла направлено внутрь
 
             extrDef.SetSideParam(true, (short)End_Type.etBlind,
-                depthCut, angle, 
-                    true);//вырезание угла направлено внутрь
+                depthCut, angle, draftOutward);
             extrDef.SetSketch(sketch);
 
             extr.Create();
@@ -179,7 +192,7 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            _diameterSideCutting = glass.DiameterBottom * 
+            _diameterSideCutting = glass.DiameterBottom *
                 (100 - glass.DepthSide) / 100;
 
             _heightCutting = glass.Height *
