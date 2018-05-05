@@ -1,7 +1,6 @@
 ﻿using Kompas6LTAPI5;
 using Kompas6Constants3D;
 using System;
-using System.Runtime.InteropServices;
 
 namespace GlassModel
 {
@@ -10,16 +9,6 @@ namespace GlassModel
     /// </summary>
     public class BuilderOfBlank : IBuilder
     {
-        /// <summary>
-        /// Объект для связи с САПР Компас 3D
-        /// </summary>
-        private KompasObject _kompas;
-
-        /// <summary>
-        /// ID Компаса 3D в COM реестре
-        /// </summary>
-        private const string _progId = "KOMPASLT.Application.5";
-
         /// <summary>
         /// Начальная координата по OX отрисовки для эскиза
         /// </summary>
@@ -30,61 +19,15 @@ namespace GlassModel
         /// </summary>
         private double _startY;
 
+        private KompasWrapper _kompas;
+
         /// <summary>
         /// Инициализация необходимых параметров для работы с Компас 3D
         /// </summary>
         public BuilderOfBlank()
         {
-            ShowCAD();
-        }
-
-        /// <summary>
-        /// Запуск Компаса 3D или подключение к запущенной версии
-        /// </summary>
-        private void RunCAD()
-        {
-            var kompasType =
-               Type.GetTypeFromProgID(_progId);
-
-            try
-            {
-                //Получение ссылки на запущенную копию Компас 3д
-                _kompas = (KompasObject)Marshal.
-                    GetActiveObject(_progId);
-            }
-            catch (COMException)
-            {
-                _kompas = (KompasObject)Activator.
-                    CreateInstance(kompasType);
-            }
-        }
-
-        /// <summary>
-        /// Показывает окно Компаса 3D
-        /// </summary>
-        private void ShowCAD()
-        {
-            var maxCount = 3;
-            for (var i = 0; i < maxCount; i++)
-            {
-                try
-                {
-                    _kompas.Visible = true;
-                }
-                catch (COMException)
-                {
-                    RunCAD();
-                }
-                catch (NullReferenceException)
-                {
-                    RunCAD();
-                }
-            }
-
-            if (_kompas != null)
-            {
-                _kompas.ActivateControllerAPI();
-            }
+            _kompas = KompasWrapper.Instance;
+            _kompas.ShowCAD();
         }
 
         /// <summary>
@@ -104,12 +47,12 @@ namespace GlassModel
                 throw new InvalidOperationException(msg);
             }
 
-            ShowCAD();
+            _kompas.ShowCAD();
 
             _startX = 0;
             _startY = _startX;
 
-            var doc = (ksDocument3D)_kompas.Document3D();
+            var doc = _kompas.Document3D;
             doc.Create();
 
             var part = (ksPart)doc.GetPart((short)Part_Type.pTop_Part);
