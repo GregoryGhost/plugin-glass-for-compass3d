@@ -66,14 +66,14 @@ namespace GlassPlugin
 
             var builder = new BuilderOfBlank();
 
-            Add(new GlassViewModel(facetedGlass, builder, "Гранёный стакан"));
+            Add(new GlassViewModel(facetedGlass, builder, "Гранёный"));
 
             var cleanGlass = new CleanGlass(diameterBottom, height);
             countFaceted = new BorderConditions<int>(20, 20, 60);
             var crimpGlass = new CrimpGlass(height, diameterBottom, countFaceted);
 
-            Add(new GlassViewModel(cleanGlass, builder, "Гладкий стакан"));
-            Add(new GlassViewModel(crimpGlass, builder, "Гофрированный стакан"));
+            Add(new GlassViewModel(cleanGlass, builder, "Гладкий"));
+            Add(new GlassViewModel(crimpGlass, builder, "Гофрированный"));
         }
     }
 
@@ -157,9 +157,9 @@ namespace GlassPlugin
         private readonly Tuple<string, string> _labelAngleHeight =
             new Tuple<string, string>("AngleHeight", "Угол наклона высоты");
         private readonly Tuple<string, string> _labelDepthSide =
-            new Tuple<string, string>("DepthSide", "Глубина стенки (в процентах)");
+            new Tuple<string, string>("DepthSide", "Глубина стенки (в %)");
         private readonly Tuple<string, string> _labelDepthBottom =
-            new Tuple<string, string>("DepthBottom", "Глубина дна (в процентах)");
+            new Tuple<string, string>("DepthBottom", "Глубина дна (в %)");
         private readonly Tuple<string, string> _labelCountFaceted =
             new Tuple<string, string>("CountFaceted", "Количество граней");
         private readonly Tuple<string, string> _labelHeightFaceted =
