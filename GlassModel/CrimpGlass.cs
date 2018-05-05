@@ -53,7 +53,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Толщина стенки стакана.
+        /// Толщина стенки стакана (в процентах).
         /// </summary>
         public override double DepthSide
         {
@@ -67,7 +67,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Толщина дна стакана.
+        /// Толщина дна стакана (в процентах).
         /// </summary>
         public override double DepthBottom
         {

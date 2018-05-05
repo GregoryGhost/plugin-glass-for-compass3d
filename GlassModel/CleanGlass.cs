@@ -42,12 +42,12 @@ namespace GlassModel
         protected BorderConditions<double> _diameterBottom;
 
         /// <summary>
-        /// Процент толщины дна стакана
+        /// Процент толщины дна стакана (в процентах).
         /// </summary>
         private double _percentForDepthBottom = 7;
 
         /// <summary>
-        /// Процент толщины стенки стакана
+        /// Процент толщины стенки стакана (в процентах).
         /// </summary>
         private double _percentForDepthSide = 2;
 
@@ -167,7 +167,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависящий параметр - толщина стенки стакана
+        /// Зависящий параметр - толщина стенки стакана (в процентах).
         /// </summary>
         public virtual double DepthSide
         {
@@ -181,7 +181,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависящий параметр - толщина дна
+        /// Зависящий параметр - толщина дна (в процентах).
         /// </summary>
         public virtual double DepthBottom
         {

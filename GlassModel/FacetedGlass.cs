@@ -22,12 +22,12 @@ namespace GlassModel
         protected BorderConditions<double> _angleHeight;
 
         /// <summary>
-        /// Толщина стенки стакана.
+        /// Толщина стенки стакана (в процентах).
         /// </summary>
         protected BorderConditions<double> _depthSide;
 
         /// <summary>
-        /// Толщина дна стакана.
+        /// Толщина дна стакана (в процентах).
         /// </summary>
         protected BorderConditions<double> _depthBottom;
 
@@ -103,7 +103,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Толщина стенки стакана.
+        /// Толщина стенки стакана (в процентах).
         /// </summary>
         /// <exception cref="ArgumentException">
         ///     Возникает, если устанавливаемое значение
@@ -130,7 +130,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Толщина дна стакана.
+        /// Толщина дна стакана (в процентах).
         /// </summary>
         /// <exception cref="ArgumentException">
         ///     Возникает, если устанавливаемое значение
