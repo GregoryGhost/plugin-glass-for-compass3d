@@ -187,9 +187,7 @@ namespace GlassModel
             _offsetFacetedPlane = 
                 glass.Height / 2 + glass.HeightFaceted / 2;
 
-            var angleRad = glass.AngleHeight * System.Math.PI
-                / 180;
-
+            var angleRad = glass.AngleHeight * System.Math.PI / 180;
             var tanRad = System.Math.Tan(angleRad);
 
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad

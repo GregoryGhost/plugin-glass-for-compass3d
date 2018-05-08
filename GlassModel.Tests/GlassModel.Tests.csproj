@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BorderConditionsTest.cs" />
+    <Compile Include="CalcParamsTest.cs" />
     <Compile Include="CleanGlassTest.cs" />
     <Compile Include="CrimpGlassTest.cs" />
     <Compile Include="FacetedGlassTest.cs" />
