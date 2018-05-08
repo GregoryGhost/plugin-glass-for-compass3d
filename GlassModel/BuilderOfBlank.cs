@@ -173,15 +173,42 @@ namespace GlassModel
         }
     }
 
-
+    /// <summary>
+    /// Вычисляемые параметры стакана, необходимые для
+    ///     работы алгоритмов построения стакана.
+    /// </summary>
     public class CalcParams
     {
+        /// <summary>
+        /// Диаметр начала отрисовки граней.
+        /// </summary>
         private double _diameterFacetedStart;
+
+        /// <summary>
+        /// Диаметр вырезаемых внутренностей стакана.
+        /// </summary>
         private double _diameterSideCutting;
+
+        /// <summary>
+        /// Высота вырезаемых внутренностей стакана.
+        /// </summary>
         private double _heightCutting;
+
+        /// <summary>
+        /// Смещенная плоскость отрисовки узора стакана.
+        /// </summary>
         private double _offsetFacetedPlane;
+
+        /// <summary>
+        /// Диаметр полоски, используется для построения граней
+        ///     гофрированного стакана.
+        /// </summary>
         private double _diameterStripsCrimp;
 
+        /// <summary>
+        /// Инициализация параметров для построения стакана.
+        /// </summary>
+        /// <param name="glass">Целевой стакан.</param>
         public CalcParams(IGlass glass)
         {
             _offsetFacetedPlane = 
@@ -207,6 +234,10 @@ namespace GlassModel
                 (100 - glass.DepthBottom) / 100;
         }
 
+        /// <summary>
+        /// Диаметр грани, 
+        ///     от которой начинается отрисовка граней стакана.
+        /// </summary>
         public double DiameterFacetedStart
         {
             get
@@ -215,6 +246,9 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Диаметр вырезаемых внутренностей стакана.
+        /// </summary>
         public double DiameterSideCutting
         {
             get
@@ -223,6 +257,9 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Высота вырезания внутренностей стакана.
+        /// </summary>
         public double HeightCutting
         {
             get
@@ -231,6 +268,9 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Плоскость отрисок граней стакана.
+        /// </summary>
         public double OffsetFacetedPlane
         {
             get
@@ -239,6 +279,9 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Диаметр полосок - граней гофрированного стакана.
+        /// </summary>
         public double DiameterStripsCrimp
         {
             get
