@@ -5,8 +5,14 @@ using System;
 
 namespace GlassModel
 {
+    /// <summary>
+    /// Построитель граненёного стакана.
+    /// </summary>
     public class BuilderFacetedGlass : IBuilder
     {
+        /// <summary>
+        /// Построитель болванки стакана.
+        /// </summary>
         private IBuilder _builderBlank;
 
         /// <summary>
@@ -35,7 +41,9 @@ namespace GlassModel
         /// </summary>
         private CalcParams _calcParams;
 
-
+        /// <summary>
+        /// Установление связи с САПР Компас 3D.
+        /// </summary>
         public BuilderFacetedGlass()
         {
             _kompas = KompasWrapper.Instance;
@@ -43,6 +51,12 @@ namespace GlassModel
             _builderBlank = new BuilderOfBlank();
         }
 
+        /// <summary>
+        /// Построить граненный стакан в САПР Компас 3D.
+        /// </summary>
+        /// <param name="glass">Граненный стакан.</param>
+        /// <param name="checker">Проверяющий параметры стакана
+        ///     в соответствие с требованиям предметной области.</param>
         public void Build(IGlass glass, IChecker checker)
         {
             _builderBlank.Build(glass, checker);
@@ -77,12 +91,16 @@ namespace GlassModel
             GenerateCutFaceted3d(sketchCutFaceted, part);
         }
 
+        /// <summary>
+        /// Генерация эскиза граней граненого стакана.
+        /// </summary>
+        /// <param name="sketchDef">Описание эскиза
+        ///     граней стакана.</param>
         private void GenerateCutFaceted2d(ksSketchDefinition sketchDef)
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            var polygon = (ksRegularPolygonParam)_kompas.GetParamStruct(
-                (short)StructType2DEnum.ko_RegularPolygonParam);
+            var polygon = _kompas.InitPolygon();
             polygon.radius = _calcParams.DiameterFacetedStart / 2;
             polygon.ang = 0;
             polygon.style = 1;
@@ -98,6 +116,11 @@ namespace GlassModel
             sketchDef.EndEdit();
         }
 
+        /// <summary>
+        /// Вырезание граней граненого стакана на болванке.
+        /// </summary>
+        /// <param name="sketch">Эскиз граней стакана</param>
+        /// <param name="part">Сборка детали.</param>
         private void GenerateCutFaceted3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
