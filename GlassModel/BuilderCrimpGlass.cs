@@ -177,7 +177,7 @@ namespace GlassModel
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            var radiusLineCrim = 0.15;
+            var radiusLineCrim = _calcParams.DiameterStripsCrimp / 2;
             var xc = _calcParams.DiameterFacetedStart * 0.7 / 2;
 
             draw.ksCircle(xc, xc, radiusLineCrim, 1);
