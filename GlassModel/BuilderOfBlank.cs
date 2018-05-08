@@ -109,6 +109,11 @@ namespace GlassModel
             GenerateCutSide3d(sketchCutSide, part);
         }
 
+        /// <summary>
+        /// Генерация эскиза основания стакана.
+        /// </summary>
+        /// <param name="sketchDef">
+        ///     Описание эскиза основания стакана.</param>
         private void GenerateBlank2d(ksSketchDefinition sketchDef)
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
@@ -119,6 +124,11 @@ namespace GlassModel
             sketchDef.EndEdit();
         }
 
+        /// <summary>
+        /// Генерация модели стакана.
+        /// </summary>
+        /// <param name="sketch">Эскиз основания стакана.</param>
+        /// <param name="part"></param>
         private void GenerateBlank3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
@@ -140,6 +150,11 @@ namespace GlassModel
             extr.Create();
         }
 
+        /// <summary>
+        /// Генерация эскиза вырезанных внутренностей стакана.
+        /// </summary>
+        /// <param name="sketchDef">Описание эскиза вырезаемых
+        ///     внутренностей стакана.</param>
         private void GenerateCutSide2d(ksSketchDefinition sketchDef)
         {
             var draw =
@@ -151,6 +166,11 @@ namespace GlassModel
             sketchDef.EndEdit();
         }
 
+        /// <summary>
+        /// Вырезание внутренностей стакана из болванки стакана.
+        /// </summary>
+        /// <param name="sketch">Эскиз вырезаемых внутренностей.</param>
+        /// <param name="part">Сборка детали.</param>
         private void GenerateCutSide3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
