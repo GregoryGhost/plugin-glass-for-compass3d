@@ -93,7 +93,7 @@ namespace GlassModel
 
             draw.ksRegularPolygon(polygon);
             draw.ksCircle(_startX, _startY,
-                _calcParams.DiameterFacetedStart * 2, 1);
+                _calcParams.DiameterFacetedStart, 1);
 
             sketchDef.EndEdit();
         }
