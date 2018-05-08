@@ -41,7 +41,8 @@ namespace GlassModel.Tests
         {
             Assert.Throws<ArgumentException>(() =>
             {
-                var parameter = new BorderConditions<double>(min, value, max);
+                var parameter = new BorderConditions<double>(
+                    min, value, max);
             });
         }
 
