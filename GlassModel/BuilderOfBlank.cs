@@ -180,6 +180,7 @@ namespace GlassModel
         private double _diameterSideCutting;
         private double _heightCutting;
         private double _offsetFacetedPlane;
+        private double _diameterStripsCrimp;
 
         public CalcParams(IGlass glass)
         {
@@ -198,6 +199,11 @@ namespace GlassModel
                 + glass.DiameterBottom;
             _diameterSideCutting = diameterTop *
                 (100 - glass.DepthSide) / 100;
+
+            var diameterCutSide = _diameterFacetedStart *
+                (100 - glass.DepthSide / 1.5) / 100;
+            _diameterStripsCrimp = _diameterFacetedStart
+                - diameterCutSide;
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
@@ -232,6 +238,14 @@ namespace GlassModel
             get
             {
                 return _offsetFacetedPlane;
+            }
+        }
+
+        public double DiameterStripsCrimp
+        {
+            get
+            {
+                return _diameterStripsCrimp;
             }
         }
     }
