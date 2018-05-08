@@ -33,7 +33,7 @@ namespace GlassModel
             _dependencies = new DependenciesParams(false, false,
                 true, true, true, true, false);
 
-            this._angleHeight = new BorderConditions<double>(0, 0, 0);
+            this._angleHeight = new BorderConditions<double>(5, 5, 5);
             this._depthSide = new BorderConditions<double>(3, 3, 3);
             this._depthBottom = new BorderConditions<double>(4, 4, 4);
         }
