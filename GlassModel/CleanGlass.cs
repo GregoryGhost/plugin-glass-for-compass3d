@@ -42,14 +42,14 @@ namespace GlassModel
         protected BorderConditions<double> _diameterBottom;
 
         /// <summary>
-        /// Процент толщины дна стакана
+        /// Процент толщины дна стакана (в процентах).
         /// </summary>
-        private double _depthBottom = 7;
+        private double _percentForDepthBottom = 7;
 
         /// <summary>
-        /// Процент толщины стенки стакана
+        /// Процент толщины стенки стакана (в процентах).
         /// </summary>
-        private double _depthSide = 2;
+        private double _percentForDepthSide = 2;
 
         /// <summary>
         /// Установление параметров гладкого стакана.
@@ -167,13 +167,13 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависящий параметр - толщина стенки стакана
+        /// Зависящий параметр - толщина стенки стакана (в процентах).
         /// </summary>
         public virtual double DepthSide
         {
             get
             {
-                return this.DiameterBottom * _depthSide / 100;
+                return _percentForDepthSide;
             }
             set
             {
@@ -181,13 +181,13 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Зависящий параметр - толщина дна
+        /// Зависящий параметр - толщина дна (в процентах).
         /// </summary>
         public virtual double DepthBottom
         {
             get
             {
-                return this.Height * _depthBottom / 100;
+                return _percentForDepthBottom;
             }
             set
             {

@@ -37,15 +37,13 @@ namespace GlassPlugin
         private const double _max = 200;
         private const double _minAngle = 0;
         private const double _maxAngle = 5;
-        private const double _minDepth = 1;
+        private const double _minDepthForFacetedGlass = 3;
         private const double _maxDepthSide = 5;
         private const double _maxDepthBottom = 7;
-        private const int _minCountFaceted = 4;
+        private const int _minCountFaceted = 8;
         private const int _maxCountFaceted = 20;
-
-        private const double _percentForDepthBottom = 7;
-        private const double _percentForHeightFaceted = 90;
-        private const double _percentForDepthSide = 4;
+        private const int _minCountStrips = 20;
+        private const int _maxCountStrips = 60;
 
         public Glasses()
         {
@@ -54,24 +52,37 @@ namespace GlassPlugin
                 _min / 2, _max / 2);
             var angleHeight = new BorderConditions<double>(_minAngle,
                 _minAngle, _maxAngle);
-            var depthSide = new BorderConditions<double>(_minDepth,
-                _minDepth, _maxDepthSide);
-            var depthBottom = new BorderConditions<double>(_minDepth,
-                _minDepth, _maxDepthBottom);
+            var depthSideForFacetedGlass = new BorderConditions<double>(
+                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                    _maxDepthSide);
+            var depthBottom = new BorderConditions<double>(
+                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                    _maxDepthBottom);
             var countFaceted = new BorderConditions<int>(
                 _minCountFaceted, _minCountFaceted, _maxCountFaceted);
 
             var facetedGlass = new FacetedGlass(height, diameterBottom,
-                angleHeight, depthSide, depthBottom, countFaceted);
+                angleHeight, depthSideForFacetedGlass, depthBottom,
+                    countFaceted);
 
-            Add(new GlassViewModel(facetedGlass, "Гранёный стакан"));
+            var builderCleanGlass = new BuilderCleanGlass();
+            var builderFacetedGlass = new BuilderFacetedGlass();
+            var builderCrimpGlass = new BuilderCrimpGlass();
+
+            Add(new GlassViewModel(facetedGlass,
+                builderFacetedGlass, "Гранёный"));
 
             var cleanGlass = new CleanGlass(diameterBottom, height);
-            countFaceted = new BorderConditions<int>(20, 20, 60);
-            var crimpGlass = new CrimpGlass(height, diameterBottom, countFaceted);
 
-            Add(new GlassViewModel(cleanGlass, "Гладкий стакан"));
-            Add(new GlassViewModel(crimpGlass, "Гофрированный стакан"));
+            countFaceted = new BorderConditions<int>(_minCountStrips,
+                _minCountStrips, _maxCountStrips);
+            var crimpGlass = new CrimpGlass(height,
+                diameterBottom, countFaceted);
+
+            Add(new GlassViewModel(cleanGlass,
+                builderCleanGlass, "Гладкий"));
+            Add(new GlassViewModel(crimpGlass,
+                builderCrimpGlass, "Гофрированный"));
         }
     }
 
@@ -144,6 +155,7 @@ namespace GlassPlugin
         private IGlass _glass;
         private string _name = String.Empty;
         private IChecker _checker;
+        private IBuilder _builder;
 
         private List<Tuple<string, bool, string>> _properties;
 
@@ -154,9 +166,9 @@ namespace GlassPlugin
         private readonly Tuple<string, string> _labelAngleHeight =
             new Tuple<string, string>("AngleHeight", "Угол наклона высоты");
         private readonly Tuple<string, string> _labelDepthSide =
-            new Tuple<string, string>("DepthSide", "Глубина стенки");
+            new Tuple<string, string>("DepthSide", "Глубина стенки (в %)");
         private readonly Tuple<string, string> _labelDepthBottom =
-            new Tuple<string, string>("DepthBottom", "Глубина дна");
+            new Tuple<string, string>("DepthBottom", "Глубина дна (в %)");
         private readonly Tuple<string, string> _labelCountFaceted =
             new Tuple<string, string>("CountFaceted", "Количество граней");
         private readonly Tuple<string, string> _labelHeightFaceted =
@@ -167,11 +179,12 @@ namespace GlassPlugin
         /// </summary>
         /// <param name="glass">Стакан</param>
         /// <param name="name">Название стакана</param>
-        public GlassViewModel(IGlass glass, string name)
+        public GlassViewModel(IGlass glass, IBuilder builder, string name)
         {
             _glass = glass;
             _name = name;
             _checker = glass as IChecker;
+            _builder = builder;
 
             var prop = _glass.Properties;
             _properties = new List<Tuple<string, bool, string>>
@@ -353,7 +366,14 @@ namespace GlassPlugin
         {
             if (IsValid)
             {
-                //построение стакана в САПР
+                try
+                {
+                    _builder.Build(_glass, _checker);
+                }
+                catch (ArgumentException)
+                {
+                    return false;
+                }
             }
 
             return IsValid;

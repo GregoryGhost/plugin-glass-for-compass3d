@@ -22,12 +22,12 @@ namespace GlassModel
         protected BorderConditions<double> _angleHeight;
 
         /// <summary>
-        /// Толщина стенки стакана.
+        /// Толщина стенки стакана (в процентах).
         /// </summary>
         protected BorderConditions<double> _depthSide;
 
         /// <summary>
-        /// Толщина дна стакана.
+        /// Толщина дна стакана (в процентах).
         /// </summary>
         protected BorderConditions<double> _depthBottom;
 
@@ -103,9 +103,7 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Толщина стенки стакана.
-        ///     Устанавливается значение в процентах,
-        ///     возвращается вычисленное значение в ед. длины.
+        /// Толщина стенки стакана (в процентах).
         /// </summary>
         /// <exception cref="ArgumentException">
         ///     Возникает, если устанавливаемое значение
@@ -114,7 +112,7 @@ namespace GlassModel
         {
             get
             {
-                return DiameterBottom * _depthSide.Value / 100;
+                return _depthSide.Value;
             }
             set
             {
@@ -131,11 +129,17 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Толщина дна стакана (в процентах).
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override double DepthBottom
         {
             get
             {
-                return Height * _depthBottom.Value / 100;
+                return _depthBottom.Value;
             }
             set
             {
@@ -159,13 +163,21 @@ namespace GlassModel
         {
             get
             {
-                return this.Height * _percentForHeightFaceted / 100;
+                var heightFaceted = Height * _percentForHeightFaceted 
+                    / 100;
+                return heightFaceted;
             }
             set
             {
             }
         }
 
+        /// <summary>
+        /// Количество граней стакана.
+        /// </summary>
+        /// <exception cref="ArgumentException">
+        ///     Возникает, если устанавливаемое значение
+        ///     выходит за рамки заданного интервала.</exception>
         public override int CountFaceted
         {
             get

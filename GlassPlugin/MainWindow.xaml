@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:local="clr-namespace:GlassPlugin"
         Title="MainWindow"
-        Height="100" Width="300"
+        Height="110" Width="270"
         SizeToContent="Height"
         WindowStartupLocation="CenterScreen"
         ResizeMode="CanMinimize"
@@ -31,9 +31,9 @@
         </StackPanel.Resources>
 
         <StackPanel Orientation="Horizontal">
-            <Label Width="140">Тип стакана:</Label>
+            <Label Width="140" HorizontalContentAlignment="Right">Тип стакана:</Label>
 
-            <ComboBox Width="140" ItemsSource="{Binding Names}" 
+            <ComboBox Width="100" ItemsSource="{Binding Names}"
                       SelectedItem="{Binding Path=SelectedGlassName, Mode=TwoWay}" 
                       x:Name="cmbbox"/>
         </StackPanel>

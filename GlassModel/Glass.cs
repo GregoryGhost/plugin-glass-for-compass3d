@@ -27,12 +27,12 @@ namespace GlassModel
         double AngleHeight { get; set; }
 
         /// <summary>
-        /// Толщина стенок стакана
+        /// Толщина стенок стакана (в процентах).
         /// </summary>
         double DepthSide { get; set; }
 
         /// <summary>
-        /// Толщина дна стакана
+        /// Толщина дна стакана (в процентах).
         /// </summary>
         double DepthBottom { get; set; }
 
