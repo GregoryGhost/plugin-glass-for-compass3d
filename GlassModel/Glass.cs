@@ -215,7 +215,23 @@ namespace GlassModel
     /// </summary>
     public class DependenciesParams : IAutoCalcParams
     {
-
+        /// <summary>
+        /// Инициализация вычислимых параметров стакана.
+        /// </summary>
+        /// <param name="height">Высота стакана 
+        ///     - вычислимый параметр.</param>
+        /// <param name="diameterBottom">Диаметр дна стакана
+        ///     - вычислимый параметр.</param>
+        /// <param name="angleHeight">Угол наклона высоты стакана
+        ///     - вычислимый параметр.</param>
+        /// <param name="depthSide">Толщина стенки стакана 
+        ///     - вычислимый параметр.</param>
+        /// <param name="depthBottom">Толщина дна стакана
+        ///     - вычислимый параметр.</param>
+        /// <param name="heightFaceted">Высота узора стакана
+        ///     - вычислимый параметр.</param>
+        /// <param name="countFaceted">Количество граней стакана
+        ///     - вычислимый параметр.</param>
         public DependenciesParams(bool height, bool diameterBottom,
             bool angleHeight, bool depthSide, bool depthBottom,
                 bool heightFaceted, bool countFaceted)
