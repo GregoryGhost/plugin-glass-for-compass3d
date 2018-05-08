@@ -77,7 +77,74 @@ namespace GlassModel
             GenerateExtrusionCrimp3d(sketchCrimp, part);
         }
 
-        private void GenerateExtrusionCrimp3d(ksEntity sketch, ksPart part)
+        private void GenerateExtrusionCrimp3d(ksEntity sketch,
+            ksPart part)
+        {
+            var extrConicSpiral = CreateConicSpiral(
+                sketch, part);
+
+            var extrKin = CreateKinematicOperation(
+                sketch, part, extrConicSpiral);
+
+            CopyByCircularGrid(part, extrKin);
+        }
+
+        private void CopyByCircularGrid(ksPart part, ksEntity extrKin)
+        {
+            var extrCirc = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_circularCopy);
+            extrCirc.name = "Копирование элементов" +
+                "по концентрической сетке";
+
+            var axisOZ = (ksEntity)part.GetDefaultEntity(
+                (short)Obj3dType.o3d_axisOZ);
+
+            var extrDefCirc =
+                (ksCircularCopyDefinition)extrCirc.GetDefinition();
+            extrDefCirc.SetAxis(axisOZ);
+            //количество полосок
+            extrDefCirc.count2 = _glass.CountFaceted;
+            extrDefCirc.inverce = false;
+            extrDefCirc.geomArray = true;
+            //полностью вокруг стенки стакана
+            extrDefCirc.step2 = 360;
+
+            var copyStrips =
+                (ksEntityCollection)extrDefCirc.GetOperationArray();
+            copyStrips.Clear();
+            copyStrips.Add(extrKin);
+
+            extrCirc.Create();
+        }
+
+        private static ksEntity CreateKinematicOperation(
+            ksEntity sketch, ksPart part, ksEntity extrConicSpiral)
+        {
+            var extrKin = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_baseEvolution);
+            extrKin.name = "Кинематическая операция для полоски";
+
+            var extrDefKin =
+                (ksBaseEvolutionDefinition)extrKin.GetDefinition();
+            //образующая при переносе сохраняет 
+            //  исходный угол с направляющей
+            extrDefKin.sketchShiftType = 1;
+            //установка эскиза сечения
+            extrDefKin.SetSketch(sketch);
+
+            var strips =
+                (ksEntityCollection)extrDefKin.PathPartArray();
+            strips.Clear();
+            //добавить в массив эскиз
+            //  с траекторией(конической спиралью)
+            strips.Add(extrConicSpiral);
+
+            extrKin.Create();
+            return extrKin;
+        }
+
+        private ksEntity CreateConicSpiral(ksEntity sketch,
+            ksPart part)
         {
             var extrConicSpiral = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_conicSpiral);
@@ -102,55 +169,11 @@ namespace GlassModel
             extrDef.SetPlane(sketch);
 
             extrConicSpiral.Create();
-
-            var extrKin = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_baseEvolution);
-            extrKin.name = "Кинематическая операция для полоски";
-
-            var extrDefKin = 
-                (ksBaseEvolutionDefinition)extrKin.GetDefinition();
-            //образующая при переносе сохраняет 
-            //  исходный угол с направляющей
-            extrDefKin.sketchShiftType = 1;
-            //установка эскиза сечения
-            extrDefKin.SetSketch(sketch);
-
-            var strips = 
-                (ksEntityCollection)extrDefKin.PathPartArray();
-            strips.Clear();
-            //добавить в массив эскиз
-            //  с траекторией(конической спиралью)
-            strips.Add(extrConicSpiral);
-
-            extrKin.Create();
-
-            var extrCirc = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_circularCopy);
-            extrCirc.name = "Копирование элементов" +
-                "по концентрической сетке";
-
-            var axisOZ = (ksEntity)part.GetDefaultEntity(
-                (short)Obj3dType.o3d_axisOZ);
-
-            var extrDefCirc =
-                (ksCircularCopyDefinition)extrCirc.GetDefinition();
-            extrDefCirc.SetAxis(axisOZ);
-            //количество полосок
-            extrDefCirc.count2 = _glass.CountFaceted;
-            extrDefCirc.inverce = false;
-            extrDefCirc.geomArray = true;
-            //полностью вокруг стенки стакана
-            extrDefCirc.step2 = 360;
-
-            var copyStrips = 
-                (ksEntityCollection)extrDefCirc.GetOperationArray();
-            copyStrips.Clear();
-            copyStrips.Add(extrKin);
-
-            extrCirc.Create();
+            return extrConicSpiral;
         }
 
-        private void GenerateExtrusionCrimp2d(ksSketchDefinition sketchDef)
+        private void GenerateExtrusionCrimp2d(
+            ksSketchDefinition sketchDef)
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
