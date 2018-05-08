@@ -113,7 +113,8 @@ namespace GlassModel
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            draw.ksCircle(_startX, _startY, _glass.DiameterBottom / 2.0, 1);
+            draw.ksCircle(_startX, _startY,
+                _glass.DiameterBottom / 2.0, 1);
 
             sketchDef.EndEdit();
         }
@@ -183,7 +184,7 @@ namespace GlassModel
         public CalcParams(IGlass glass)
         {
             _offsetFacetedPlane = 
-                glass.Height * glass.HeightFaceted / 100;
+                glass.Height / 2 + glass.HeightFaceted / 2;
 
             var angleRad = glass.AngleHeight * System.Math.PI
                 / 180;
@@ -196,7 +197,7 @@ namespace GlassModel
             var diameterTop = 2 * glass.Height * tanRad 
                 + glass.DiameterBottom;
             _diameterSideCutting = diameterTop *
-                (100 - glass.DepthSide * 2) / 100;
+                (100 - glass.DepthSide) / 100;
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
