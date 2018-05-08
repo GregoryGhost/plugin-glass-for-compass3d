@@ -65,7 +65,8 @@ namespace GlassModel.Tests
             _cleanGlass.DiameterBottom = diameterBottom;
 
             Assert.That(height, Is.EqualTo(_cleanGlass.Height));
-            Assert.That(diameterBottom, Is.EqualTo(_cleanGlass.DiameterBottom));
+            Assert.That(diameterBottom,
+                Is.EqualTo(_cleanGlass.DiameterBottom));
             Assert.That(_cleanGlass.Height >= _cleanGlass.DiameterBottom);
             Assert.That(expIsValid, Is.EqualTo(_cleanGlass.IsValid));
         }
@@ -73,13 +74,17 @@ namespace GlassModel.Tests
         [Test(Description = "Check setted params of clean glass -" +
             "height, diameter bottom - incorrect data")]
         [TestCase(_min / 10, _min / 2, _invalid,
-            TestName = "Setted neg - Height glass < min, diameter bottom = min")]
+            TestName = "Setted neg - Height glass < min, " +
+                "diameter bottom = min")]
         [TestCase(_min / 10, _min / 2, _invalid,
-            TestName = "Setted neg - Height glass = min, diameter bottom < min")]
+            TestName = "Setted neg - Height glass = min," +
+                " diameter bottom < min")]
         [TestCase(_max * 2, _max / 2, _invalid,
-            TestName = "Setted neg - Height glass > max, diameter bottom = max")]
+            TestName = "Setted neg - Height glass > max," + 
+                "diameter bottom = max")]
         [TestCase(_max, _max, _invalid,
-            TestName = "Setted neg - Height glass = max, diameter bottom > max")]
+            TestName = "Setted neg - Height glass = max," +
+                " diameter bottom > max")]
         [TestCase(_min, _max / 2, _invalid,
             TestName = "Setted neg - Height glass < diameter bottom,")]
         public void CheckSettedParamsNegative(double height,
@@ -102,9 +107,11 @@ namespace GlassModel.Tests
         [Test(Description = "Check dependencies params of clean glass -" +
             "depth side, depth bottom - correct data")]
         [TestCase(_min, _min / 2,
-            TestName = "Depend - Height glass = min, diameter bottom = min")]
+            TestName = "Depend - Height glass = min," +
+                " diameter bottom = min")]
         [TestCase(_max, _max / 2,
-            TestName = "Depend - Height glass = max, diameter bottom = max")]
+            TestName = "Depend - Height glass = max," +
+                " diameter bottom = max")]
         [TestCase((_min + _max) / 2, (_min / 2 + _max / 2) / 2,
             TestName = "Depend - Height glass and diameter bottom" +
                 "in the allowable range")]
@@ -120,8 +127,10 @@ namespace GlassModel.Tests
             var expDepthBottom = _percentForDepthBottom;
             var expDepthSide = _percentForDepthSide;
 
-            Assert.That(expDepthBottom, Is.EqualTo(_cleanGlass.DepthBottom));
-            Assert.That(expDepthSide, Is.EqualTo(_cleanGlass.DepthSide));
+            Assert.That(expDepthBottom, 
+                Is.EqualTo(_cleanGlass.DepthBottom));
+            Assert.That(expDepthSide,
+                Is.EqualTo(_cleanGlass.DepthSide));
         }
 
         [Test(Description = "Check auto calc params of clean glass - " +
@@ -150,12 +159,14 @@ namespace GlassModel.Tests
             Assert.That(exp, Is.EqualTo(was));
         }
 
-        private static bool[] CreateArrayAutoCalcParams(IAutoCalcParams parameters)
+        private static bool[] CreateArrayAutoCalcParams(
+            IAutoCalcParams parameters)
         {
             var p = parameters;
 
             return new[]{p.Height, p.DiameterBottom, p.AngleHeight,
-                p.DepthSide, p.DepthBottom, p.HeightFaceted, p.CountFaceted};
+                p.DepthSide, p.DepthBottom, p.HeightFaceted,
+                    p.CountFaceted};
         }
 
         /// <summary>
@@ -165,7 +176,8 @@ namespace GlassModel.Tests
         ///     дна стакана.</param>
         /// <param name="percent">Процент стенки или дна стакана.</param>
         /// <returns></returns>
-        public static double CalcDepthOfGlass(double height, double percent)
+        public static double CalcDepthOfGlass(double height,
+            double percent)
         {
             return height * percent / 100;
         }

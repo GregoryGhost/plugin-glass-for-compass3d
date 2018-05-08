@@ -10,7 +10,6 @@ namespace GlassModel.Tests
         private FacetedGlass _facetedGlass;
 
         private const double _angle = 0.0f;
-        private const double _heightFaceted = 0.0f;
         private const int _countFaceted = 0;
 
         private const double _min = 10;
@@ -60,10 +59,9 @@ namespace GlassModel.Tests
         {
             _facetedGlass.Height = height;
 
-            var expPercentHeightFaceted =
-                _percentForHeightFaceted;
+            var expHeightFaceted = height * _percentForHeightFaceted / 100;
 
-            Assert.AreEqual(expPercentHeightFaceted,
+            Assert.AreEqual(expHeightFaceted,
                 _facetedGlass.HeightFaceted);
         }
 
@@ -105,10 +103,14 @@ namespace GlassModel.Tests
             var expPercentForDepthBottom = depthBottom;
 
             //angleHeight, depthSide, depthBottom, countFaceted
-            Assert.That(angleHeight, Is.EqualTo(_facetedGlass.AngleHeight));
-            Assert.That(expPercentDepthSide, Is.EqualTo(_facetedGlass.DepthSide));
-            Assert.That(expPercentForDepthBottom, Is.EqualTo(_facetedGlass.DepthBottom));
-            Assert.That(countFaceted, Is.EqualTo(_facetedGlass.CountFaceted));
+            Assert.That(angleHeight,
+                Is.EqualTo(_facetedGlass.AngleHeight));
+            Assert.That(expPercentDepthSide,
+                Is.EqualTo(_facetedGlass.DepthSide));
+            Assert.That(expPercentForDepthBottom,
+                Is.EqualTo(_facetedGlass.DepthBottom));
+            Assert.That(countFaceted,
+                Is.EqualTo(_facetedGlass.CountFaceted));
 
             Assert.That(expIsValid,
                 Is.EqualTo(_facetedGlass.IsValid));

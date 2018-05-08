@@ -1,4 +1,5 @@
-﻿using Kompas6Constants3D;
+﻿using Kompas6Constants;
+using Kompas6Constants3D;
 using Kompas6LTAPI5;
 using System;
 using System.Runtime.InteropServices;
@@ -140,9 +141,14 @@ namespace GlassModel
             return planeFormSurface;
         }
 
-        public ksRegularPolygonParam GetParamStruct(short param)
+        /// <summary>
+        /// Инициализировать многогранник.
+        /// </summary>
+        /// <returns>Экземпляр многогранника.</returns>
+        public ksRegularPolygonParam InitPolygon()
         {
-            return _kompas.GetParamStruct(param);
+            return _kompas.GetParamStruct(
+                (short)StructType2DEnum.ko_RegularPolygonParam);
         }
     }
 }
