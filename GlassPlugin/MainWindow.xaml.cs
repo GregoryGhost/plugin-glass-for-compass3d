@@ -76,7 +76,9 @@ namespace GlassPlugin
         private void GenTextBox(List<Tuple<string, bool, string>> nameProp,
             GlassViewModel selected)
         {
-            const int width = 140;
+            const int width = 100;
+            const int widthLabel = 140;
+            const int margin = 5;
 
             _main.test.Children.Clear();
 
@@ -110,12 +112,18 @@ namespace GlassPlugin
                     var l1 = new Label
                     {
                         Content = String.Format("{0}:", textProp),
-                        Width = width
+                        Width = widthLabel,
+                        HorizontalContentAlignment = 
+                            HorizontalAlignment.Right
                     };
+
+                    var m = new Thickness();
+                    m.Top = margin;
 
                     var st = new StackPanel
                     {
-                        Orientation = Orientation.Horizontal
+                        Orientation = Orientation.Horizontal,
+                        Margin = m
                     };
                     st.Children.Add(l1);
                     st.Children.Add(t1);
