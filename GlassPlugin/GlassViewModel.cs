@@ -45,6 +45,9 @@ namespace GlassPlugin
         private const int _minCountStrips = 20;
         private const int _maxCountStrips = 60;
 
+        /// <summary>
+        /// Инициализация параметров разных типов стакана.
+        /// </summary>
         public Glasses()
         {
             var height = new BorderConditions<double>(_min, _min, _max);
@@ -94,6 +97,9 @@ namespace GlassPlugin
         private GlassViewModel _currentGlass;
         private Glasses _glasses;
 
+        /// <summary>
+        /// Инициализация представлений моделей стаканов.
+        /// </summary>
         public GlassesViewModel()
         {
             _glasses = new Glasses();
