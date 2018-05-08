@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 
 namespace GlassModel
 {
-
-
     /// <summary>
     /// Гофрированный стакан
     /// </summary>
