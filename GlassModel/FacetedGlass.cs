@@ -163,7 +163,9 @@ namespace GlassModel
         {
             get
             {
-                return _percentForHeightFaceted;
+                var heightFaceted = Height * _percentForHeightFaceted 
+                    / 100;
+                return heightFaceted;
             }
             set
             {

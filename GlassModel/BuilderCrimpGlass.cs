@@ -97,7 +97,7 @@ namespace GlassModel
             extrDef.initialDiam = _calcParams.DiameterFacetedStart;
             //наклон образующей внутрь
             extrDef.tiltAngleHow = true;
-            extrDef.tiltAngle = 7.0;
+            extrDef.tiltAngle = 6.2;
             extrDef.firstAngle = 25.0;
             extrDef.SetPlane(sketch);
 
@@ -138,6 +138,7 @@ namespace GlassModel
             //количество полосок
             extrDefCirc.count2 = _glass.CountFaceted;
             extrDefCirc.inverce = false;
+            extrDefCirc.geomArray = true;
             //полностью вокруг стенки стакана
             extrDefCirc.step2 = 360;
 
@@ -153,7 +154,7 @@ namespace GlassModel
         {
             var draw = (ksDocument2D)sketchDef.BeginEdit();
 
-            var radiusLineCrim = 0.25;
+            var radiusLineCrim = 0.15;
             var xc = _calcParams.DiameterFacetedStart * 0.7 / 2;
 
             draw.ksCircle(xc, xc, radiusLineCrim, 1);
