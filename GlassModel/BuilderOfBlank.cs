@@ -193,8 +193,10 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            _diameterSideCutting = glass.DiameterBottom *
-                (100 - glass.DepthSide) / 100;
+            var diameterTop = 2 * glass.Height * tanRad 
+                + glass.DiameterBottom;
+            _diameterSideCutting = diameterTop *
+                (100 - glass.DepthSide * 2) / 100;
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
