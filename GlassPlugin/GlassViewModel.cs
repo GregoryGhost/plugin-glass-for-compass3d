@@ -45,6 +45,9 @@ namespace GlassPlugin
         private const int _minCountStrips = 20;
         private const int _maxCountStrips = 60;
 
+        /// <summary>
+        /// Инициализация параметров разных типов стакана.
+        /// </summary>
         public Glasses()
         {
             var height = new BorderConditions<double>(_min, _min, _max);
@@ -94,6 +97,9 @@ namespace GlassPlugin
         private GlassViewModel _currentGlass;
         private Glasses _glasses;
 
+        /// <summary>
+        /// Инициализация представлений моделей стаканов.
+        /// </summary>
         public GlassesViewModel()
         {
             _glasses = new Glasses();
@@ -238,6 +244,9 @@ namespace GlassPlugin
             }
         }
 
+        /// <summary>
+        /// Угол наклона высоты стакана.
+        /// </summary>
         public double AngleHeight
         {
             get
@@ -251,6 +260,9 @@ namespace GlassPlugin
             }
         }
 
+        /// <summary>
+        /// Толщина стенки стакана (в процентах).
+        /// </summary>
         public double DepthSide
         {
             get
@@ -264,6 +276,9 @@ namespace GlassPlugin
             }
         }
 
+        /// <summary>
+        /// Толщина дна стакана (в процентах).
+        /// </summary>
         public double DepthBottom
         {
             get
@@ -277,6 +292,9 @@ namespace GlassPlugin
             }
         }
 
+        /// <summary>
+        /// Количество граней стакана.
+        /// </summary>
         public int CountFaceted
         {
             get
@@ -290,6 +308,9 @@ namespace GlassPlugin
             }
         }
 
+        /// <summary>
+        /// Высота узора стакана.
+        /// </summary>
         public double HeightFaceted
         {
             get
@@ -332,17 +353,6 @@ namespace GlassPlugin
             get
             {
                 return _name;
-            }
-        }
-
-        /// <summary>
-        /// Получить стакана.
-        /// </summary>
-        public IGlass GetGlass
-        {
-            get
-            {
-                return _glass;
             }
         }
 

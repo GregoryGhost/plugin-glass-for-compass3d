@@ -5,6 +5,9 @@ using System;
 
 namespace GlassModel
 {
+    /// <summary>
+    /// Построитель гофрированных стаканов.
+    /// </summary>
     public class BuilderCrimpGlass : IBuilder
     {
         /// <summary>
@@ -33,8 +36,14 @@ namespace GlassModel
         /// </summary>
         private CalcParams _calcParams;
 
+        /// <summary>
+        /// Построитель болванок стакана.
+        /// </summary>
         private IBuilder _builderBlank;
 
+        /// <summary>
+        /// Установление связи с Компас 3D.
+        /// </summary>
         public BuilderCrimpGlass()
         {
             _kompas = KompasWrapper.Instance;
@@ -42,6 +51,12 @@ namespace GlassModel
             _builderBlank = new BuilderOfBlank();
         }
 
+        /// <summary>
+        /// Построить гофрированный стакан.
+        /// </summary>
+        /// <param name="glass">Гофрированный стакан.</param>
+        /// <param name="checker">Проверяющий параметры стакана
+        ///     в соответствие с требованиям предметной области.</param>
         public void Build(IGlass glass, IChecker checker)
         {
             _builderBlank.Build(glass, checker);
@@ -77,6 +92,12 @@ namespace GlassModel
             GenerateExtrusionCrimp3d(sketchCrimp, part);
         }
 
+        /// <summary>
+        /// Сгенерировать рефренности(полоски)
+        ///     гофрированного стакана.
+        /// </summary>
+        /// <param name="sketch">Эскиз рефленностей стакана.</param>
+        /// <param name="part">Сборка детали.</param>
         private void GenerateExtrusionCrimp3d(ksEntity sketch,
             ksPart part)
         {
@@ -89,6 +110,12 @@ namespace GlassModel
             CopyByCircularGrid(part, extrKin);
         }
 
+        /// <summary>
+        /// Копировать полоски(узор) по концетрической сетке.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="extrKin">Эскиз полосок
+        ///     гофрированного стакана.</param>
         private void CopyByCircularGrid(ksPart part, ksEntity extrKin)
         {
             var extrCirc = (ksEntity)part.NewEntity(
@@ -117,7 +144,17 @@ namespace GlassModel
             extrCirc.Create();
         }
 
-        private static ksEntity CreateKinematicOperation(
+        /// <summary>
+        /// Создать с помощью кинематической операции
+        ///     полоску гофрированного стакана.
+        /// </summary>
+        /// <param name="sketch">Эскиз рефленности стакана.</param>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="extrConicSpiral">Коническая спираль
+        ///     для создания полоски стакана.</param>
+        /// <returns>Модель полоски(узора)
+        ///     для гофрированного стакана.</returns>
+        private ksEntity CreateKinematicOperation(
             ksEntity sketch, ksPart part, ksEntity extrConicSpiral)
         {
             var extrKin = (ksEntity)part.NewEntity(
@@ -143,6 +180,12 @@ namespace GlassModel
             return extrKin;
         }
 
+        /// <summary>
+        /// Создать коническую спираль.
+        /// </summary>
+        /// <param name="sketch">Эскиз рефленности стакана.</param>
+        /// <param name="part">Сборка детали.</param>
+        /// <returns>Коническая спираль для создания полоски стакана.</returns>
         private ksEntity CreateConicSpiral(ksEntity sketch,
             ksPart part)
         {
@@ -172,6 +215,10 @@ namespace GlassModel
             return extrConicSpiral;
         }
 
+        /// <summary>
+        /// Создать полоску на эскизе стакана.
+        /// </summary>
+        /// <param name="sketchDef">Описание эскиза стакана.</param>
         private void GenerateExtrusionCrimp2d(
             ksSketchDefinition sketchDef)
         {
