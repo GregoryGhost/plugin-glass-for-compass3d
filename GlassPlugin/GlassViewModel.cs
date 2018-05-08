@@ -37,15 +37,13 @@ namespace GlassPlugin
         private const double _max = 200;
         private const double _minAngle = 0;
         private const double _maxAngle = 5;
-        private const double _minDepth = 1;
+        private const double _minDepthForFacetedGlass = 3;
         private const double _maxDepthSide = 5;
         private const double _maxDepthBottom = 7;
-        private const int _minCountFaceted = 4;
+        private const int _minCountFaceted = 8;
         private const int _maxCountFaceted = 20;
-
-        private const double _percentForDepthBottom = 7;
-        private const double _percentForHeightFaceted = 90;
-        private const double _percentForDepthSide = 4;
+        private const int _minCountStrips = 20;
+        private const int _maxCountStrips = 60;
 
         public Glasses()
         {
@@ -54,15 +52,18 @@ namespace GlassPlugin
                 _min / 2, _max / 2);
             var angleHeight = new BorderConditions<double>(_minAngle,
                 _minAngle, _maxAngle);
-            var depthSide = new BorderConditions<double>(_minDepth,
-                _minDepth, _maxDepthSide);
-            var depthBottom = new BorderConditions<double>(_minDepth,
-                _minDepth, _maxDepthBottom);
+            var depthSideForFacetedGlass = new BorderConditions<double>(
+                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                    _maxDepthSide);
+            var depthBottom = new BorderConditions<double>(
+                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                    _maxDepthBottom);
             var countFaceted = new BorderConditions<int>(
                 _minCountFaceted, _minCountFaceted, _maxCountFaceted);
 
             var facetedGlass = new FacetedGlass(height, diameterBottom,
-                angleHeight, depthSide, depthBottom, countFaceted);
+                angleHeight, depthSideForFacetedGlass, depthBottom,
+                    countFaceted);
 
             var builderCleanGlass = new BuilderCleanGlass();
             var builderFacetedGlass = new BuilderFacetedGlass();
@@ -72,8 +73,11 @@ namespace GlassPlugin
                 builderFacetedGlass, "Гранёный"));
 
             var cleanGlass = new CleanGlass(diameterBottom, height);
-            countFaceted = new BorderConditions<int>(20, 20, 60);
-            var crimpGlass = new CrimpGlass(height, diameterBottom, countFaceted);
+
+            countFaceted = new BorderConditions<int>(_minCountStrips,
+                _minCountStrips, _maxCountStrips);
+            var crimpGlass = new CrimpGlass(height,
+                diameterBottom, countFaceted);
 
             Add(new GlassViewModel(cleanGlass,
                 builderCleanGlass, "Гладкий"));
