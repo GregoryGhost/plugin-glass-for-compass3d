@@ -108,10 +108,7 @@ namespace GlassModel
             extrDef.directionType = (short)Direction_Type.dtNormal;
 
             var angle = _glass.AngleHeight;
-            var heightFaceted = _glass.Height * 
-                _glass.HeightFaceted / 100;
-            var depthCut =  heightFaceted - 
-                (_glass.Height - heightFaceted) / 2;
+            var depthCut = _glass.HeightFaceted;
             var draftOutward = false; //вырезание угла направлено наружу
 
             extrDef.SetSideParam(true, (short)End_Type.etBlind,
