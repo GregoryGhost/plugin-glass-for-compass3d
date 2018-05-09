@@ -79,6 +79,7 @@ namespace GlassPlugin
             const int width = 100;
             const int widthLabel = 140;
             const int margin = 5;
+            const string intProperty = "CountFaceted";
 
             _main.test.Children.Clear();
 
@@ -100,10 +101,16 @@ namespace GlassPlugin
                         Path = new PropertyPath(labelProp),
                         ValidatesOnDataErrors = true,
                         ValidatesOnExceptions = true,
-                        UpdateSourceTrigger = 
+                        UpdateSourceTrigger =
                             UpdateSourceTrigger.PropertyChanged,
                         Mode = BindingMode.TwoWay
                     };
+
+                    if (labelProp.GetHashCode() 
+                        != intProperty.GetHashCode())
+                    {
+                        bind.StringFormat = "0.0#####";
+                    }
 
                     t1.SetBinding(TextBox.TextProperty, bind);
 
@@ -113,7 +120,7 @@ namespace GlassPlugin
                     {
                         Content = String.Format("{0}", textProp),
                         Width = widthLabel,
-                        HorizontalContentAlignment = 
+                        HorizontalContentAlignment =
                             HorizontalAlignment.Right
                     };
 
@@ -151,7 +158,7 @@ namespace GlassPlugin
             cmbbox.SelectionChanged += ComboBox_SelectionChanged;
             _main = (MainWindow)Application.Current.MainWindow;
 
-            _glasses = this.Resources["Glasses"] 
+            _glasses = this.Resources["Glasses"]
                 as GlassesViewModel;
             cmbbox.SelectedIndex = -1;
             cmbbox.SelectedIndex = index;
