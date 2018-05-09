@@ -31,7 +31,7 @@
         </StackPanel.Resources>
 
         <StackPanel Orientation="Horizontal">
-            <Label Width="140" HorizontalContentAlignment="Right">Тип стакана:</Label>
+            <Label Width="140" HorizontalContentAlignment="Right">Тип стакана</Label>
 
             <ComboBox Width="100" ItemsSource="{Binding Names}"
                       SelectedItem="{Binding Path=SelectedGlassName, Mode=TwoWay}" 
