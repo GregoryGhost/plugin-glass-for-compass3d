@@ -11,16 +11,6 @@ namespace GlassModel
     public class BuilderCrimpGlass : IBuilder
     {
         /// <summary>
-        /// Начальная координата по OX отрисовки для эскиза
-        /// </summary>
-        private double _startX;
-
-        /// <summary>
-        /// Начальная координата по OY отрисовки для эскиза
-        /// </summary>
-        private double _startY;
-
-        /// <summary>
         /// Обертка над САПР Компас 3D.
         /// </summary>
         private KompasWrapper _kompas;
@@ -60,9 +50,6 @@ namespace GlassModel
         public void Build(IGlass glass, IChecker checker)
         {
             _builderBlank.Build(glass, checker);
-
-            _startX = 0;
-            _startY = 0;
 
             _glass = glass;
             _calcParams = new CalcParams(glass);
