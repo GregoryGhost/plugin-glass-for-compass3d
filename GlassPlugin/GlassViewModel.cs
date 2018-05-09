@@ -166,19 +166,19 @@ namespace GlassPlugin
         private List<Tuple<string, bool, string>> _properties;
 
         private readonly Tuple<string, string> _labelHeight =
-            new Tuple<string, string>("Height", "Высота");
+            new Tuple<string, string>("Height", "Высота, мм");
         private readonly Tuple<string, string> _labelDiameterBottom =
-            new Tuple<string, string>("DiameterBottom", "Диаметр дна");
+            new Tuple<string, string>("DiameterBottom", "Диаметр дна, мм");
         private readonly Tuple<string, string> _labelAngleHeight =
-            new Tuple<string, string>("AngleHeight", "Угол наклона высоты");
+            new Tuple<string, string>("AngleHeight", "Угол наклона высоты, °");
         private readonly Tuple<string, string> _labelDepthSide =
-            new Tuple<string, string>("DepthSide", "Глубина стенки (в %)");
+            new Tuple<string, string>("DepthSide", "Глубина стенки, %");
         private readonly Tuple<string, string> _labelDepthBottom =
-            new Tuple<string, string>("DepthBottom", "Глубина дна (в %)");
+            new Tuple<string, string>("DepthBottom", "Глубина дна, %");
         private readonly Tuple<string, string> _labelCountFaceted =
             new Tuple<string, string>("CountFaceted", "Количество граней");
         private readonly Tuple<string, string> _labelHeightFaceted =
-            new Tuple<string, string>("HeightFaceted", "Высота узора");
+            new Tuple<string, string>("HeightFaceted", "Высота узора, мм");
 
         /// <summary>
         /// Инициализация представление стакана

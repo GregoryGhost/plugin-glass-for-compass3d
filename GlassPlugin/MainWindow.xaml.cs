@@ -111,7 +111,7 @@ namespace GlassPlugin
 
                     var l1 = new Label
                     {
-                        Content = String.Format("{0}:", textProp),
+                        Content = String.Format("{0}", textProp),
                         Width = widthLabel,
                         HorizontalContentAlignment = 
                             HorizontalAlignment.Right
