@@ -45,6 +45,10 @@ namespace GlassModel.Tests
         private const int _minCountStrips = 20;
         private const int _maxCountStrips = 60;
 
+       /// <summary>
+       /// Инициализация разных стаканов для тестирования.
+       /// </summary>
+       /// <returns>Массив разных типов стакана.</returns>
         static object[] GlassesCases()
         {
             var height = new BorderConditions<double>(_min, _min, _max);
@@ -81,6 +85,10 @@ namespace GlassModel.Tests
         }
     }
 
+    /// <summary>
+    /// Тестовая реализация параметров стакана, вычисляемых
+    ///     для работы алгоритмов построения стакана.
+    /// </summary>
     public class CalcParamsFake
     {
         private double _diameterFacetedStart;
@@ -89,6 +97,11 @@ namespace GlassModel.Tests
         private double _offsetFacetedPlane;
         private double _diameterStripsCrimp;
 
+        /// <summary>
+        /// Вычисление параметров стакана
+        ///     для работы алгоритма построения.
+        /// </summary>
+        /// <param name="glass">Стакан для построения.</param>
         public CalcParamsFake(IGlass glass)
         {
             _offsetFacetedPlane = 
@@ -115,6 +128,10 @@ namespace GlassModel.Tests
                 (100 - glass.DepthBottom) / 100;
         }
 
+        /// <summary>
+        /// Диаметр грани, 
+        ///     от которой начинается отрисовка граней стакана.
+        /// </summary>
         public double DiameterFacetedStart
         {
             get
@@ -123,6 +140,9 @@ namespace GlassModel.Tests
             }
         }
 
+        /// <summary>
+        /// Диаметр вырезаемых внутренностей стакана.
+        /// </summary>
         public double DiameterSideCutting
         {
             get
@@ -131,6 +151,9 @@ namespace GlassModel.Tests
             }
         }
 
+        /// <summary>
+        /// Высота вырезания внутренностей стакана.
+        /// </summary>
         public double HeightCutting
         {
             get
@@ -139,6 +162,9 @@ namespace GlassModel.Tests
             }
         }
 
+        /// <summary>
+        /// Плоскость отрисок граней стакана.
+        /// </summary>
         public double OffsetFacetedPlane
         {
             get
@@ -147,6 +173,9 @@ namespace GlassModel.Tests
             }
         }
 
+        /// <summary>
+        /// Диаметр полосок - граней гофрированного стакана.
+        /// </summary>
         public double DiameterStripsCrimp
         {
             get
