@@ -159,6 +159,12 @@ namespace GlassModel.Tests
             Assert.That(exp, Is.EqualTo(was));
         }
 
+        /// <summary>
+        /// Создать массив из автовычислимых параметров стакана
+        /// </summary>
+        /// <param name="parameters">Параметры стакана,
+        ///     помеченные как автовычислимые</param>
+        /// <returns></returns>
         private static bool[] CreateArrayAutoCalcParams(
             IAutoCalcParams parameters)
         {
