@@ -163,5 +163,10 @@ namespace GlassPlugin
             cmbbox.SelectedIndex = -1;
             cmbbox.SelectedIndex = index;
         }
+
+        private void CheckBox_Checked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
