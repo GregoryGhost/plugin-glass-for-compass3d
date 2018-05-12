@@ -10,6 +10,7 @@ namespace GlassModel.Tests
     public class CleanGlassTest
     {
         private CleanGlass _cleanGlass;
+
         private const double _angle = 0.0f;
         private const double _heightFaceted = 0.0f;
         private const int _countFaceted = 0;
@@ -17,8 +18,11 @@ namespace GlassModel.Tests
         private const double _max = 200;
         private const double _percentForDepthBottom = 7;
         private const double _percentForDepthSide = 2;
+
         private const bool _valid = true;
         private const bool _invalid = false;
+
+        private const bool _filleted = true;
 
         [SetUp]
         public void Setup()
@@ -142,6 +146,15 @@ namespace GlassModel.Tests
         {
             CheckAutoCalcParamsOfGlass(exp,
                 _cleanGlass);
+        }
+
+        [Test(Description="Check a filleted of clean glass")]
+        [TestCase(_filleted, TestName="Filleted clean glass")]
+        [TestCase(!_filleted, TestName="Not Filleted clean glass")]
+        public void CheckFilletedCleanGlass(bool filleted)
+        {
+            _cleanGlass.Filleted = _filleted;
+            Assert.AreEqual(_filleted, _cleanGlass.Filleted);
         }
 
         /// <summary>

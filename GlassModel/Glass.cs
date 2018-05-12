@@ -50,6 +50,11 @@ namespace GlassModel
         /// Узнать автовычислимые параметры стакана
         /// </summary>
         IAutoCalcParams Properties { get; }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана
+        /// </summary>
+        bool Filleted { get; set; }
     }
 
 
