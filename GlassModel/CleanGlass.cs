@@ -236,6 +236,10 @@ namespace GlassModel
         protected const string _labelDiameterBottom = "DiameterBottom";
         protected const string _labelHeight = "Height";
 
+        /// <summary>
+        /// Проверяет удовлетворяют ли параметры стакана
+        ///     требованиям предметной области.
+        /// </summary>
         public bool IsValid
         {
             get
@@ -251,7 +255,9 @@ namespace GlassModel
             }
         }
 
-
+        /// <summary>
+        /// Узнать автовычислимые параметры стакана
+        /// </summary>
         public IAutoCalcParams Properties
         {
             get { return _dependencies; }
