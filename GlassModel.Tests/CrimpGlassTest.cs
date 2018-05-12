@@ -22,6 +22,8 @@ namespace GlassModel.Tests
         private const bool _valid = true;
         private const bool _invalid = false;
 
+        private const bool _filleted = true;
+
         [SetUp]
         public void Setup()
         {
@@ -145,6 +147,15 @@ namespace GlassModel.Tests
             });
 
             Assert.That(expIsValid, Is.EqualTo(_crimpGlass.IsValid));
+        }
+
+        [Test(Description = "Check a filleted of faceted glass")]
+        [TestCase(_filleted, TestName = "Filleted faceted glass")]
+        [TestCase(!_filleted, TestName = "Not Filleted faceted glass")]
+        public void CheckFilletedCleanGlass(bool filleted)
+        {
+            _crimpGlass.Filleted = _filleted;
+            Assert.AreEqual(_filleted, _crimpGlass.Filleted);
         }
     }
 }
