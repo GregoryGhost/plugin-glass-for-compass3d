@@ -1,6 +1,7 @@
 ﻿using Kompas6LTAPI5;
 using Kompas6Constants3D;
 using System;
+using System.Collections.Generic;
 
 namespace GlassModel
 {
@@ -128,9 +129,15 @@ namespace GlassModel
             {
                 var start = (int)FacesBlankGlass.Bottom;
                 var end = (int)FacesBlankGlass.Top;
+                var radiuses = new List<double> 
+                { 
+                    _glass.DiameterBottom / 20,
+                    _glass.DiameterBottom / 50
+                };
+                //bottom = 1 грань, то есть start = 1
                 for (var i = start; i <= end; i++)
                 {
-                    FilletedBottomAndTop(part, i);
+                    FilletedBottomAndTop(part, i, radiuses[i - 1]);
                 }
             }
         }
@@ -139,13 +146,16 @@ namespace GlassModel
         /// Скругление дна и горлышка стакана по граням.
         /// </summary>
         /// <param name="part">Сборка детали.</param>
-        private void FilletedBottomAndTop(ksPart part, int numberFace)
+        /// <param name="numberFace">Номер грани в детали.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        private void FilletedBottomAndTop(ksPart part, int numberFace,
+            double radius)
         {
             var extrFillet = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_fillet);
 
             var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
-            filletDef.radius = _glass.DiameterBottom / 50;
+            filletDef.radius = radius;
             //Не продолжать по касательным ребрам
             filletDef.tangent = false;
 
@@ -281,7 +291,7 @@ namespace GlassModel
         /// <param name="glass">Целевой стакан.</param>
         public CalcParams(IGlass glass)
         {
-            _offsetFacetedPlane = 
+            _offsetFacetedPlane =
                 glass.Height / 2 + glass.HeightFaceted / 2;
 
             var angleRad = glass.AngleHeight * System.Math.PI / 180;
@@ -290,7 +300,7 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            var diameterTop = 2 * glass.Height * tanRad 
+            var diameterTop = 2 * glass.Height * tanRad
                 + glass.DiameterBottom;
             _diameterSideCutting = diameterTop *
                 (100 - glass.DepthSide) / 100;
