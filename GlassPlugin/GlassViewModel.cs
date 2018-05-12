@@ -346,6 +346,21 @@ namespace GlassPlugin
         }
 
         /// <summary>
+        /// Скругление дна и горлышка стакана.
+        /// </summary>
+        public bool Filleted
+        {
+            get
+            {
+                return _glass.Filleted;
+            }
+            set
+            {
+                _glass.Filleted = value;
+            }
+        }
+
+        /// <summary>
         /// Получить название стакана.
         /// </summary>
         public string Name
