@@ -5,6 +5,22 @@ using System;
 namespace GlassModel
 {
     /// <summary>
+    /// Грани болванки стакана.
+    /// </summary>
+    public enum FacesBlankGlass
+    {
+        /// <summary>
+        /// Грань дна стакана.
+        /// </summary>
+        Bottom = 1,
+        /// <summary>
+        /// Грань горлышка стакана.
+        /// </summary>
+        Top = 2
+    }
+
+
+    /// <summary>
     /// Мастер по созданию болванок стакана в САПР Компас 3D
     /// </summary>
     public class BuilderOfBlank : IBuilder
@@ -110,7 +126,12 @@ namespace GlassModel
 
             if (glass.Filleted)
             {
-                FilletedBottomAndTop(part);
+                var start = (int)FacesBlankGlass.Bottom;
+                var end = (int)FacesBlankGlass.Top;
+                for (var i = start; i <= end; i++)
+                {
+                    FilletedBottomAndTop(part, i);
+                }
             }
         }
 
@@ -118,7 +139,7 @@ namespace GlassModel
         /// Скругление дна и горлышка стакана по граням.
         /// </summary>
         /// <param name="part">Сборка детали.</param>
-        private void FilletedBottomAndTop(ksPart part)
+        private void FilletedBottomAndTop(ksPart part, int numberFace)
         {
             var extrFillet = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_fillet);
@@ -133,7 +154,7 @@ namespace GlassModel
 
             var filletFaces = (ksEntityCollection)(filletDef.array());
             filletFaces.Clear();
-            filletFaces.Add(facesGlass.GetByIndex(2));
+            filletFaces.Add(facesGlass.GetByIndex(numberFace));
 
             extrFillet.Create();
         }
