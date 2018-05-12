@@ -107,6 +107,35 @@ namespace GlassModel
             GenerateBlank3d(sketchBase, part);
             GenerateCutSide2d(sketchDefCutSide);
             GenerateCutSide3d(sketchCutSide, part);
+
+            if (glass.Filleted)
+            {
+                FilletedBottomAndTop(part);
+            }
+        }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана по граням.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        private void FilletedBottomAndTop(ksPart part)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = _glass.DiameterBottom / 50;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var facesGlass = (ksEntityCollection)part.EntityCollection(
+                (short)Obj3dType.o3d_face);
+
+            var filletFaces = (ksEntityCollection)(filletDef.array());
+            filletFaces.Clear();
+            filletFaces.Add(facesGlass.GetByIndex(2));
+
+            extrFillet.Create();
         }
 
         /// <summary>
@@ -128,7 +157,7 @@ namespace GlassModel
         /// Генерация модели стакана.
         /// </summary>
         /// <param name="sketch">Эскиз основания стакана.</param>
-        /// <param name="part"></param>
+        /// <param name="part">Сборка детали.</param>
         private void GenerateBlank3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
