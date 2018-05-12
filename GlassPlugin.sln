@@ -1,0 +1,49 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassPlugin", "GlassPlugin\GlassPlugin.csproj", "{2B13C08D-7D6E-4DFA-9269-60462BF12A33}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassModel.Tests", "GlassModel.Tests\GlassModel.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassModel", "GlassModel\GlassModel.csproj", "{71871169-A430-4B3E-9564-B4EA412A5E2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Release|x64.ActiveCfg = Release|Any CPU
+		{2B13C08D-7D6E-4DFA-9269-60462BF12A33}.Release|x86.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|x64.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|x86.ActiveCfg = Release|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Release|x64.ActiveCfg = Release|Any CPU
+		{71871169-A430-4B3E-9564-B4EA412A5E2A}.Release|x86.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
