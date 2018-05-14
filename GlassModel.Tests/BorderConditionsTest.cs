@@ -46,18 +46,10 @@ namespace GlassModel.Tests
             });
         }
 
-
-        [Test(Description = "Set value great than max value")]
+        [Test(Description = "Setting value out of range")]
         [TestCase(_max * 2, TestName = "Max < Value")]
-        public void SetGreatValueThanMax(double value)
-        {
-            Assert.Throws<ArgumentException>(() =>
-                _parameter.Value = value);
-        }
-
-        [Test(Description = "Set value less than min value")]
         [TestCase(_min * 2, TestName = "Min > Value")]
-        public void SetLessValueThanMin(double value)
+        public void SetValueOutsideRange(double value)
         {
             Assert.Throws<ArgumentException>(() =>
                 _parameter.Value = value);
