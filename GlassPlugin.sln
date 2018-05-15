@@ -8,7 +8,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassModel.Tests", "GlassMo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassModel", "GlassModel\GlassModel.csproj", "{71871169-A430-4B3E-9564-B4EA412A5E2A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassViewModel", "GlassViewModel\GlassViewModel.csproj", "{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassViewsModel", "GlassViewModel\GlassViewsModel.csproj", "{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}"
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LoadingPlugin.Tests", "LoadingPlugin.Tests\LoadingPlugin.Tests.fsproj", "{9EA6B1A3-E213-438A-9E97-B51F75330E1D}"
 	ProjectSection(ProjectDependencies) = postProject

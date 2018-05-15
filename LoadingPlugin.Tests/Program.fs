@@ -1,10 +1,11 @@
 ﻿open FSharp.Charting
-open GlassViewModel
+open GlassViewsModel
 open System.Diagnostics
+open System
 
 [<EntryPoint>]
 let main argv = 
-    let maxCountBuilding = 5
+    let maxCountBuilding = 1
     let sw = new Stopwatch()
     let glassesVM = new GlassesViewModel()
 
