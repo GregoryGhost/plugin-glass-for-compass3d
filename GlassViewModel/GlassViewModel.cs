@@ -6,7 +6,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace GlassPlugin
+namespace GlassViewModel
 {
     /// <summary>
     /// Помощник для работы с INotifyPropertyChanged
