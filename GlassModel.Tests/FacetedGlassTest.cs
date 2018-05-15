@@ -128,34 +128,34 @@ namespace GlassModel.Tests
         [TestCase(_min, _min / 10, _minAngle, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - diameter bottom < min")]
-        [TestCase(_min, _max, _minAngle, _minDepth,
+        [TestCase(_max, _max, _minAngle, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - diameter bottom > max")]
-        [TestCase(_min, _max, _minAngle / 2, _minDepth,
+        [TestCase(_max, _max / 2, _minAngle - _max, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - angle height < min")]
-        [TestCase(_max, _min, _maxAngle * 2, _minDepth,
+        [TestCase(_max, _min / 2, _maxAngle * 2, _minDepth,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - angle height > max")]
-        [TestCase(_max, _min, _maxAngle, _minDepth / 10,
+        [TestCase(_max, _min / 2, _maxAngle, _minDepth / 10,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - depth side < min")]
-        [TestCase(_max, _min, _maxAngle, _maxDepthSide * 2,
+        [TestCase(_max, _min / 2, _maxAngle, _maxDepthSide * 2,
             _minDepth, _minCountFaceted, _invalid,
                 TestName = "Setted neg - depth side > max")]
-        [TestCase(_max, _min, _maxAngle, _minDepth,
+        [TestCase(_max, _min / 2, _maxAngle, _minDepth,
             _minDepth / 10, _minCountFaceted, _invalid,
                 TestName = "Setted neg - depth bottom < min")]
-        [TestCase(_max, _min, _maxAngle, _maxDepthSide,
+        [TestCase(_max, _min / 2, _maxAngle, _maxDepthSide,
             _maxDepthBottom * 2, _minCountFaceted, _invalid,
                 TestName = "Setted neg - depth bottom > max")]
-        [TestCase(_max, _min, _maxAngle, _minDepth,
+        [TestCase(_max, _min / 2, _maxAngle, _minDepth,
             _minDepth, _minCountFaceted - 100, _invalid,
                 TestName = "Setted neg - count faceted < min")]
-        [TestCase(_max, _min, _maxAngle, _maxDepthSide,
-            _maxDepthBottom, _minCountFaceted + 100, _invalid,
+        [TestCase(_max, _min / 2, _maxAngle, _maxDepthSide,
+            _maxDepthBottom, _maxCountFaceted + 100, _invalid,
                 TestName = "Setted neg - count faceted > max")]
-        [TestCase(_min, _max, _minAngle, _maxDepthSide,
+        [TestCase(_min, _max / 2, _minAngle, _maxDepthSide,
             _maxDepthBottom, _maxCountFaceted, _invalid,
                 TestName = "Setted neg - Height glass < diameter bottom,")]
         public void CheckSettedParamsNegative(double height,
