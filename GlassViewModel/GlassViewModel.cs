@@ -9,16 +9,16 @@ using System.Runtime.CompilerServices;
 namespace GlassViewModel
 {
     /// <summary>
-    /// Помощник для работы с INotifyPropertyChanged
+    /// Помощник для работы с INotifyPropertyChanged.
     /// </summary>
     public class Notify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Оповестить об изменение свойства
+        /// Оповестить об изменение свойства.
         /// </summary>
-        /// <param name="prop">Название свойства</param>
+        /// <param name="prop">Название свойства.</param>
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
             if (PropertyChanged != null)
@@ -29,7 +29,7 @@ namespace GlassViewModel
     }
 
     /// <summary>
-    /// Коллекция стаканов
+    /// Коллекция стаканов.
     /// </summary>
     public class Glasses : ObservableCollection<GlassViewModel>
     {
@@ -90,7 +90,7 @@ namespace GlassViewModel
     }
 
     /// <summary>
-    /// Представление модели стаканов
+    /// Представление модели стаканов.
     /// </summary>
     public class GlassesViewModel : Notify
     {
@@ -107,7 +107,7 @@ namespace GlassViewModel
         }
 
         /// <summary>
-        /// Доступные стаканы
+        /// Доступные стаканы.
         /// </summary>
         public List<string> Names
         {
@@ -120,7 +120,7 @@ namespace GlassViewModel
         }
 
         /// <summary>
-        /// Получить название выбранного стакана
+        /// Получить название выбранного стакана.
         /// </summary>
         public string SelectedGlassName
         {
@@ -134,6 +134,27 @@ namespace GlassViewModel
                                         .First(g => g.Name == value);
                 OnPropertyChanged("SelectedGlassName");
             }
+        }
+
+        /// <summary>
+        /// Получить доступное количество стаканов.
+        /// </summary>
+        public int CountGlasses
+        {
+            get
+            {
+                return _glasses.Count;
+            }
+        }
+
+        /// <summary>
+        /// Получить стакан по его индексу.
+        /// </summary>
+        /// <param name="index">Индекс стакана.</param>
+        /// <returns>Возвращает представление стакана.</returns>
+        public GlassViewModel GetGlassByIndex(int index)
+        {
+            return _glasses[index];
         }
 
         /// <summary>
