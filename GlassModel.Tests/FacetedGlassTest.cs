@@ -195,7 +195,7 @@ namespace GlassModel.Tests
         [Test(Description = "Check a filleted of faceted glass")]
         [TestCase(_filleted, TestName = "Filleted faceted glass")]
         [TestCase(!_filleted, TestName = "Not Filleted faceted glass")]
-        public void CheckFilletedCleanGlass(bool filleted)
+        public void CheckFilletedFacetedGlass(bool filleted)
         {
             _facetedGlass.Filleted = _filleted;
             Assert.AreEqual(_filleted, _facetedGlass.Filleted);
