@@ -7,22 +7,22 @@ using System.Threading.Tasks;
 namespace GlassModel
 {
     /// <summary>
-    /// Шаблон стакана
+    /// Шаблон стакана.
     /// </summary>
     public interface IGlass
     {
         /// <summary>
-        /// Высота стакана
+        /// Высота стакана.
         /// </summary>
         double Height { get; set; }
 
         /// <summary>
-        /// Диаметр основания
+        /// Диаметр основания.
         /// </summary>
         double DiameterBottom { get; set; }
 
         /// <summary>
-        /// Угол наклона высоты стакана
+        /// Угол наклона высоты стакана.
         /// </summary>
         double AngleHeight { get; set; }
 
@@ -37,19 +37,24 @@ namespace GlassModel
         double DepthBottom { get; set; }
 
         /// <summary>
-        /// Высота граней стакана
+        /// Высота граней стакана.
         /// </summary>
         double HeightFaceted { get; set; }
 
         /// <summary>
-        /// Количество граней стакана
+        /// Количество граней стакана.
         /// </summary>
         int CountFaceted { get; set; }
 
         /// <summary>
-        /// Узнать автовычислимые параметры стакана
+        /// Узнать автовычислимые параметры стакана.
         /// </summary>
         IAutoCalcParams Properties { get; }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана.
+        /// </summary>
+        bool Filleted { get; set; }
     }
 
 
@@ -68,42 +73,42 @@ namespace GlassModel
 
 
     /// <summary>
-    /// Маркер зависимых(автовычислимых) параметров стакана
+    /// Маркер зависимых(автовычислимых) параметров стакана.
     /// </summary>
     public interface IAutoCalcParams
     {
         /// <summary>
-        /// Зависимый параметр - высота стакана
+        /// Зависимый параметр - высота стакана.
         /// </summary>
         bool Height { get; }
 
         /// <summary>
-        /// Зависимый параметр - диаметр основания
+        /// Зависимый параметр - диаметр основания.
         /// </summary>
         bool DiameterBottom { get; }
 
         /// <summary>
-        /// Зависимый параметр - угол наклона высоты стакана
+        /// Зависимый параметр - угол наклона высоты стакана.
         /// </summary>
         bool AngleHeight { get; }
 
         /// <summary>
-        /// Зависимый параметр - толщина стенок стакана
+        /// Зависимый параметр - толщина стенок стакана.
         /// </summary>
         bool DepthSide { get; }
 
         /// <summary>
-        /// Зависимый параметр - толщина дна стакана
+        /// Зависимый параметр - толщина дна стакана.
         /// </summary>
         bool DepthBottom { get; }
 
         /// <summary>
-        /// Зависимый параметр - высота граней стакана
+        /// Зависимый параметр - высота граней стакана.
         /// </summary>
         bool HeightFaceted { get; }
 
         /// <summary>
-        /// Зависимый параметр - количество граней стакана
+        /// Зависимый параметр - количество граней стакана.
         /// </summary>
         bool CountFaceted { get; }
     }
