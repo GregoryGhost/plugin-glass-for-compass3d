@@ -50,19 +50,19 @@ namespace GlassViewsModel
         /// </summary>
         public Glasses()
         {
-            var height = new BorderConditions<double>(_min, _min, _max);
+            var height = new BorderConditions<double>(_min, _max, _max);
             var diameterBottom = new BorderConditions<double>(_min / 2,
-                _min / 2, _max / 2);
+                _max / 2, _max / 2);
             var angleHeight = new BorderConditions<double>(_minAngle,
-                _minAngle, _maxAngle);
+                _maxAngle, _maxAngle);
             var depthSideForFacetedGlass = new BorderConditions<double>(
-                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                _minDepthForFacetedGlass, _maxDepthSide,
                     _maxDepthSide);
             var depthBottom = new BorderConditions<double>(
-                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                _minDepthForFacetedGlass, _maxDepthBottom,
                     _maxDepthBottom);
             var countFaceted = new BorderConditions<int>(
-                _minCountFaceted, _minCountFaceted, _maxCountFaceted);
+                _minCountFaceted, _maxCountFaceted, _maxCountFaceted);
 
             var facetedGlass = new FacetedGlass(height, diameterBottom,
                 angleHeight, depthSideForFacetedGlass, depthBottom,
@@ -78,7 +78,7 @@ namespace GlassViewsModel
             var cleanGlass = new CleanGlass(diameterBottom, height);
 
             countFaceted = new BorderConditions<int>(_minCountStrips,
-                _minCountStrips, _maxCountStrips);
+                _maxCountStrips, _maxCountStrips);
             var crimpGlass = new CrimpGlass(height,
                 diameterBottom, countFaceted);
 
