@@ -61,7 +61,6 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="GlassViewModel.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -99,6 +98,10 @@
     <ProjectReference Include="..\GlassModel\GlassModel.csproj">
       <Project>{71871169-a430-4b3e-9564-b4ea412a5e2a}</Project>
       <Name>GlassModel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GlassViewModel\GlassViewsModel.csproj">
+      <Project>{3c54bcd2-a2b4-4f07-bdce-3417c7af720e}</Project>
+      <Name>GlassViewsModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
