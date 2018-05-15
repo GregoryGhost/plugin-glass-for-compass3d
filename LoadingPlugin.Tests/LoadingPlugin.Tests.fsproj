@@ -60,8 +60,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GlassViewModel\GlassViewModel.csproj">
-      <Name>GlassViewModel</Name>
+    <ProjectReference Include="..\GlassModel\GlassModel.csproj">
+      <Name>GlassModel</Name>
+      <Project>{71871169-a430-4b3e-9564-b4ea412a5e2a}</Project>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\GlassViewModel\GlassViewsModel.csproj">
+      <Name>GlassViewsModel</Name>
       <Project>{3c54bcd2-a2b4-4f07-bdce-3417c7af720e}</Project>
       <Private>True</Private>
     </ProjectReference>

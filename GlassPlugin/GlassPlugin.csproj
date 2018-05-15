@@ -34,9 +34,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="FSharp.Charting">
-      <HintPath>..\packages\FSharp.Charting.0.91.1\lib\net45\FSharp.Charting.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -102,9 +99,9 @@
       <Project>{71871169-a430-4b3e-9564-b4ea412a5e2a}</Project>
       <Name>GlassModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GlassViewModel\GlassViewModel.csproj">
+    <ProjectReference Include="..\GlassViewModel\GlassViewsModel.csproj">
       <Project>{3c54bcd2-a2b4-4f07-bdce-3417c7af720e}</Project>
-      <Name>GlassViewModel</Name>
+      <Name>GlassViewsModel</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
