@@ -80,7 +80,7 @@ namespace GlassModel.Tests
         [TestCase(_min / 10, _min / 2, _invalid,
             TestName = "Setted neg - Height glass < min, " +
                 "diameter bottom = min")]
-        [TestCase(_min / 10, _min / 2, _invalid,
+        [TestCase(_min, _min / 10, _invalid,
             TestName = "Setted neg - Height glass = min," +
                 " diameter bottom < min")]
         [TestCase(_max * 2, _max / 2, _invalid,
@@ -90,7 +90,7 @@ namespace GlassModel.Tests
             TestName = "Setted neg - Height glass = max," +
                 " diameter bottom > max")]
         [TestCase(_min, _max / 2, _invalid,
-            TestName = "Setted neg - Height glass < diameter bottom,")]
+            TestName = "Setted neg - Height glass < diameter bottom")]
         public void CheckSettedParamsNegative(double height,
             double diameterBottom, bool expIsValid)
         {
