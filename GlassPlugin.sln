@@ -10,6 +10,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassModel", "GlassModel\Gl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassViewModel", "GlassViewModel\GlassViewModel.csproj", "{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "LoadingPlugin.Tests", "LoadingPlugin.Tests\LoadingPlugin.Tests.fsproj", "{9EA6B1A3-E213-438A-9E97-B51F75330E1D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -52,6 +54,14 @@ Global
 		{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}.Release|x64.ActiveCfg = Release|Any CPU
 		{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}.Release|x86.ActiveCfg = Release|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Release|x64.ActiveCfg = Release|Any CPU
+		{9EA6B1A3-E213-438A-9E97-B51F75330E1D}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
