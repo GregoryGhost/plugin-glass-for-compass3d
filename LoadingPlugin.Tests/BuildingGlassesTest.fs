@@ -6,7 +6,6 @@ module BuildingGlassesTest =
     open System.Diagnostics
     open System
 
-    let maxCountBuilding = 1
     let sw = new Stopwatch()
     let glassesVM = new GlassesViewModel()
 
@@ -25,7 +24,8 @@ module BuildingGlassesTest =
                 mls / 1000.
             (x, timeBuilding)    ]
     
-    let calcTimeBuild glass = 
+    let calcTimeBuild glass n = 
+        let maxCountBuilding = n
         let time =
             measureTime(glass, maxCountBuilding)
         let name = glass.Name
@@ -35,7 +35,8 @@ module BuildingGlassesTest =
         let (data, name) = glass
         Chart.Line (data, Name = name)
 
-    let timeBuild =
+    let timeBuild n =
+        let calc g = calcTimeBuild g n
         glasses
-        |> List.map calcTimeBuild
+        |> List.map calc
         |> List.map genChart
