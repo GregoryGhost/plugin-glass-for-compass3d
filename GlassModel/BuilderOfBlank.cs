@@ -1,9 +1,30 @@
 ﻿using Kompas6LTAPI5;
 using Kompas6Constants3D;
 using System;
+using System.Collections.Generic;
 
 namespace GlassModel
 {
+    /// <summary>
+    /// Ребра болванки стакана.
+    /// </summary>
+    public enum EdgesBlankGlass
+    {
+        /// <summary>
+        /// Внешняя ребро дна стакана.
+        /// </summary>
+        Bottom = 0,
+        /// <summary>
+        /// Внешнее ребро горлышка стакана.
+        /// </summary>
+        TopOut,
+        /// <summary>
+        /// Внутреннее ребро горлышка стакана.
+        /// </summary>
+        TopIn
+    }
+
+
     /// <summary>
     /// Мастер по созданию болванок стакана в САПР Компас 3D
     /// </summary>
@@ -107,6 +128,86 @@ namespace GlassModel
             GenerateBlank3d(sketchBase, part);
             GenerateCutSide2d(sketchDefCutSide);
             GenerateCutSide3d(sketchCutSide, part);
+
+            if (glass.Filleted)
+            {
+                var start = (int)EdgesBlankGlass.Bottom;
+                var end = (int)EdgesBlankGlass.TopIn;
+
+                var rTopOut = _calcParams.RadiusTopFilleted;
+                var rTopIn = rTopOut;
+                var rBottom = _calcParams.RadiusBottomFilleted;
+
+                var radiuses = new List<double> 
+                { 
+                    rBottom,
+                    rTopOut,
+                    rTopIn
+                };
+                var j = 0;
+                for (var i = start; i <= end; i++)
+                {
+                    FilletedBottomAndTopOnEdges(
+                        part, i, radiuses[j]);
+                    j++;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана по граням.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="numberFace">Номер грани в детали.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        private void FilletedBottomAndTopOnFaces(ksPart part,
+            int numberFace, double radius)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+            extrFillet.name = String.Format("Скругление №{0}", numberFace);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = radius;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var facesGlass = (ksEntityCollection)part.EntityCollection(
+                (short)Obj3dType.o3d_face);
+
+            var filletFaces = (ksEntityCollection)(filletDef.array());
+            filletFaces.Clear();
+            filletFaces.Add(facesGlass.GetByIndex(numberFace));
+
+            extrFillet.Create();
+        }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана по ребрам.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="numberEdge">Номер ребра в детали.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        private void FilletedBottomAndTopOnEdges(ksPart part, int numberEdge,
+            double radius)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+            extrFillet.name = String.Format("Скругление №{0}", numberEdge);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = radius;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var edgesGlass = (ksEntityCollection)part.EntityCollection(
+                (short)Obj3dType.o3d_edge);
+
+            var filletEdges = (ksEntityCollection)(filletDef.array());
+            filletEdges.Clear();
+            filletEdges.Add(edgesGlass.GetByIndex(numberEdge));
+
+            extrFillet.Create();
         }
 
         /// <summary>
@@ -128,7 +229,7 @@ namespace GlassModel
         /// Генерация модели стакана.
         /// </summary>
         /// <param name="sketch">Эскиз основания стакана.</param>
-        /// <param name="part"></param>
+        /// <param name="part">Сборка детали.</param>
         private void GenerateBlank3d(ksEntity sketch, ksPart part)
         {
             var extr = (ksEntity)part.NewEntity(
@@ -224,6 +325,8 @@ namespace GlassModel
         ///     гофрированного стакана.
         /// </summary>
         private double _diameterStripsCrimp;
+        private double _radiusTopFilleted;
+        private double _radiusBottomFilleted;
 
         /// <summary>
         /// Инициализация параметров для построения стакана.
@@ -231,7 +334,7 @@ namespace GlassModel
         /// <param name="glass">Целевой стакан.</param>
         public CalcParams(IGlass glass)
         {
-            _offsetFacetedPlane = 
+            _offsetFacetedPlane =
                 glass.Height / 2 + glass.HeightFaceted / 2;
 
             var angleRad = glass.AngleHeight * System.Math.PI / 180;
@@ -240,7 +343,7 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            var diameterTop = 2 * glass.Height * tanRad 
+            var diameterTop = 2 * glass.Height * tanRad
                 + glass.DiameterBottom;
             _diameterSideCutting = diameterTop *
                 (100 - glass.DepthSide) / 100;
@@ -252,6 +355,11 @@ namespace GlassModel
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
+            
+            _radiusTopFilleted = diameterTop *
+                (1 - (100 - glass.DepthSide / 2) / 100);
+
+            _radiusBottomFilleted = glass.DiameterBottom / 50;
         }
 
         /// <summary>
@@ -307,6 +415,22 @@ namespace GlassModel
             get
             {
                 return _diameterStripsCrimp;
+            }
+        }
+
+        public double RadiusTopFilleted
+        {
+            get
+            {
+                return _radiusTopFilleted;
+            }
+        }
+
+        public double RadiusBottomFilleted
+        {
+            get
+            {
+                return _radiusBottomFilleted;
             }
         }
     }

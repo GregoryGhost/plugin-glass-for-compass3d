@@ -52,6 +52,11 @@ namespace GlassModel
         private double _percentForDepthSide = 2;
 
         /// <summary>
+        /// Скругление дна и горлышка стакана.
+        /// </summary>
+        private bool _filleted;
+
+        /// <summary>
         /// Установление параметров гладкого стакана.
         /// </summary>
         /// <param name="diameterBottom">Диаметр дна стакана.</param>
@@ -231,6 +236,10 @@ namespace GlassModel
         protected const string _labelDiameterBottom = "DiameterBottom";
         protected const string _labelHeight = "Height";
 
+        /// <summary>
+        /// Проверяет удовлетворяют ли параметры стакана
+        ///     требованиям предметной области.
+        /// </summary>
         public bool IsValid
         {
             get
@@ -246,10 +255,27 @@ namespace GlassModel
             }
         }
 
-
+        /// <summary>
+        /// Узнать автовычислимые параметры стакана
+        /// </summary>
         public IAutoCalcParams Properties
         {
             get { return _dependencies; }
+        }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана.
+        /// </summary>
+        public bool Filleted
+        {
+            get
+            {
+                return _filleted;
+            }
+            set
+            {
+                _filleted = value;
+            }
         }
     }
 }
