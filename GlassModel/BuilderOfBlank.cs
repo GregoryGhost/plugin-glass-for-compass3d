@@ -6,18 +6,22 @@ using System.Collections.Generic;
 namespace GlassModel
 {
     /// <summary>
-    /// Грани болванки стакана.
+    /// Ребра болванки стакана.
     /// </summary>
-    public enum FacesBlankGlass
+    public enum EdgesBlankGlass
     {
         /// <summary>
-        /// Грань дна стакана.
+        /// Внешняя ребро дна стакана.
         /// </summary>
-        Bottom = 1,
+        Bottom = 0,
         /// <summary>
-        /// Грань горлышка стакана.
+        /// Внешнее ребро горлышка стакана.
         /// </summary>
-        Top = 2
+        TopOut,
+        /// <summary>
+        /// Внутреннее ребро горлышка стакана.
+        /// </summary>
+        TopIn
     }
 
 
@@ -127,17 +131,25 @@ namespace GlassModel
 
             if (glass.Filleted)
             {
-                var start = (int)FacesBlankGlass.Bottom;
-                var end = (int)FacesBlankGlass.Top;
+                var start = (int)EdgesBlankGlass.Bottom;
+                var end = (int)EdgesBlankGlass.TopIn;
+
+                var rTopOut = _calcParams.RadiusTopFilleted;
+                var rTopIn = rTopOut;
+                var rBottom = _calcParams.RadiusBottomFilleted;
+
                 var radiuses = new List<double> 
                 { 
-                    _glass.DiameterBottom / 20,
-                    _glass.DiameterBottom / 50
+                    rBottom,
+                    rTopOut,
+                    rTopIn
                 };
-                //bottom = 1 грань, то есть start = 1
+                var j = 0;
                 for (var i = start; i <= end; i++)
                 {
-                    FilletedBottomAndTop(part, i, radiuses[i - 1]);
+                    FilletedBottomAndTopOnEdges(
+                        part, i, radiuses[j]);
+                    j++;
                 }
             }
         }
@@ -148,11 +160,12 @@ namespace GlassModel
         /// <param name="part">Сборка детали.</param>
         /// <param name="numberFace">Номер грани в детали.</param>
         /// <param name="radius">Радиус сглаживания.</param>
-        private void FilletedBottomAndTop(ksPart part, int numberFace,
-            double radius)
+        private void FilletedBottomAndTopOnFaces(ksPart part,
+            int numberFace, double radius)
         {
             var extrFillet = (ksEntity)part.NewEntity(
                 (short)Obj3dType.o3d_fillet);
+            extrFillet.name = String.Format("Скругление №{0}", numberFace);
 
             var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
             filletDef.radius = radius;
@@ -165,6 +178,34 @@ namespace GlassModel
             var filletFaces = (ksEntityCollection)(filletDef.array());
             filletFaces.Clear();
             filletFaces.Add(facesGlass.GetByIndex(numberFace));
+
+            extrFillet.Create();
+        }
+
+        /// <summary>
+        /// Скругление дна и горлышка стакана по ребрам.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="numberEdge">Номер ребра в детали.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        private void FilletedBottomAndTopOnEdges(ksPart part, int numberEdge,
+            double radius)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+            extrFillet.name = String.Format("Скругление №{0}", numberEdge);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = radius;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var edgesGlass = (ksEntityCollection)part.EntityCollection(
+                (short)Obj3dType.o3d_edge);
+
+            var filletEdges = (ksEntityCollection)(filletDef.array());
+            filletEdges.Clear();
+            filletEdges.Add(edgesGlass.GetByIndex(numberEdge));
 
             extrFillet.Create();
         }
@@ -284,6 +325,8 @@ namespace GlassModel
         ///     гофрированного стакана.
         /// </summary>
         private double _diameterStripsCrimp;
+        private double _radiusTopFilleted;
+        private double _radiusBottomFilleted;
 
         /// <summary>
         /// Инициализация параметров для построения стакана.
@@ -312,6 +355,11 @@ namespace GlassModel
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
+            
+            _radiusTopFilleted = diameterTop *
+                (1 - (100 - glass.DepthSide / 2) / 100);
+
+            _radiusBottomFilleted = glass.DiameterBottom / 50;
         }
 
         /// <summary>
@@ -367,6 +415,22 @@ namespace GlassModel
             get
             {
                 return _diameterStripsCrimp;
+            }
+        }
+
+        public double RadiusTopFilleted
+        {
+            get
+            {
+                return _radiusTopFilleted;
+            }
+        }
+
+        public double RadiusBottomFilleted
+        {
+            get
+            {
+                return _radiusBottomFilleted;
             }
         }
     }
