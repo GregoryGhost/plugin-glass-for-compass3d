@@ -113,118 +113,45 @@ namespace GlassModel
 
             if (glass.Filleted)
             {
-                //дно стакана
-                var rBottom = glass.DiameterBottom / 2;
-                var pointBottom = new Point3D(_startX, rBottom, 0);
-                var edge0 = FindIntersectionPointWithEdge(
-                    part, pointBottom);
-                //TODO: поменять радиус сглаживания на автовычисляемый
-                //  вместо константы 10
-                FilletedOnEdge(part, edge0, 10);
-
-                //с внешней стороны диаметр горлышка
-                var pointTop = new Point3D(_startX,
-                    _calcParams.DiameterTop / 2, glass.Height);
-                var edge = FindIntersectionPointWithEdge(
-                    part, pointTop);
-                //TODO: поменять радиус сглаживания на автовычисляемый
-                //  вместо константы 2
-                FilletedOnEdge(part, edge, 2);
-
-                //с внутренней стороны диаметр горлышка
-                //  (вырезаемых внутренностей)
-                var pointTop2 = new Point3D(_startX,
-                    _calcParams.DiameterSideCutting / 2, glass.Height);
-                var edge2 = FindIntersectionPointWithEdge(
-                    part, pointTop2);
-                //TODO: поменять радиус сглаживания на автовычисляемый
-                //  вместо константы 2
-                FilletedOnEdge(part, edge2,
-                    /*_calcParams.RadiusTopFilleted*/2);
+                FilletedBottomAndTop(glass, part);
             }
         }
 
         /// <summary>
-        /// Скругление по грани.
+        /// Сгладить дно и горлышко болванки стакана.
+        /// </summary>
+        /// <param name="glass">Параметры стакана.</param>
         /// <param name="part">Сборка детали.</param>
-        /// <param name="numberFace">Сглаживаемая грань.</param>
-        /// <param name="radius">Радиус сглаживания.</param>
-        private void FilletedOnFace(
-            ksPart part, object face, int radius)
+        private void FilletedBottomAndTop(IGlass glass, ksPart part)
         {
-            var extrFillet = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_fillet);
+            //дно стакана
+            var rBottom = glass.DiameterBottom / 2;
+            var pointBottom = new Point3D(_startX, rBottom, 0);
+            var edge0 = _kompas.FindIntersectionPointWithEdge(
+                part, pointBottom);
+            //TODO: поменять радиус сглаживания на автовычисляемый
+            //  вместо константы 10
+            _kompas.FilletedOnEdge(part, edge0, 10);
 
-            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
-            filletDef.radius = radius;
-            //Не продолжать по касательным ребрам
-            filletDef.tangent = false;
+            //с внешней стороны диаметр горлышка
+            var pointTop = new Point3D(_startX,
+                _calcParams.DiameterTop / 2, glass.Height);
+            var edge = _kompas.FindIntersectionPointWithEdge(
+                part, pointTop);
+            //TODO: поменять радиус сглаживания на автовычисляемый
+            //  вместо константы 2
+            _kompas.FilletedOnEdge(part, edge, 2);
 
-            var filletFaces = (ksEntityCollection)(filletDef.array());
-            filletFaces.Clear();
-            filletFaces.Add(face);
-
-            extrFillet.Create();
-        }
-
-        /// <summary>
-        /// Находит первое ребро, пересекающиеся с точкой.
-        /// </summary>
-        /// <param name="part">Сборка детали</param>
-        /// <param name="point">Точка пересечения.</param>
-        /// <returns>Возвращает первое ребро,
-        ///     пересекающиеся с точкой.</returns>
-        private object FindIntersectionPointWithEdge(
-            ksPart part, Point3D point)
-        {
-            var edges = (ksEntityCollection)part.EntityCollection(
-                       (short)Obj3dType.o3d_edge);
-            //отфильтровать ребра, проходящие через точку
-            edges.SelectByPoint(point.X, point.Y, point.Z);
-
-            return edges.First();
-        }
-
-        /// <summary>
-        /// Находит первое грань, пересекающиеся с точкой.
-        /// </summary>
-        /// <param name="part">Сборка детали</param>
-        /// <param name="point">Точка пересечения.</param>
-        /// <returns>Возвращает первую грань,
-        ///     пересекающуюся с точкой.</returns>
-        private object FindIntersectionPointWithFace(
-            ksPart part, Point3D point)
-        {
-            var faces = (ksEntityCollection)part.EntityCollection(
-                       (short)Obj3dType.o3d_face);
-            //отфильтровать грани, проходящие через точку
-            faces.SelectByPoint(point.X, point.Y, point.Z);
-
-            return faces.First();
-        }
-
-        /// <summary>
-        /// Скругление по ребру.
-        /// </summary>
-        /// <param name="part">Сборка детали.</param>
-        /// <param name="numberFace">Сглаживаемое ребро.</param>
-        /// <param name="radius">Радиус сглаживания.</param>
-        private void FilletedOnEdge(ksPart part, object edge,
-            double radius)
-        {
-            var extrFillet = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_fillet);
-
-            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
-            filletDef.radius = radius;
-            //Не продолжать по касательным ребрам
-            filletDef.tangent = false;
-
-            var filletEdges = (ksEntityCollection)(filletDef.array());
-            filletEdges.Clear();
-            filletEdges.Add(edge);
-
-            extrFillet.Create();
+            //с внутренней стороны диаметр горлышка
+            //  (вырезаемых внутренностей)
+            var pointTop2 = new Point3D(_startX,
+                _calcParams.DiameterSideCutting / 2, glass.Height);
+            var edge2 = _kompas.FindIntersectionPointWithEdge(
+                part, pointTop2);
+            //TODO: поменять радиус сглаживания на автовычисляемый
+            //  вместо константы 2
+            _kompas.FilletedOnEdge(part, edge2,
+                /*_calcParams.RadiusTopFilleted*/2);
         }
 
         /// <summary>
