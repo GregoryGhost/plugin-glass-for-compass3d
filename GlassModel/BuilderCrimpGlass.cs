@@ -119,7 +119,7 @@ namespace GlassModel
             //количество полосок
             extrDefCirc.count2 = _glass.CountFaceted;
             extrDefCirc.inverce = false;
-            extrDefCirc.geomArray = true;
+            extrDefCirc.geomArray = false;
             //полностью вокруг стенки стакана
             extrDefCirc.step2 = 360;
 
