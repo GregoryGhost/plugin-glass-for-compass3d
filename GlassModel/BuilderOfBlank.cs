@@ -241,6 +241,9 @@ namespace GlassModel
     /// </summary>
     public class CalcParams
     {
+        /// <summary>
+        /// Процент сглаживания для дна стакана.
+        /// </summary>
         private readonly double _percentFilletedBottom = 90;
 
         /// <summary>
