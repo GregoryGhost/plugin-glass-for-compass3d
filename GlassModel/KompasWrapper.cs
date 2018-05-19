@@ -3,6 +3,7 @@ using Kompas6Constants3D;
 using Kompas6LTAPI5;
 using System;
 using System.Runtime.InteropServices;
+using System.Windows.Media.Media3D;
 
 namespace GlassModel
 {
@@ -149,6 +150,89 @@ namespace GlassModel
         {
             return _kompas.GetParamStruct(
                 (short)StructType2DEnum.ko_RegularPolygonParam);
+        }
+
+        /// <summary>
+        /// Скругление по грани.
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="numberFace">Сглаживаемая грань.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        public void FilletedOnFace(
+            ksPart part, object face, int radius)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = radius;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var filletFaces = (ksEntityCollection)(filletDef.array());
+            filletFaces.Clear();
+            filletFaces.Add(face);
+
+            extrFillet.Create();
+        }
+
+        /// <summary>
+        /// Скругление по ребру.
+        /// </summary>
+        /// <param name="part">Сборка детали.</param>
+        /// <param name="numberFace">Сглаживаемое ребро.</param>
+        /// <param name="radius">Радиус сглаживания.</param>
+        public void FilletedOnEdge(ksPart part, object edge,
+            double radius)
+        {
+            var extrFillet = (ksEntity)part.NewEntity(
+                (short)Obj3dType.o3d_fillet);
+
+            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
+            filletDef.radius = radius;
+            //Не продолжать по касательным ребрам
+            filletDef.tangent = false;
+
+            var filletEdges = (ksEntityCollection)(filletDef.array());
+            filletEdges.Clear();
+            filletEdges.Add(edge);
+
+            extrFillet.Create();
+        }
+
+        /// <summary>
+        /// Находит первое ребро, пересекающиеся с точкой.
+        /// </summary>
+        /// <param name="part">Сборка детали</param>
+        /// <param name="point">Точка пересечения.</param>
+        /// <returns>Возвращает первое ребро,
+        ///     пересекающиеся с точкой.</returns>
+        public object FindIntersectionPointWithEdge(
+            ksPart part, Point3D point)
+        {
+            var edges = (ksEntityCollection)part.EntityCollection(
+                       (short)Obj3dType.o3d_edge);
+            //отфильтровать ребра, проходящие через точку
+            edges.SelectByPoint(point.X, point.Y, point.Z);
+
+            return edges.First();
+        }
+
+        /// <summary>
+        /// Находит первое грань, пересекающиеся с точкой.
+        /// </summary>
+        /// <param name="part">Сборка детали</param>
+        /// <param name="point">Точка пересечения.</param>
+        /// <returns>Возвращает первую грань,
+        ///     пересекающуюся с точкой.</returns>
+        public object FindIntersectionPointWithFace(
+            ksPart part, Point3D point)
+        {
+            var faces = (ksEntityCollection)part.EntityCollection(
+                       (short)Obj3dType.o3d_face);
+            //отфильтровать грани, проходящие через точку
+            faces.SelectByPoint(point.X, point.Y, point.Z);
+
+            return faces.First();
         }
     }
 }

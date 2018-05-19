@@ -2,41 +2,23 @@
 using Kompas6Constants3D;
 using System;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Media.Media3D;
 
 namespace GlassModel
 {
     /// <summary>
-    /// Ребра болванки стакана.
-    /// </summary>
-    public enum EdgesBlankGlass
-    {
-        /// <summary>
-        /// Внешняя ребро дна стакана.
-        /// </summary>
-        Bottom = 0,
-        /// <summary>
-        /// Внешнее ребро горлышка стакана.
-        /// </summary>
-        TopOut,
-        /// <summary>
-        /// Внутреннее ребро горлышка стакана.
-        /// </summary>
-        TopIn
-    }
-
-
-    /// <summary>
-    /// Мастер по созданию болванок стакана в САПР Компас 3D
+    /// Мастер по созданию болванок стакана в САПР Компас 3D.
     /// </summary>
     public class BuilderOfBlank : IBuilder
     {
         /// <summary>
-        /// Начальная координата по OX отрисовки для эскиза
+        /// Начальная координата по OX отрисовки для эскиза.
         /// </summary>
         private double _startX;
 
         /// <summary>
-        /// Начальная координата по OY отрисовки для эскиза
+        /// Начальная координата по OY отрисовки для эскиза.
         /// </summary>
         private double _startY;
 
@@ -57,7 +39,7 @@ namespace GlassModel
         private CalcParams _calcParams;
 
         /// <summary>
-        /// Инициализация необходимых параметров для работы с Компас 3D
+        /// Инициализация необходимых параметров для работы с Компас 3D.
         /// </summary>
         public BuilderOfBlank()
         {
@@ -69,10 +51,10 @@ namespace GlassModel
         }
 
         /// <summary>
-        /// Построить модель стакана в САПР Компас 3D
+        /// Построить модель стакана в САПР Компас 3D.
         /// </summary>
-        /// <param name="photoFrame">Шаблон стакана</param>
-        /// <param name="checker">Проверяющий параметры стакана</param>
+        /// <param name="photoFrame">Шаблон стакана.</param>
+        /// <param name="checker">Проверяющий параметры стакана.</param>
         /// <exception cref="InvalidOperationException">
         ///     Вызывается тогда, когда параметры стакана
         ///     имеют недопустимые значения.</exception>
@@ -131,83 +113,41 @@ namespace GlassModel
 
             if (glass.Filleted)
             {
-                var start = (int)EdgesBlankGlass.Bottom;
-                var end = (int)EdgesBlankGlass.TopIn;
-
-                var rTopOut = _calcParams.RadiusTopFilleted;
-                var rTopIn = rTopOut;
-                var rBottom = _calcParams.RadiusBottomFilleted;
-
-                var radiuses = new List<double> 
-                { 
-                    rBottom,
-                    rTopOut,
-                    rTopIn
-                };
-                var j = 0;
-                for (var i = start; i <= end; i++)
-                {
-                    FilletedBottomAndTopOnEdges(
-                        part, i, radiuses[j]);
-                    j++;
-                }
+                FilletedBottomAndTop(glass, part);
             }
         }
 
         /// <summary>
-        /// Скругление дна и горлышка стакана по граням.
+        /// Сгладить дно и горлышко болванки стакана.
         /// </summary>
+        /// <param name="glass">Параметры стакана.</param>
         /// <param name="part">Сборка детали.</param>
-        /// <param name="numberFace">Номер грани в детали.</param>
-        /// <param name="radius">Радиус сглаживания.</param>
-        private void FilletedBottomAndTopOnFaces(ksPart part,
-            int numberFace, double radius)
+        private void FilletedBottomAndTop(IGlass glass, ksPart part)
         {
-            var extrFillet = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_fillet);
-            extrFillet.name = String.Format("Скругление №{0}", numberFace);
+            //дно стакана
+            var rBottom = glass.DiameterBottom / 2;
+            var pointBottom = new Point3D(_startX, rBottom, 0);
+            var edge0 = _kompas.FindIntersectionPointWithEdge(
+                part, pointBottom);
+            _kompas.FilletedOnEdge(part, edge0,
+                _calcParams.RadiusBottomFilleted);
 
-            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
-            filletDef.radius = radius;
-            //Не продолжать по касательным ребрам
-            filletDef.tangent = false;
+            //с внешней стороны диаметр горлышка
+            var pointTop = new Point3D(_startX,
+                _calcParams.DiameterTop / 2, glass.Height);
+            var edge = _kompas.FindIntersectionPointWithEdge(
+                part, pointTop);
+            _kompas.FilletedOnEdge(part, edge,
+                _calcParams.RadiusTopFilleted);
 
-            var facesGlass = (ksEntityCollection)part.EntityCollection(
-                (short)Obj3dType.o3d_face);
-
-            var filletFaces = (ksEntityCollection)(filletDef.array());
-            filletFaces.Clear();
-            filletFaces.Add(facesGlass.GetByIndex(numberFace));
-
-            extrFillet.Create();
-        }
-
-        /// <summary>
-        /// Скругление дна и горлышка стакана по ребрам.
-        /// </summary>
-        /// <param name="part">Сборка детали.</param>
-        /// <param name="numberEdge">Номер ребра в детали.</param>
-        /// <param name="radius">Радиус сглаживания.</param>
-        private void FilletedBottomAndTopOnEdges(ksPart part, int numberEdge,
-            double radius)
-        {
-            var extrFillet = (ksEntity)part.NewEntity(
-                (short)Obj3dType.o3d_fillet);
-            extrFillet.name = String.Format("Скругление №{0}", numberEdge);
-
-            var filletDef = (ksFilletDefinition)extrFillet.GetDefinition();
-            filletDef.radius = radius;
-            //Не продолжать по касательным ребрам
-            filletDef.tangent = false;
-
-            var edgesGlass = (ksEntityCollection)part.EntityCollection(
-                (short)Obj3dType.o3d_edge);
-
-            var filletEdges = (ksEntityCollection)(filletDef.array());
-            filletEdges.Clear();
-            filletEdges.Add(edgesGlass.GetByIndex(numberEdge));
-
-            extrFillet.Create();
+            //с внутренней стороны диаметр горлышка
+            //  (вырезаемых внутренностей)
+            var pointTop2 = new Point3D(_startX,
+                _calcParams.DiameterSideCutting / 2, glass.Height);
+            var edge2 = _kompas.FindIntersectionPointWithEdge(
+                part, pointTop2);
+            _kompas.FilletedOnEdge(part, edge2,
+                _calcParams.RadiusTopFilleted);
         }
 
         /// <summary>
@@ -294,12 +234,15 @@ namespace GlassModel
         }
     }
 
+
     /// <summary>
     /// Вычисляемые параметры стакана, необходимые для
     ///     работы алгоритмов построения стакана.
     /// </summary>
     public class CalcParams
     {
+        private readonly double _percentFilletedBottom = 90;
+
         /// <summary>
         /// Диаметр начала отрисовки граней.
         /// </summary>
@@ -325,8 +268,6 @@ namespace GlassModel
         ///     гофрированного стакана.
         /// </summary>
         private double _diameterStripsCrimp;
-        private double _radiusTopFilleted;
-        private double _radiusBottomFilleted;
 
         /// <summary>
         /// Инициализация параметров для построения стакана.
@@ -343,9 +284,9 @@ namespace GlassModel
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            var diameterTop = 2 * glass.Height * tanRad
+            DiameterTop = 2 * glass.Height * tanRad
                 + glass.DiameterBottom;
-            _diameterSideCutting = diameterTop *
+            _diameterSideCutting = DiameterTop *
                 (100 - glass.DepthSide) / 100;
 
             var diameterCutSide = _diameterFacetedStart *
@@ -355,11 +296,19 @@ namespace GlassModel
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
-            
-            _radiusTopFilleted = diameterTop *
-                (1 - (100 - glass.DepthSide / 2) / 100);
 
-            _radiusBottomFilleted = glass.DiameterBottom / 50;
+            var filletedTop = DiameterTop *
+                (1 - (100 - glass.DepthSide / 2) / 100);
+            //Так как сглаживание горылшка происходит с двух сторон,
+            //  то делим толщину стенки на два
+            RadiusTopFilleted = filletedTop / 2;
+
+            var delta = _offsetFacetedPlane;
+            if(glass.HeightFaceted == 0)
+            {
+                delta = glass.Height * _percentFilletedBottom / 100;
+            }
+            RadiusBottomFilleted = (glass.Height - delta);
         }
 
         /// <summary>
@@ -418,22 +367,25 @@ namespace GlassModel
             }
         }
 
+        /// <summary>
+        /// Радиус сглаживания горлышка стакана.
+        /// </summary>
         public double RadiusTopFilleted
         {
-            get
-            {
-                return _radiusTopFilleted;
-            }
+            get; private set;
         }
 
+        /// <summary>
+        /// Радиус сглаживания дна стакана.
+        /// </summary>
         public double RadiusBottomFilleted
         {
-            get
-            {
-                return _radiusBottomFilleted;
-            }
+            get; private set;
         }
+
+        /// <summary>
+        /// Диаметр горлышка стакана.
+        /// </summary>
+        public double DiameterTop { get; private set; }
     }
-
-
 }
