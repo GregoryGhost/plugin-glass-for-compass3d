@@ -194,7 +194,7 @@ namespace GlassModel
             extrDef.initialDiam = _calcParams.DiameterFacetedStart;
             //наклон образующей внутрь
             extrDef.tiltAngleHow = true;
-            extrDef.tiltAngle = 6.2;
+            extrDef.tiltAngle = 5;
             extrDef.firstAngle = 25.0;
             extrDef.SetPlane(sketch);
 
