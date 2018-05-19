@@ -96,6 +96,7 @@ namespace GlassModel.Tests
         private double _heightCutting;
         private double _offsetFacetedPlane;
         private double _diameterStripsCrimp;
+        private readonly double _percentFilletedBottom = 90;
 
         /// <summary>
         /// Вычисление параметров стакана
@@ -104,19 +105,18 @@ namespace GlassModel.Tests
         /// <param name="glass">Стакан для построения.</param>
         public CalcParamsFake(IGlass glass)
         {
-            _offsetFacetedPlane = 
-                glass.Height / 2 + glass.HeightFaceted / 2;
+            _offsetFacetedPlane =
+               glass.Height / 2 + glass.HeightFaceted / 2;
 
-            var angleRad = glass.AngleHeight * System.Math.PI
-                / 180;
+            var angleRad = glass.AngleHeight * System.Math.PI / 180;
             var tanRad = System.Math.Tan(angleRad);
 
             _diameterFacetedStart = 2 * _offsetFacetedPlane * tanRad
                 + glass.DiameterBottom;
 
-            var diameterTop = 2 * glass.Height * tanRad 
+            DiameterTop = 2 * glass.Height * tanRad
                 + glass.DiameterBottom;
-            _diameterSideCutting = diameterTop *
+            _diameterSideCutting = DiameterTop *
                 (100 - glass.DepthSide) / 100;
 
             var diameterCutSide = _diameterFacetedStart *
@@ -126,6 +126,19 @@ namespace GlassModel.Tests
 
             _heightCutting = glass.Height *
                 (100 - glass.DepthBottom) / 100;
+
+            var filletedTop = DiameterTop *
+                (1 - (100 - glass.DepthSide / 2) / 100);
+            //Так как сглаживание горылшка происходит с двух сторон,
+            //  то делим толщину стенки на два
+            RadiusTopFilleted = filletedTop / 2;
+
+            var delta = _offsetFacetedPlane;
+            if (glass.HeightFaceted == 0)
+            {
+                delta = glass.Height * _percentFilletedBottom / 100;
+            }
+            RadiusBottomFilleted = (glass.Height - delta);
         }
 
         /// <summary>
@@ -183,5 +196,28 @@ namespace GlassModel.Tests
                 return _diameterStripsCrimp;
             }
         }
+
+        /// <summary>
+        /// Радиус сглаживания горлышка стакана.
+        /// </summary>
+        public double RadiusTopFilleted
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Радиус сглаживания дна стакана.
+        /// </summary>
+        public double RadiusBottomFilleted
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Диаметр горлышка стакана.
+        /// </summary>
+        public double DiameterTop { get; private set; }
     }
 }
