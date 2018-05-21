@@ -1,4 +1,6 @@
-﻿using GlassModel;
+﻿using GlassModel.Builders;
+using GlassModel.Glasses;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
