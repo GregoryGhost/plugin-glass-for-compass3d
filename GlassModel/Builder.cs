@@ -1,21 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using GlassModel.Glasses;
 
 namespace GlassModel
 {
-    /// <summary>
-    /// Построитель стакана в САПР
-    /// </summary>
-    public interface IBuilder
+    namespace Builders
     {
         /// <summary>
-        /// Построить модель стакана
+        /// Построитель стакана в САПР
         /// </summary>
-        /// <param name="glass">Шаблон с параметрами стакана</param>
-        /// <param name="checker">Проверяющий параметры стакана</param>
-        void Build(IGlass glass, IChecker checker);
+        public interface IBuilder
+        {
+            /// <summary>
+            /// Построить модель стакана
+            /// </summary>
+            /// <param name="glass">Шаблон с параметрами стакана</param>
+            /// <param name="checker">Проверяющий параметры стакана</param>
+            void Build(IGlass glass, IChecker checker);
+        }
     }
 }
