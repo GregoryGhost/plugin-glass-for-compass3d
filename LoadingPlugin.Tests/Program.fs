@@ -13,14 +13,10 @@ let main argv =
         printfn "Ok: %d" k
         Console.ForegroundColor <- ConsoleColor.White
         k
-
-    let chartsBuilding tb = 
-        tb 
-        |> chartsTimeBuilding
     
     let tb =  
         maxCountBuilding 
-        |> timeBuild 
+        |> calcTimeBuildingGlasses 
 
     let timesBuilding = 
         tb 
@@ -37,7 +33,7 @@ let main argv =
         let mutable repeat = true
         while(repeat) do
             tb 
-            |> chartsBuilding 
+            |> chartsTimeBuilding 
             |> charts |> Chart.Show
             printfn "Drawing plot?(y/n)"
             let r = Console.ReadLine() |> string
