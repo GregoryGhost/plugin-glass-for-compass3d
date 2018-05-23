@@ -1,6 +1,8 @@
 ﻿open FSharp.Charting
 open LoadingPlugin.Tests.BuildingGlassesTest
+open LoadingPlugin.Tests.BuildingChart
 open System
+
 
 [<EntryPoint>]
 let main argv = 
@@ -11,6 +13,10 @@ let main argv =
         printfn "Ok: %d" k
         Console.ForegroundColor <- ConsoleColor.White
         k
+
+    let chartsBuilding tb = 
+        tb 
+        |> chartsTimeBuilding
     
     let tb =  
         maxCountBuilding 
@@ -25,7 +31,7 @@ let main argv =
         let timesBuildingOfGlasses = 
             times |> List.sum 
         printSummary timesBuildingOfGlasses
-        printForEachGlass timesBuilding   
+        printForEachGlass timesBuilding 
 
     let repeatDrawingPlot =
         let mutable repeat = true
@@ -33,7 +39,7 @@ let main argv =
             tb 
             |> chartsBuilding 
             |> charts |> Chart.Show
-            printfn "Repeat drawing plot?(y/n)"
+            printfn "Drawing plot?(y/n)"
             let r = Console.ReadLine() |> string
             if(r <> "y") then repeat <- false
     0
