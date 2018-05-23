@@ -13,22 +13,28 @@ module Series =
     type Serie = LoadingTest list
 
     ///Серии - нагрузочные тесты для разных типов стакана.
-    type Series = {
-        CleanGlass   : Serie
-        FacetedGlass : Serie
-        CrimpGlass   : Serie }
+    type Series = (Serie * string) list
+        
 
     ///Время, затраченное на построение разных типов стакана за серию.
-    type SummaryTimeBuilding = {
-        CleanGlasses   : double
-        FacetedGlasses : double
-        CrimpGlasses   : double }
+    type SummaryTimeBuilding = (double * string) list
 
     ///Конвертация серии данных в JSON-формат. 
     let toJson data = Json.serialize data
 
     ///Получение серии данных из JSON-формата.
     let toSeries jData = Json.deserialize<Series> jData
+
+    let convertToSeries(data : ((int * double) list * string) list) =
+        let series =
+            data
+            |> List.map (fun (points, name) -> 
+                    let serie = 
+                        points 
+                        |> List.map (fun (x, y) ->
+                            {TimeBuildingGlass = y; NumberBuildingGlass = x})
+                    (serie, name)  )
+        series
 
     ///Прочитать серию данных из указанного файла.
     let readSeries(path : string) = 
@@ -44,26 +50,19 @@ module Series =
         sw.Close()
 
     ///Посчитать общее время для каждой нагрузочной серии
-    let sumForEach series =
-        let sum (series : Serie) =
-            series 
+    let sumForEach serie =
+        let sum (serie : Serie) =
+            serie 
             |> List.map (fun s -> s.TimeBuildingGlass)
             |> List.sum
-        let clean = 
-            series.CleanGlass |> sum 
-        let faceted =
-            series.FacetedGlass |> sum
-        let crimp =
-            series.CrimpGlass |> sum
-        {CleanGlasses = clean
-            ;FacetedGlasses = faceted
-            ;CrimpGlasses = crimp }
+        serie |> sum
     
     ///Посчитать общее время всех нагрузочных серий.
-    let sumForAll series =
-        series.CleanGlasses 
-        + series.FacetedGlasses 
-        + series.CrimpGlasses
+    let sumForAll (series : Series) =
+        series 
+        |> List.map (fun (d, n) -> 
+                let s = d |> sumForEach
+                (s, n))
 
 
 module BuildingChart =
@@ -108,4 +107,4 @@ module BuildingChart =
             Min = 0.0) 
         |> Chart.WithYAxis(
             Title = "Время построения, с",
-            Min = 0.0)
+            Min = 0.0) 
