@@ -108,5 +108,4 @@ module BuildingChart =
             Min = 0.0) 
         |> Chart.WithYAxis(
             Title = "Время построения, с",
-            Min = 0.0) 
-
+            Min = 0.0)

@@ -63,6 +63,7 @@
   <ItemGroup>
     <Compile Include="BuildingChart.fs" />
     <Compile Include="BuildingGlassesTest.fs" />
+    <Compile Include="Views.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <None Include="packages.config" />
