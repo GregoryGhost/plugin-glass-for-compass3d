@@ -12,20 +12,25 @@ open System
 
 [<EntryPoint>]
 let main argv = 
-    let defaultNameFile = "loading.data"
+    let defaultNameFile = "/loading.data"
     let pathData = Application.StartupPath + defaultNameFile 
 
     let maxCountBuilding() = 
         printfn "Enter max count building of glasses:"
         let k = Console.ReadLine() |> int
+        //TODO: обработка неверных k
         Console.ForegroundColor <- ConsoleColor.Green
         printfn "Ok: %d" k
         Console.ForegroundColor <- ConsoleColor.White
         k
 
     let tb() =  
-        maxCountBuilding() 
-        |> calcTimeBuildingGlasses 
+        let data =
+            maxCountBuilding() 
+            |> calcTimeBuildingGlasses
+        let writeDefault data = writeSeries(data, pathData)
+        data |> convertToSeries |> toJson |> writeDefault
+        data
 
     let timesBuilding() = 
         tb()
@@ -48,22 +53,28 @@ let main argv =
             let r = Console.ReadLine() |> string
             if(r <> "y") then repeat <- false
 
+    let showExp(msg : Exception) = 
+        Console.ForegroundColor <- ConsoleColor.Red
+        printfn "%s" msg.Message
+        Console.ForegroundColor <- ConsoleColor.White
+        None
+
+    let isOkPath path = 
+        Console.ForegroundColor <- ConsoleColor.Green
+        printfn "Data loaded: %s" path
+        Console.ForegroundColor <- ConsoleColor.White
+
     let showViewChart() =
         printfn "Enter path of data loading building test:"
         printfn "(default path: %s)" pathData
         let path = Console.ReadLine()
-        let showExp(msg : Exception) = 
-            Console.ForegroundColor <- ConsoleColor.Red
-            printfn "%s" msg.Message
-            Console.ForegroundColor <- ConsoleColor.White
-            None
-        let isOkPath path = 
-            Console.ForegroundColor <- ConsoleColor.Green
-            printfn "Data loaded: %s" path
-            Console.ForegroundColor <- ConsoleColor.White
         let tryLoadData =
             try
-                let series = path |> readSeries
+                let series = 
+                    if(path.Length = 0) then 
+                        pathData |> readSeries
+                    else 
+                        path |> readSeries
                 series |> Some
             with
             | :? FileNotFoundException as ex -> 
@@ -75,6 +86,7 @@ let main argv =
         let next =
             if Option.isSome tryLoadData then
                 path |> isOkPath
+                //функции постройки графика нагрузочных тестов
         next
     
     let toMenu item = 
@@ -83,6 +95,7 @@ let main argv =
         | 2 -> Menu.BuildChart
         | 0 -> Menu.Exit
         | _ -> Menu.Exit
+
     let runMenuTask task = 
         match task with
         | Menu.LoadingTest -> repeatDrawingPlot()
