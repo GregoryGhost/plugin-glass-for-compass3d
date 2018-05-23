@@ -33,7 +33,7 @@ module BuildingGlassesTest =
         let name = glass.Name
         (time, name)
 
-    let timeBuild n =
+    let calcTimeBuildingGlasses n =
         let calc g = calcTimeBuild g n
         let times = 
             glasses |> List.map calc
