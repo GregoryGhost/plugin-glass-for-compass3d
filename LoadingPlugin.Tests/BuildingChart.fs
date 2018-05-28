@@ -83,6 +83,7 @@ module Series =
 module BuildingChart =
     open FSharp.Charting
     open System
+    open Series
 
     let timeBuilding(times : ((int * double) list * string) list) = 
         times
@@ -123,3 +124,10 @@ module BuildingChart =
         |> Chart.WithYAxis(
             Title = "Время построения, с",
             Min = 0.0) 
+
+    let printChart(data : Series option) =
+        if data.IsSome then
+            data.Value
+            |> convertToData
+            |> chartsTimeBuilding
+            |> charts |> Chart.Show
