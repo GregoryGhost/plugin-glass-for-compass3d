@@ -1,6 +1,7 @@
 ﻿open FSharp.Charting
 
 open LoadingPlugin.Tests.Views
+open LoadingPlugin.Tests.ViewsHelpers
 
 open System.IO
 open System
