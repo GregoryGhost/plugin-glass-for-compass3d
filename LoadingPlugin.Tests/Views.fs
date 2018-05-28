@@ -1,20 +1,29 @@
 ﻿namespace LoadingPlugin.Tests
 
-module Views = 
-    open LoadingPlugin.Tests.BuildingGlassesTest
-    open LoadingPlugin.Tests.BuildingChart
-    open LoadingPlugin.Tests.Series
-    
-    open System
-    open System.IO
-    open System.Windows.Forms
-    open FSharp.Charting
-
+module ViewsHelpers =
     type Menu =
         | LoadingTest
         | BuildChart
         | Exit
-    
+
+    let toMenu item = 
+        match item with
+        | 1 -> Menu.LoadingTest
+        | 2 -> Menu.BuildChart
+        | 0 -> Menu.Exit
+        | _ -> Menu.Exit
+
+
+module Views = 
+    open LoadingPlugin.Tests.BuildingGlassesTest
+    open LoadingPlugin.Tests.BuildingChart
+    open LoadingPlugin.Tests.Series
+    open ViewsHelpers
+
+    open System
+    open System.IO
+    open System.Windows.Forms
+    open FSharp.Charting
 
     let defaultNameFile = "/loading.data"
     let pathData = Application.StartupPath + defaultNameFile 
@@ -83,13 +92,6 @@ module Views =
             | :? ArgumentException as ex ->
                 ex |> showExp
 
-    let printChart(data : Series option) =
-            if data.IsSome then
-                data.Value
-                |> convertToData
-                |> chartsTimeBuilding
-                |> charts |> Chart.Show
-
     let showViewChart() =
         printfn "Enter path of data loading building test:"
         printfn "(default path: %s)" pathData
@@ -99,17 +101,10 @@ module Views =
         |> tryLoadData
         |> printChart
     
-    let toMenu item = 
-        match item with
-        | 1 -> Menu.LoadingTest
-        | 2 -> Menu.BuildChart
-        | 0 -> Menu.Exit
-        | _ -> Menu.Exit
-
     let runMenuTask task = 
         match task with
         | Menu.LoadingTest -> repeatDrawingPlot()
 
         | Menu.BuildChart -> showViewChart()
 
-        | Menu.Exit -> Environment.ExitCode |> exit 
+        | Menu.Exit -> Environment.ExitCode |> exit
