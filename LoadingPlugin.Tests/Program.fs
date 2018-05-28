@@ -84,10 +84,14 @@ let main argv =
                 ex |> showExp
 
         let next =
-            if Option.isSome tryLoadData then
+            if tryLoadData.IsSome then
                 path |> isOkPath
                 //функции постройки графика нагрузочных тестов
-        next
+                tryLoadData.Value
+                |> convertToData
+                |> chartsTimeBuilding
+                |> charts |> Chart.Show
+        ()
     
     let toMenu item = 
         match item with

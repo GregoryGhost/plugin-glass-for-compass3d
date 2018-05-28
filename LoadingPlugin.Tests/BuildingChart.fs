@@ -25,6 +25,8 @@ module Series =
     ///Получение серии данных из JSON-формата.
     let toSeries jData = Json.deserialize<Series> jData
 
+    ///Конвертировании полученных данных при работе нагрузочных тестов в 
+    /// серии нагрузочных тестов
     let convertToSeries(data : ((int * double) list * string) list) =
         let series =
             data
@@ -35,6 +37,19 @@ module Series =
                             {TimeBuildingGlass = y; NumberBuildingGlass = x})
                     (serie, name)  )
         series
+    
+    ///Конвертирование серии нагрузочных тестов в данные по
+    /// нагрузочным тестам
+    let convertToData(series : Series) =
+        let data =
+            series
+            |> List.map (fun (points, name) ->
+                    let sData =
+                        points
+                        |> List.map (fun p -> 
+                            (p.NumberBuildingGlass, p.TimeBuildingGlass))
+                    (sData, name)   )
+        data
 
     ///Прочитать серию данных из указанного файла.
     let readSeries(path : string) = 
