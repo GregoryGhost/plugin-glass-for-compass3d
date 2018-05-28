@@ -8,13 +8,17 @@ open System
 
 [<EntryPoint>]
 let main argv = 
+    let selectedNumber() = Console.ReadLine() |> int
     let showMenu() = 
         while(true) do
             printfn "Menu program, enter number:"
             printfn "1) Run loading testing;"
             printfn "2) Build chart;"
             printfn "0) Exit."
-            let number() = Console.ReadLine() |> int
-            number() |> toMenu |> runMenuTask |> ignore
+            
+            selectedNumber() 
+            |> toMenu 
+            |> runMenuTask 
+            |> Console.Clear
     showMenu()
     0
