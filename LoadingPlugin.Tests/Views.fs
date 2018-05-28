@@ -78,13 +78,13 @@ module Views =
         Console.ForegroundColor <- ConsoleColor.White
     
     let tryLoadData(path : string) =
-            try
-                let series = 
-                    if(path.Length = 0) then 
-                        pathData |> readSeries
-                    else 
-                        path |> readSeries
-                series |> Some
+            try    
+                let data = 
+                    path
+                    |> readSeries
+                    |> Some
+                path |> isOkPath
+                data
             with
             | :? FileNotFoundException as ex -> 
                 ex |> showExp
@@ -92,11 +92,23 @@ module Views =
             | :? ArgumentException as ex ->
                 ex |> showExp
 
+    let printSelectedPath(path:string) =
+        if(path.Length = 0) then 
+            printfn "Loading data at default path ..."
+            pathData
+        else 
+            printfn "Loading data at %s ..." path
+            path
+
     let showViewChart() =
         printfn "Enter path of data loading building test:"
         printfn "(default path: %s)" pathData
+        printfn "Press \"Enter\" key for load data at default path."
 
-        let enterPath = Console.ReadLine()
+        let enterPath = 
+            let path = Console.ReadLine()
+            path |> printSelectedPath
+
         enterPath
         |> tryLoadData
         |> printChart
