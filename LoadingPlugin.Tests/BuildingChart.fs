@@ -53,16 +53,20 @@ module Series =
 
     ///Прочитать серию данных из указанного файла.
     let readSeries(path : string) = 
-        use sr = new StreamReader(path)
-        let jSeries = sr.ReadToEnd()
+        let sr = new StreamReader(path)
+        let series = 
+            sr.ReadToEnd()
+            |> toSeries
         sr.Close()
-        jSeries |> toSeries
+        sr.Dispose()
+        series 
     
     ///Записать серию данных (в JSON) в указанный файл.
     let writeSeries(series : string, path : string) =
-        use sw = new StreamWriter(path)
-        sw.WriteLineAsync(series) |> ignore
+        let sw = new StreamWriter(path)
+        sw.WriteLine(series) |> ignore
         sw.Close()
+        sw.Dispose()
 
     ///Посчитать общее время для каждой нагрузочной серии
     let sumForEach serie =
