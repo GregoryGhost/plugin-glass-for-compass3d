@@ -1,12 +1,15 @@
 ﻿namespace LoadingPlugin.Tests
 
 module ViewsHelpers =
+    open Microsoft.FSharp.Reflection
+
     type Menu =
         | MainMenu
         | LoadingTest
         | BuildChart
         | Exit
-         with static member CountMenuItem = 3
+         with static member CountMenuItem()=
+                FSharpType.GetUnionCases(typeof<Menu>).Length
 
     let toMenu(item : int option) = 
         if item.IsNone then
@@ -33,18 +36,40 @@ module Views =
     let defaultNameFile = "/loading.data"
     let pathData = Application.StartupPath + defaultNameFile 
 
-    let maxCountBuilding() = 
-        printfn "Enter max count building of glasses:"
-        let k = Console.ReadLine() |> int
-
+    let printMaxCountBuilding k =
+        let fc = Console.ForegroundColor
         Console.ForegroundColor <- ConsoleColor.Green
         printfn "Ok: %d" k
-        Console.ForegroundColor <- ConsoleColor.White
-        k
+        Console.ForegroundColor <- fc
+    
+    let showExp(msg : Exception) =
+        let fc = Console.ForegroundColor
+        Console.ForegroundColor <- ConsoleColor.Red
+        printfn "%s" msg.Message
+        Console.ForegroundColor <- fc
+        Console.ReadKey() |> ignore
+        None
+
+    let maxCountBuilding() = 
+        printfn "Enter max count building of glasses:"
+        try
+            let k = Console.ReadLine() |> int
+            let kOutRange = 
+                (k > 0 && k <= maxCountBuildingPossible) = false
+            if kOutRange then
+                let msg = 
+                    sprintf "Entered value is outside \
+                        of allowed range [%d, %d]" 0 maxCountBuildingPossible
+                raise (FormatException msg)
+            k |> Some
+        with
+        | :? FormatException as ex ->
+            ex |> showExp
 
     let tb() =  
         let data =
             maxCountBuilding()
+            |> Option.get
             |> calcTimeBuildingGlasses
         let writeDefault data = writeSeries(data, pathData)
         data |> convertToSeries |> toJson |> writeDefault
@@ -70,13 +95,6 @@ module Views =
             printfn "Drawing plot?(y/n)"
             let r = Console.ReadLine() |> string
             if(r <> "y") then repeat <- false
-
-    let showExp(msg : Exception) =
-        Console.ForegroundColor <- ConsoleColor.Red
-        printfn "%s" msg.Message
-        Console.ForegroundColor <- ConsoleColor.White
-        Console.ReadKey() |> ignore
-        None
 
     let isOkPath path = 
         Console.ForegroundColor <- ConsoleColor.Green

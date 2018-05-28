@@ -4,6 +4,8 @@ module BuildingGlassesTest =
     open GlassViewsModel
     open System.Diagnostics
 
+    let maxCountBuildingPossible = 200
+
     let sw = new Stopwatch()
     let glassesVM = new GlassesViewModel()
 
