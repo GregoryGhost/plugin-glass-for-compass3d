@@ -13,7 +13,7 @@ let main argv =
             printfn "Input number of item menu:"
             let number = Console.ReadLine() |> int
             let numberOutRange = 
-                (number >= 0 && number <= Menu.CountMenuItem-1) = false
+                (number >= 0 && number <= Menu.CountMenuItem()-1) = false
             if numberOutRange then
                 raise (FormatException "Selected correct number")
             number |> Some  
