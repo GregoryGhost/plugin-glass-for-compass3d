@@ -77,7 +77,7 @@ module Series =
         series 
         |> List.map (fun (d, n) -> 
                 let s = d |> sumForEach
-                (s, n))
+                (s, n)  )
 
 
 module BuildingChart =

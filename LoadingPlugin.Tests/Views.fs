@@ -36,10 +36,10 @@ module Views =
     let defaultNameFile = "/loading.data"
     let pathData = Application.StartupPath + defaultNameFile 
 
-    let printMaxCountBuilding k =
+    let printSuccessOperation str =
         let fc = Console.ForegroundColor
         Console.ForegroundColor <- ConsoleColor.Green
-        printfn "Ok: %d" k
+        printfn "Ok: %A" str
         Console.ForegroundColor <- fc
     
     let showExp(msg : Exception) =
@@ -66,18 +66,37 @@ module Views =
         | :? FormatException as ex ->
             ex |> showExp
 
+    let (>>=) twoTrackInput switchFunction = 
+        Option.bind switchFunction twoTrackInput
+    
+    let printEndTest() = 
+        let msg = "Finished loading test."
+        msg |> printSuccessOperation |> ignore
+
+    let printStartTest() =
+        let msg = "Start loading test ..."
+        msg |> printSuccessOperation |> ignore
+
     let tb() =  
+        let writeDefault data = writeSeries(data, pathData) 
         let data =
-            maxCountBuilding()
-            |> Option.get
-            |> calcTimeBuildingGlasses
-        let writeDefault data = writeSeries(data, pathData)
-        data |> convertToSeries |> toJson |> writeDefault
+            let mc = maxCountBuilding()
+            if mc.IsSome then
+                printStartTest() |> ignore
+                let data = mc.Value |> calcTimeBuildingGlasses
+                data |> convertToSeries |> toJson |> writeDefault
+                printEndTest() |> ignore
+                data |> Some
+            else 
+                None
         data
+    
+    let adapterTimeBuilding data =
+        data |> timeBuilding |> Some  
 
     let timesBuilding() = 
         tb()
-        |> timeBuilding
+        >>= adapterTimeBuilding |> Option.get
 
     let printTimesBuilding() =
         let times, _ = timesBuilding() |> List.unzip
@@ -86,15 +105,31 @@ module Views =
         printSummary timesBuildingOfGlasses
         printForEachGlass <| timesBuilding() 
 
+    let adapterChartsTimeBuilding times =
+        times |> chartsTimeBuilding |> Some
+    
+    let adapterCharts c =
+        c |> charts |> Some
+    
+    let adapterChartShow c =
+        c |> Chart.Show |> Some
+    
+    let next() =
+        printfn "Redrawing plot?(y/n)"
+        let r = Console.ReadLine() |> string
+        if(r = "y") then 
+            Some ()
+        else None
+
     let repeatDrawingPlot() =
-        let mutable repeat = true
-        while(repeat) do
-            tb() 
-            |> chartsTimeBuilding 
-            |> charts |> Chart.Show
-            printfn "Drawing plot?(y/n)"
-            let r = Console.ReadLine() |> string
-            if(r <> "y") then repeat <- false
+        let rec repeat() =
+            tb()
+            >>= adapterChartsTimeBuilding
+            >>= adapterCharts
+            >>= adapterChartShow
+            >>= next
+            >>= repeat
+        repeat() |> ignore
 
     let isOkPath path = 
         Console.ForegroundColor <- ConsoleColor.Green
