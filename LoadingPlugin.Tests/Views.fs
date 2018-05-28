@@ -2,16 +2,21 @@
 
 module ViewsHelpers =
     type Menu =
+        | MainMenu
         | LoadingTest
         | BuildChart
         | Exit
+         with static member CountMenuItem = 3
 
-    let toMenu item = 
-        match item with
-        | 1 -> Menu.LoadingTest
-        | 2 -> Menu.BuildChart
-        | 0 -> Menu.Exit
-        | _ -> Menu.Exit
+    let toMenu(item : int option) = 
+        if item.IsNone then
+            MainMenu
+        else
+            match item.Value with
+            | 1 -> Menu.LoadingTest
+            | 2 -> Menu.BuildChart
+            | 0 -> Menu.Exit
+            | _ -> Menu.MainMenu
 
 
 module Views = 
@@ -31,7 +36,7 @@ module Views =
     let maxCountBuilding() = 
         printfn "Enter max count building of glasses:"
         let k = Console.ReadLine() |> int
-        //TODO: обработка неверных k
+
         Console.ForegroundColor <- ConsoleColor.Green
         printfn "Ok: %d" k
         Console.ForegroundColor <- ConsoleColor.White
@@ -39,7 +44,7 @@ module Views =
 
     let tb() =  
         let data =
-            maxCountBuilding() 
+            maxCountBuilding()
             |> calcTimeBuildingGlasses
         let writeDefault data = writeSeries(data, pathData)
         data |> convertToSeries |> toJson |> writeDefault
@@ -66,10 +71,11 @@ module Views =
             let r = Console.ReadLine() |> string
             if(r <> "y") then repeat <- false
 
-    let showExp(msg : Exception) = 
+    let showExp(msg : Exception) =
         Console.ForegroundColor <- ConsoleColor.Red
         printfn "%s" msg.Message
         Console.ForegroundColor <- ConsoleColor.White
+        Console.ReadKey() |> ignore
         None
 
     let isOkPath path = 
@@ -78,19 +84,19 @@ module Views =
         Console.ForegroundColor <- ConsoleColor.White
     
     let tryLoadData(path : string) =
-            try    
-                let data = 
-                    path
-                    |> readSeries
-                    |> Some
-                path |> isOkPath
-                data
-            with
-            | :? FileNotFoundException as ex -> 
-                ex |> showExp
+        try    
+            let data = 
+                path
+                |> readSeries
+                |> Some
+            path |> isOkPath
+            data
+        with
+        | :? FileNotFoundException as ex -> 
+            ex |> showExp
 
-            | :? ArgumentException as ex ->
-                ex |> showExp
+        | :? ArgumentException as ex ->
+            ex |> showExp
 
     let printSelectedPath(path:string) =
         if(path.Length = 0) then 
@@ -113,6 +119,12 @@ module Views =
         |> tryLoadData
         |> printChart
     
+    let showMainMenu() =
+        printfn "Menu program, enter number:"
+        printfn "1) Run loading testing;"
+        printfn "2) Build chart;"
+        printfn "0) Exit."
+
     let runMenuTask task = 
         match task with
         | Menu.LoadingTest -> repeatDrawingPlot()
@@ -120,3 +132,5 @@ module Views =
         | Menu.BuildChart -> showViewChart()
 
         | Menu.Exit -> Environment.ExitCode |> exit
+
+        | Menu.MainMenu -> showMainMenu()
