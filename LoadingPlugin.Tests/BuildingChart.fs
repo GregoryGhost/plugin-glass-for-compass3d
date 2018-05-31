@@ -15,9 +15,16 @@ module Series =
     ///Серии - нагрузочные тесты для разных типов стакана.
     type Series = (Serie * string) list
         
-
     ///Время, затраченное на построение разных типов стакана за серию.
     type SummaryTimeBuilding = (double * string) list
+
+    ///Сырые данные, снятые во время нагрузочного тестирования,
+    /// за серию.
+    type SourceDataSerie = (int * double) list
+
+    ///Сырые данные, снятые во время нагрузочного тестирования,
+    /// за серии.
+    type SourceDataSeries = ((int * double) list * string) list
 
     ///Конвертация серии данных в JSON-формат. 
     let toJson data = Json.serialize data
@@ -129,9 +136,8 @@ module BuildingChart =
             Title = "Время построения, с",
             Min = 0.0) 
 
-    let printChart(data : Series option) =
-        if data.IsSome then
-            data.Value
-            |> convertToData
-            |> chartsTimeBuilding
-            |> charts |> Chart.Show
+    let printChart(data : Series) =
+        data
+        |> convertToData
+        |> chartsTimeBuilding
+        |> charts |> Chart.Show |> Some
