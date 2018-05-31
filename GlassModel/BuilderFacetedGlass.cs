@@ -58,11 +58,9 @@ namespace GlassModel
             /// Построить граненный стакан в САПР Компас 3D.
             /// </summary>
             /// <param name="glass">Граненный стакан.</param>
-            /// <param name="checker">Проверяющий параметры стакана
-            ///     в соответствие с требованиям предметной области.</param>
-            public void Build(IGlass glass, IChecker checker)
+            public void Build(IGlass glass)
             {
-                _builderBlank.Build(glass, checker);
+                _builderBlank.Build(glass);
 
                 _startX = 0;
                 _startY = 0;

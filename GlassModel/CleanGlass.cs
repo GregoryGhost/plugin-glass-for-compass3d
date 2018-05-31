@@ -8,7 +8,7 @@ namespace GlassModel
         /// <summary>
         /// Гладкий стакан.
         /// </summary>
-        public class CleanGlass : IGlass, IChecker
+        public class CleanGlass : IGlass
         {
             /// <summary>
             /// Зависимые и фиксированные параметры стакана

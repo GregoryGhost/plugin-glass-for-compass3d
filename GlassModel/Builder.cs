@@ -14,7 +14,7 @@ namespace GlassModel
             /// </summary>
             /// <param name="glass">Шаблон с параметрами стакана</param>
             /// <param name="checker">Проверяющий параметры стакана</param>
-            void Build(IGlass glass, IChecker checker);
+            void Build(IGlass glass);
         }
     }
 }

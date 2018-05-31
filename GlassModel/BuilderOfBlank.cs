@@ -58,13 +58,12 @@ namespace GlassModel
             /// Построить модель стакана в САПР Компас 3D.
             /// </summary>
             /// <param name="photoFrame">Шаблон стакана.</param>
-            /// <param name="checker">Проверяющий параметры стакана.</param>
             /// <exception cref="InvalidOperationException">
             ///     Вызывается тогда, когда параметры стакана
             ///     имеют недопустимые значения.</exception>
-            public void Build(IGlass glass, IChecker checker)
+            public void Build(IGlass glass)
             {
-                if (checker.IsValid == false)
+                if (glass.IsValid == false)
                 {
                     var msg = String.Format("Шаблон стакана имеет" +
                         " недопустимые параметры для построения.");
