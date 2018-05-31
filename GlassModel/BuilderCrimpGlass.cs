@@ -47,11 +47,9 @@ namespace GlassModel
             /// Построить гофрированный стакан.
             /// </summary>
             /// <param name="glass">Гофрированный стакан.</param>
-            /// <param name="checker">Проверяющий параметры стакана
-            ///     в соответствие с требованиям предметной области.</param>
-            public void Build(IGlass glass, IChecker checker)
+            public void Build(IGlass glass)
             {
-                _builderBlank.Build(glass, checker);
+                _builderBlank.Build(glass);
 
                 _glass = glass;
                 _calcParams = new CalcParams(glass);
