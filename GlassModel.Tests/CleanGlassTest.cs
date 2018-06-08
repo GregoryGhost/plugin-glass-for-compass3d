@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
-using GlassModel;
+
 using System;
-using System.Collections.Generic;
+
+using GlassModel.Glasses;
 
 
 namespace GlassModel.Tests
@@ -10,6 +11,7 @@ namespace GlassModel.Tests
     public class CleanGlassTest
     {
         private CleanGlass _cleanGlass;
+
         private const double _angle = 0.0f;
         private const double _heightFaceted = 0.0f;
         private const int _countFaceted = 0;
@@ -17,8 +19,11 @@ namespace GlassModel.Tests
         private const double _max = 200;
         private const double _percentForDepthBottom = 7;
         private const double _percentForDepthSide = 2;
+
         private const bool _valid = true;
         private const bool _invalid = false;
+
+        private const bool _filleted = true;
 
         [SetUp]
         public void Setup()
@@ -76,7 +81,7 @@ namespace GlassModel.Tests
         [TestCase(_min / 10, _min / 2, _invalid,
             TestName = "Setted neg - Height glass < min, " +
                 "diameter bottom = min")]
-        [TestCase(_min / 10, _min / 2, _invalid,
+        [TestCase(_min, _min / 10, _invalid,
             TestName = "Setted neg - Height glass = min," +
                 " diameter bottom < min")]
         [TestCase(_max * 2, _max / 2, _invalid,
@@ -86,7 +91,7 @@ namespace GlassModel.Tests
             TestName = "Setted neg - Height glass = max," +
                 " diameter bottom > max")]
         [TestCase(_min, _max / 2, _invalid,
-            TestName = "Setted neg - Height glass < diameter bottom,")]
+            TestName = "Setted neg - Height glass < diameter bottom")]
         public void CheckSettedParamsNegative(double height,
             double diameterBottom, bool expIsValid)
         {
@@ -142,6 +147,15 @@ namespace GlassModel.Tests
         {
             CheckAutoCalcParamsOfGlass(exp,
                 _cleanGlass);
+        }
+
+        [Test(Description="Check a filleted of clean glass")]
+        [TestCase(_filleted, TestName="Filleted clean glass")]
+        [TestCase(!_filleted, TestName="Not Filleted clean glass")]
+        public void CheckFilletedCleanGlass(bool filleted)
+        {
+            _cleanGlass.Filleted = _filleted;
+            Assert.AreEqual(_filleted, _cleanGlass.Filleted);
         }
 
         /// <summary>
