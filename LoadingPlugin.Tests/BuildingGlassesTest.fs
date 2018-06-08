@@ -2,19 +2,21 @@
 
 module BuildingGlassesTest =
     open GlassViewsModel
-    open FSharp.Charting
     open System.Diagnostics
-    open System
+
+    let maxCountBuildingPossible = 200
 
     let sw = new Stopwatch()
     let glassesVM = new GlassesViewModel()
 
     let glasses = [
         for i in 0..glassesVM.CountGlasses-1 ->
-            glassesVM.GetGlassByIndex(i) ]
+            let g = glassesVM.GetGlassByIndex(i)
+            g.Filleted <- true
+            g ]
     
     let measureTime (glass : GlassViewModel, maxCount : int) = [
-        for x in 0..maxCount ->
+        for x in 1..maxCount ->
             sw.Start()
             glass.BuildModel() |> ignore
             sw.Stop()
@@ -22,7 +24,9 @@ module BuildingGlassesTest =
                 sw.ElapsedMilliseconds |> double
             let timeBuilding = 
                 mls / 1000.
-            (x, timeBuilding)    ]
+            sw.Reset()
+            printfn "Building %s glass №%d" glass.Name x
+            (x, timeBuilding)  ]
     
     let calcTimeBuild glass n = 
         let maxCountBuilding = n
@@ -31,12 +35,8 @@ module BuildingGlassesTest =
         let name = glass.Name
         (time, name)
 
-    let genChart(glass : (int * double) list * string) =
-        let (data, name) = glass
-        Chart.Line (data, Name = name)
-
-    let timeBuild n =
+    let calcTimeBuildingGlasses n =
         let calc g = calcTimeBuild g n
-        glasses
-        |> List.map calc
-        |> List.map genChart
+        let times = 
+            glasses |> List.map calc
+        times

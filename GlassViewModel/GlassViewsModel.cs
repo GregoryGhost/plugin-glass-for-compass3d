@@ -1,4 +1,6 @@
-﻿using GlassModel;
+﻿using GlassModel.Builders;
+using GlassModel.Glasses;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -181,7 +183,6 @@ namespace GlassViewsModel
     {
         private IGlass _glass;
         private string _name = String.Empty;
-        private IChecker _checker;
         private IBuilder _builder;
 
         private List<Tuple<string, bool, string>> _properties;
@@ -210,7 +211,6 @@ namespace GlassViewsModel
         {
             _glass = glass;
             _name = name;
-            _checker = glass as IChecker;
             _builder = builder;
 
             var prop = _glass.Properties;
@@ -399,7 +399,7 @@ namespace GlassViewsModel
         {
             get
             {
-                return _checker.IsValid;
+                return _glass.IsValid;
             }
         }
 
@@ -414,7 +414,7 @@ namespace GlassViewsModel
             {
                 try
                 {
-                    _builder.Build(_glass, _checker);
+                    _builder.Build(_glass);
                 }
                 catch (ArgumentException)
                 {

@@ -1,5 +1,7 @@
 ﻿using NUnit.Framework;
-using GlassModel;
+
+using GlassModel.Glasses;
+
 using System;
 
 namespace GlassModel.Tests
