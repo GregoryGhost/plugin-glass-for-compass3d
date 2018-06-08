@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
-using GlassModel;
+
 using System;
-using System.Collections.Generic;
+
+using GlassModel.Glasses;
 
 
 namespace GlassModel.Tests

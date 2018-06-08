@@ -1,19 +1,32 @@
 ﻿open FSharp.Charting
-open LoadingPlugin.Tests.BuildingGlassesTest
+
+open LoadingPlugin.Tests.Views
+open LoadingPlugin.Tests.ViewsHelpers
+
+open System.IO
 open System
 
 [<EntryPoint>]
 let main argv = 
-    let maxCountBuilding = 
-        printfn "Enter max count building of glasses:"
-        let k = Console.ReadLine() |> int
-        Console.ForegroundColor <- ConsoleColor.Green
-        printfn "Ok: %d" k
-        Console.ForegroundColor <- ConsoleColor.White
-        k
-    let charts = 
-        maxCountBuilding
-        |> timeBuild 
-        |> Chart.Combine
-    charts |> Chart.Show
+    let selectedNumber() = 
+        try
+            printfn "Input number of item menu:"
+            let number = Console.ReadLine() |> int
+            let numberOutRange = 
+                (number >= 0 && number <= Menu.CountMenuItem()-1) = false
+            if numberOutRange then
+                raise (FormatException "Selected correct number")
+            number |> Some  
+        with
+        | :? System.FormatException as ex -> 
+            ex |> showExp
+
+    let rec showMenu() =
+        showMainMenu()
+        selectedNumber()
+        |> toMenu 
+        |> runMenuTask 
+        |> Console.Clear
+        showMenu()
+    showMenu()
     0
