@@ -1,4 +1,6 @@
-﻿using GlassModel;
+﻿using GlassModel.Builders;
+using GlassModel.Glasses;
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -6,19 +8,19 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace GlassPlugin
+namespace GlassViewsModel
 {
     /// <summary>
-    /// Помощник для работы с INotifyPropertyChanged
+    /// Помощник для работы с INotifyPropertyChanged.
     /// </summary>
     public class Notify : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
         /// <summary>
-        /// Оповестить об изменение свойства
+        /// Оповестить об изменение свойства.
         /// </summary>
-        /// <param name="prop">Название свойства</param>
+        /// <param name="prop">Название свойства.</param>
         public void OnPropertyChanged([CallerMemberName]string prop = "")
         {
             if (PropertyChanged != null)
@@ -29,7 +31,7 @@ namespace GlassPlugin
     }
 
     /// <summary>
-    /// Коллекция стаканов
+    /// Коллекция стаканов.
     /// </summary>
     public class Glasses : ObservableCollection<GlassViewModel>
     {
@@ -50,19 +52,19 @@ namespace GlassPlugin
         /// </summary>
         public Glasses()
         {
-            var height = new BorderConditions<double>(_min, _min, _max);
+            var height = new BorderConditions<double>(_min, _max, _max);
             var diameterBottom = new BorderConditions<double>(_min / 2,
-                _min / 2, _max / 2);
+                _max / 2, _max / 2);
             var angleHeight = new BorderConditions<double>(_minAngle,
-                _minAngle, _maxAngle);
+                _maxAngle, _maxAngle);
             var depthSideForFacetedGlass = new BorderConditions<double>(
-                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                _minDepthForFacetedGlass, _maxDepthSide,
                     _maxDepthSide);
             var depthBottom = new BorderConditions<double>(
-                _minDepthForFacetedGlass, _minDepthForFacetedGlass,
+                _minDepthForFacetedGlass, _maxDepthBottom,
                     _maxDepthBottom);
             var countFaceted = new BorderConditions<int>(
-                _minCountFaceted, _minCountFaceted, _maxCountFaceted);
+                _minCountFaceted, _maxCountFaceted, _maxCountFaceted);
 
             var facetedGlass = new FacetedGlass(height, diameterBottom,
                 angleHeight, depthSideForFacetedGlass, depthBottom,
@@ -78,7 +80,7 @@ namespace GlassPlugin
             var cleanGlass = new CleanGlass(diameterBottom, height);
 
             countFaceted = new BorderConditions<int>(_minCountStrips,
-                _minCountStrips, _maxCountStrips);
+                _maxCountStrips, _maxCountStrips);
             var crimpGlass = new CrimpGlass(height,
                 diameterBottom, countFaceted);
 
@@ -90,7 +92,7 @@ namespace GlassPlugin
     }
 
     /// <summary>
-    /// Представление модели стаканов
+    /// Представление модели стаканов.
     /// </summary>
     public class GlassesViewModel : Notify
     {
@@ -107,7 +109,7 @@ namespace GlassPlugin
         }
 
         /// <summary>
-        /// Доступные стаканы
+        /// Доступные стаканы.
         /// </summary>
         public List<string> Names
         {
@@ -120,7 +122,7 @@ namespace GlassPlugin
         }
 
         /// <summary>
-        /// Получить название выбранного стакана
+        /// Получить название выбранного стакана.
         /// </summary>
         public string SelectedGlassName
         {
@@ -134,6 +136,27 @@ namespace GlassPlugin
                                         .First(g => g.Name == value);
                 OnPropertyChanged("SelectedGlassName");
             }
+        }
+
+        /// <summary>
+        /// Получить доступное количество стаканов.
+        /// </summary>
+        public int CountGlasses
+        {
+            get
+            {
+                return _glasses.Count;
+            }
+        }
+
+        /// <summary>
+        /// Получить стакан по его индексу.
+        /// </summary>
+        /// <param name="index">Индекс стакана.</param>
+        /// <returns>Возвращает представление стакана.</returns>
+        public GlassViewModel GetGlassByIndex(int index)
+        {
+            return _glasses[index];
         }
 
         /// <summary>
@@ -160,7 +183,6 @@ namespace GlassPlugin
     {
         private IGlass _glass;
         private string _name = String.Empty;
-        private IChecker _checker;
         private IBuilder _builder;
 
         private List<Tuple<string, bool, string>> _properties;
@@ -189,7 +211,6 @@ namespace GlassPlugin
         {
             _glass = glass;
             _name = name;
-            _checker = glass as IChecker;
             _builder = builder;
 
             var prop = _glass.Properties;
@@ -346,6 +367,21 @@ namespace GlassPlugin
         }
 
         /// <summary>
+        /// Скругление дна и горлышка стакана.
+        /// </summary>
+        public bool Filleted
+        {
+            get
+            {
+                return _glass.Filleted;
+            }
+            set
+            {
+                _glass.Filleted = value;
+            }
+        }
+
+        /// <summary>
         /// Получить название стакана.
         /// </summary>
         public string Name
@@ -363,7 +399,7 @@ namespace GlassPlugin
         {
             get
             {
-                return _checker.IsValid;
+                return _glass.IsValid;
             }
         }
 
@@ -378,7 +414,7 @@ namespace GlassPlugin
             {
                 try
                 {
-                    _builder.Build(_glass, _checker);
+                    _builder.Build(_glass);
                 }
                 catch (ArgumentException)
                 {

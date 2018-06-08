@@ -1,6 +1,8 @@
-﻿using System;
+﻿using GlassModel.Glasses;
+
 using NUnit.Framework;
-using GlassModel;
+
+using System;
 
 namespace GlassModel.Tests
 {
@@ -22,6 +24,8 @@ namespace GlassModel.Tests
         private const bool _valid = true;
         private const bool _invalid = false;
 
+        private const bool _filleted = true;
+
         [SetUp]
         public void Setup()
         {
@@ -36,9 +40,8 @@ namespace GlassModel.Tests
         }
 
         [Test(Description = "Check auto calc and fixed params" +
-            "of crimp glass - " +
-                "height, diameter bottom, angleHeight, depth side, " +
-                    "depth bottom, height faceted, count faceted")]
+            "of crimp glass - height, diameter bottom, angleHeight, " +
+                "depth side, depth bottom, height faceted, count faceted")]
         [TestCase(new[] { false, false, true, true, true, true, false },
             TestName = "Check auto calc params")]
         public void CheckAutoCalcParams(bool[] exp)
@@ -48,7 +51,7 @@ namespace GlassModel.Tests
         }
 
         [Test(Description = "Check fixed params of crimp glass -" +
-            "angle height, count faceted, height faceted")]
+            "angle height, height faceted, depth side, depth bottom")]
         [TestCase(_angle, _heightFaceted, _percentForDepthBottom,
             _percentForDepthSide,
                 TestName = "Fixed params of crimp glass")]
@@ -105,7 +108,7 @@ namespace GlassModel.Tests
             "height, diameter bottom - incorrect data")]
         [TestCase(_min / 10, _min / 2, _invalid,
             TestName = "Setted neg - Height glass < min, diameter bottom = min")]
-        [TestCase(_min / 10, _min / 2, _invalid,
+        [TestCase(_min, _min / 10, _invalid,
             TestName = "Setted neg - Height glass = min, diameter bottom < min")]
         [TestCase(_max * 2, _max / 2, _invalid,
             TestName = "Setted neg - Height glass > max, diameter bottom = max")]
@@ -133,7 +136,7 @@ namespace GlassModel.Tests
         [Test(Description = "Check setted params of crimp glass -" +
             "count faceted - incorrect data")]
         [TestCase(_minCountFaceted / 2, _invalid,
-            TestName="Setted neg - count faceted < min")]
+            TestName = "Setted neg - count faceted < min")]
         [TestCase(_maxCountFaceted * 2, _invalid,
             TestName = "Setted neg - count faceted > max")]
         public void CheckSettedParamsNegative2(int countFaceted,
@@ -145,6 +148,15 @@ namespace GlassModel.Tests
             });
 
             Assert.That(expIsValid, Is.EqualTo(_crimpGlass.IsValid));
+        }
+
+        [Test(Description = "Check a filleted of faceted glass")]
+        [TestCase(_filleted, TestName = "Filleted faceted glass")]
+        [TestCase(!_filleted, TestName = "Not Filleted faceted glass")]
+        public void CheckFilletedCrimpGlass(bool filleted)
+        {
+            _crimpGlass.Filleted = _filleted;
+            Assert.AreEqual(_filleted, _crimpGlass.Filleted);
         }
     }
 }

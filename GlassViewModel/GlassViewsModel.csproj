@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{71871169-A430-4B3E-9564-B4EA412A5E2A}</ProjectGuid>
+    <ProjectGuid>{3C54BCD2-A2B4-4F07-BDCE-3417C7AF720E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>GlassModel</RootNamespace>
-    <AssemblyName>GlassModel</AssemblyName>
+    <RootNamespace>GlassViewsModel</RootNamespace>
+    <AssemblyName>GlassViewsModel</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,7 +30,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -38,49 +37,16 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BuilderCleanGlass.cs" />
-    <Compile Include="BuilderCrimpGlass.cs" />
-    <Compile Include="BuilderFacetedGlass.cs" />
-    <Compile Include="BuilderOfBlank.cs" />
-    <Compile Include="CleanGlass.cs" />
-    <Compile Include="CrimpGlass.cs" />
-    <Compile Include="FacetedGlass.cs" />
-    <Compile Include="Glass.cs" />
-    <Compile Include="Builder.cs" />
-    <Compile Include="KompasWrapper.cs" />
+    <Compile Include="GlassViewsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <COMReference Include="Kompas6Constants">
-      <Guid>{75C9F5D0-B5B8-4526-8681-9903C567D2ED}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Kompas6Constants3D">
-      <Guid>{2CAF168C-7961-4B90-9DA2-701419BEEFE3}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
-    <COMReference Include="Kompas6LTAPI5">
-      <Guid>{737224C1-8E29-48E7-918F-09922E51B664}</Guid>
-      <VersionMajor>1</VersionMajor>
-      <VersionMinor>0</VersionMinor>
-      <Lcid>0</Lcid>
-      <WrapperTool>tlbimp</WrapperTool>
-      <Isolated>False</Isolated>
-      <EmbedInteropTypes>True</EmbedInteropTypes>
-    </COMReference>
+    <ProjectReference Include="..\GlassModel\GlassModel.csproj">
+      <Project>{71871169-a430-4b3e-9564-b4ea412a5e2a}</Project>
+      <Name>GlassModel</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
